@@ -1,7 +1,8 @@
 import javax.security.auth.login.LoginException;
 
 //hidden class in public version
-//git commit test 1
+//git commit test 1 desktop
+//git commit test 2 laptop
 public class Runner {
 	private final String discordAPIKey = "Nzc5MTg1MTM3OTcxNDk0OTMy.X7c2tQ.UXkX1wWybGeoEK5JOMX3Pqgu7y4";
 

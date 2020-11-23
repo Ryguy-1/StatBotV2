@@ -6,7 +6,9 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/API Jars/JSON in Java.jar"/>
-	<classpathentry kind="lib" path="C:/Discord JDA/JDA-4.2.0_179-withDependencies.jar"/>
+	<classpathentry kind="lib" path="C:/API Jars/JSON_in_Java.jar"/>
+	<classpathentry kind="lib" path="C:/API Jars/okhttp-3.9.0.jar"/>
+	<classpathentry kind="lib" path="C:/API Jars/okio-1.13.0.jar"/>
+	<classpathentry kind="lib" path="C:/Discord JDA/JDA-4.2.0_221-withDependencies.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
