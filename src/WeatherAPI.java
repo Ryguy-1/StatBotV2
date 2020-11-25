@@ -33,7 +33,7 @@ public class WeatherAPI {
 		try {
 			response = doGetRequest(longitude, latitude);
 		} catch (IOException e) {
-			response = "WeatherAPI Response Error";
+			response = "Weather API Error";
 			e.printStackTrace();
 		}
 		formatResponse();
@@ -64,80 +64,78 @@ public class WeatherAPI {
 				responses[i][0] = objTemp.getInt("timepoint") + "";
 				// index 1 = prec_type
 				responses[i][1] = objTemp.getString("prec_type");
-				// index 2 = prec_amount
-				responses[i][2] = objTemp.getInt("prec_amount") + "";
-				// index 3 = wind direction
+				// index 2 = wind direction
 				JSONObject objTemp2 = objTemp.getJSONObject("wind10m");
-				responses[i][3] = objTemp2.getString("direction");
-				// index 4 = wind speed
+				responses[i][2] = objTemp2.getString("direction");
+				// index 3 = wind speed
 				int windSpeedTemp = objTemp2.getInt("speed");
 				switch (windSpeedTemp) {
 				case 1:
-					responses[i][4] = "Below 0.3m/s (calm)";
+					responses[i][3] = "Below 0.3m/s (calm)";
 					break;
 				case 2:
-					responses[i][4] = "0.3-3.4m/s (light)";
+					responses[i][3] = "0.3-3.4m/s (light)";
 					break;
 				case 3:
-					responses[i][4] = "3.4-8.0m/s (moderate)";
+					responses[i][3] = "3.4-8.0m/s (moderate)";
 					break;
 				case 4:
-					responses[i][4] = "8.0-10.8m/s (fresh)";
+					responses[i][3] = "8.0-10.8m/s (fresh)";
 					break;
 				case 5:
-					responses[i][4] = "10.8-17.2m/s (strong)";
+					responses[i][3] = "10.8-17.2m/s (strong)";
 					break;
 				case 6:
-					responses[i][4] = "17.2-24.5m/s (gale)";
+					responses[i][3] = "17.2-24.5m/s (gale)";
 					break;
 				case 7:
-					responses[i][4] = "24.5-32.6m/s (storm)";
+					responses[i][3] = "24.5-32.6m/s (storm)";
 					break;
 				case 8:
-					responses[i][4] = "Over 32.6m/s (hurricane)";
+					responses[i][3] = "Over 32.6m/s (hurricane)";
 					break;
 				}
-				// index 5 = prec_amount
+				// index 4 = prec_amount
 				switch (objTemp.getInt("prec_amount")) {
 				case 0:
-					responses[i][5] = "None";
+					responses[i][4] = "None";
 					break;
 				case 1:
-					responses[i][5] = "0-0.25mm/hr";
+					responses[i][4] = "0-0.25mm/hr";
 					break;
 				case 2:
-					responses[i][5] = "0.25-1mm/hr";
+					responses[i][4] = "0.25-1mm/hr";
 					break;
 				case 3:
-					responses[i][5] = "1-4mm/hr";
+					responses[i][4] = "1-4mm/hr";
 					break;
 				case 4:
-					responses[i][5] = "4-10mm/hr";
+					responses[i][4] = "4-10mm/hr";
 					break;
 				case 5:
-					responses[i][5] = "10-16mm/hr";
+					responses[i][4] = "10-16mm/hr";
 					break;
 				case 6:
-					responses[i][5] = "16-30mm/hr";
+					responses[i][4] = "16-30mm/hr";
 					break;
 				case 7:
-					responses[i][5] = "30-50mm/hr";
+					responses[i][4] = "30-50mm/hr";
 					break;
 				case 8:
-					responses[i][5] = "50-75mm/hr";
+					responses[i][4] = "50-75mm/hr";
 					break;
 				case 9:
-					responses[i][5] = "Over 75mm/hr";
+					responses[i][4] = "Over 75mm/hr";
 					break;
 
 				}
-				// index 6 = weather
-				responses[i][6] = objTemp.getString("weather");
+				// index 5 = weather
+				responses[i][5] = objTemp.getString("weather");
 
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			response = "Weather API Error";
 		}
 	}
 

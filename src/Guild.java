@@ -109,11 +109,29 @@ public class Guild {
 			System.out.println(arrOfStr[0]);
 			System.out.println(arrOfStr[1]);
 			weatherAPI.getStats(Double.parseDouble(arrOfStr[0]), Double.parseDouble(arrOfStr[1]));
+			EmbedBuilder eb = new EmbedBuilder();
+			MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
+			eb.setColor(new Color(255, 105, 180));
+			eb.setTitle("Weather ☁🌡");
+			
+			if (!weatherAPI.getResponseRaw()
+					.equals("Weather API Error")) {
+				for (int i = 0; i < weatherAPI.getResponseArray().length; i++) {
+					eb.addField("Hour "+ (i+1)*3, "Weather: "+weatherAPI.getResponseArray()[i][5] +"\nPrecipitation: "+weatherAPI.getResponseArray()[i][1] + "\nPrecipitation Amount: "+weatherAPI.getResponseArray()[i][4] +"\nWind Direction: "+weatherAPI.getResponseArray()[i][2]+ "\nWind Speed: "+weatherAPI.getResponseArray()[i][3], true);
+				}
+				// end set fields...
+			} else {
+				eb.setDescription(weatherAPI.getResponseRaw() + " ☹");
+			}
+			eb.setFooter("Powered By StatBot");// will need to have image as second parameter eventually
+			eb3 = eb.build();
+			channel.sendMessage(eb3).queue();
+			
 		}catch(Exception e) {
 			EmbedBuilder eb = new EmbedBuilder();
 			MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
 			eb.setColor(new Color(255, 105, 180));
-			eb.setTitle("Formatting Error. The Correct Format is /stat weather longitude,lattitude");
+			eb.setTitle("The Correct Format is /stat weather longitude,lattitude");
 			eb.setFooter("Powered By StatBot");// will need to have image as second parameter eventually
 			eb3 = eb.build();
 			channel.sendMessage(eb3).queue();
