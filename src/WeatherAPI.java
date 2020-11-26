@@ -1,6 +1,5 @@
 
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 
 import org.json.JSONArray;

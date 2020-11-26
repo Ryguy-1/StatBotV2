@@ -11,12 +11,14 @@ public class Guild {
 	private String guildId;
 	private CovidStatsAPI covidStatsAPI;
 	private WeatherAPI weatherAPI;
+	private NamePredict namePredict;
 
 	Guild(String guildId) {
 		this.guildId = guildId;
 		// put "us" in constructor as a placeholder
 		covidStatsAPI = new CovidStatsAPI("us");
 		weatherAPI = new WeatherAPI(1, 1);
+		namePredict = new NamePredict("john");
 	}
 
 	public void sendEvent(MessageReceivedEvent event) {
@@ -42,6 +44,15 @@ public class Guild {
 				channel.sendMessage("See /stat help weather for formatting!").queue();
 			} else {
 				weather(channel, substring, event);
+			}
+		} else if (message.contains("/stat name")) {
+			// substring to get message
+			String substring = message.substring(message.lastIndexOf(" ") + 1);
+			// makes sure they formatted it correctly
+			if (substring.contains("name")) {
+				channel.sendMessage("See /stat help name for formatting!").queue();
+			} else {
+				name(channel, substring, event);
 			}
 		}
 	}
@@ -103,7 +114,7 @@ public class Guild {
 	}
 
 	private void weather(MessageChannel channel, String message, MessageReceivedEvent event) {
-		
+
 		try {
 			String[] arrOfStr = message.split(",", 2);
 			System.out.println(arrOfStr[0]);
@@ -113,11 +124,16 @@ public class Guild {
 			MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
 			eb.setColor(new Color(255, 105, 180));
 			eb.setTitle("Weather ☁🌡");
-			
-			if (!weatherAPI.getResponseRaw()
-					.equals("Weather API Error")) {
+
+			if (!weatherAPI.getResponseRaw().equals("Weather API Error")) {
 				for (int i = 0; i < weatherAPI.getResponseArray().length; i++) {
-					eb.addField("Hour "+ (i+1)*3, "Weather: "+weatherAPI.getResponseArray()[i][5] +"\nPrecipitation: "+weatherAPI.getResponseArray()[i][1] + "\nPrecipitation Amount: "+weatherAPI.getResponseArray()[i][4] +"\nWind Direction: "+weatherAPI.getResponseArray()[i][2]+ "\nWind Speed: "+weatherAPI.getResponseArray()[i][3], true);
+					eb.addField("Hour " + (i + 1) * 3,
+							"Weather: " + weatherAPI.getResponseArray()[i][5] + "\nPrecipitation: "
+									+ weatherAPI.getResponseArray()[i][1] + "\nPrecipitation Amount: "
+									+ weatherAPI.getResponseArray()[i][4] + "\nWind Direction: "
+									+ weatherAPI.getResponseArray()[i][2] + "\nWind Speed: "
+									+ weatherAPI.getResponseArray()[i][3],
+							true);
 				}
 				// end set fields...
 			} else {
@@ -126,8 +142,8 @@ public class Guild {
 			eb.setFooter("Powered By StatBot");// will need to have image as second parameter eventually
 			eb3 = eb.build();
 			channel.sendMessage(eb3).queue();
-			
-		}catch(Exception e) {
+
+		} catch (Exception e) {
 			EmbedBuilder eb = new EmbedBuilder();
 			MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
 			eb.setColor(new Color(255, 105, 180));
@@ -136,9 +152,25 @@ public class Guild {
 			eb3 = eb.build();
 			channel.sendMessage(eb3).queue();
 		}
-		
-		
+	}
 
+	private void name(MessageChannel channel, String message, MessageReceivedEvent event) {
+		namePredict.getStats(message);
+		EmbedBuilder eb = new EmbedBuilder();
+		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
+		eb.setColor(new Color(255, 105, 180));
+		eb.setTitle("NamePredict 💭📊");
+		// sets fields...
+		if (!namePredict.getResponseRaw().equals("Name API Error")) {
+			eb.addField("Predicted Age", namePredict.getPredictedAge() + "", true);
+			eb.addField("Count for " + message, namePredict.getNumPeopleWithName() + "", true);
+			// end set fields...
+		} else {
+			eb.setDescription(namePredict.getResponseRaw() + " ☹");
+		}
+		eb.setFooter("Powered By agify.io");
+		eb3 = eb.build();
+		channel.sendMessage(eb3).queue();
 	}
 
 	// method to pause for x seconds
