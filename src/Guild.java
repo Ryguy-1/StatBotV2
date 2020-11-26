@@ -89,6 +89,8 @@ public class Guild {
 			} else {
 				placeinfo(channel, substring, event);
 			}
+		}else if(message.contains("/stat help")) {
+			help(channel);
 		}
 	}
 
@@ -269,6 +271,24 @@ public class Guild {
 			eb.setDescription(placeInfoByName.getResponseRaw() + " ☹");
 		}
 		eb.setFooter("Powered By OpenCage");
+		eb3 = eb.build();
+		channel.sendMessage(eb3).queue();
+	}
+	
+	private void help(MessageChannel channel) {
+		EmbedBuilder eb = new EmbedBuilder();
+		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
+		eb.setColor(new Color(255, 105, 180));
+		eb.setTitle("📜The Stat Bot Commands📊");
+		eb.addField("Covid Stats🦠📈", "`/stat covid (us)`", true);
+		eb.addField("Weather☁🌡", "`/stat weather (long,lat)`", true);
+		eb.addField("Name -> Age Predictions💭📊", "`/stat name (name)`", true);
+		eb.addField("Image📷🖼", "`/stat image (ImageName)`", true);
+		eb.addField("Longitude Latitude🌎🌐", "`/stat lnglat (place)`", true);
+		eb.addField("Place Information🌎🌐", "`/stat placeinfo (place)`", true);
+		eb.addField("Help🆘", "`/stat help`", true);
+		
+		eb.setFooter("Powered By StatBot");// will need to have image as second parameter eventually
 		eb3 = eb.build();
 		channel.sendMessage(eb3).queue();
 	}
