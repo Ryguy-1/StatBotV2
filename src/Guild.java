@@ -35,82 +35,82 @@ public class Guild {
 	public void sendEvent(MessageReceivedEvent event) {
 		String message = event.getMessage().getContentRaw();
 		MessageChannel channel = event.getChannel();
-		if (message.contains("/stat ping")) {
+		if (message.contains("intel ping")) {
 			// pings server
 			ping(channel, event);
-		} else if (message.contains("/stat covid")) {
+		} else if (message.contains("intel covid")) {
 			// substring to get message
 			String substring = message.substring(message.indexOf(" ", 6) + 1);
 			// makes sure they formatted it correctly
 			if (substring.contains("covid")) {
-				channel.sendMessage("See `/stat help` for formatting!").queue();
+				channel.sendMessage("See `intel help` for formatting!").queue();
 			} else {
 				covid(channel, substring, event);
 			}
-		} else if (message.contains("/stat weather")) {
+		} else if (message.contains("intel weather")) {
 			// substring to get message
 			String substring = message.substring(message.indexOf(" ", 6) + 1);
 			// makes sure they formatted it correctly
 			if (substring.contains("weather")) {
-				channel.sendMessage("See `/stat help` for formatting!").queue();
+				channel.sendMessage("See `intel help` for formatting!").queue();
 			} else {
 				weather(channel, substring, event);
 			}
-		} else if (message.contains("/stat name")) {
+		} else if (message.contains("intel name")) {
 			// substring to get message
 			String substring = message.substring(message.indexOf(" ", 6) + 1);
 			// makes sure they formatted it correctly
 			if (substring.contains("name")) {
-				channel.sendMessage("See `/stat help` for formatting!").queue();
+				channel.sendMessage("See `intel help` for formatting!").queue();
 			} else {
 				name(channel, substring, event);
 			}
-		}else if (message.contains("/stat image")) {
+		}else if (message.contains("intel image")) {
 			// substring to get message
 			String substring = message.substring(message.indexOf(" ", 6) + 1);
 			// makes sure they formatted it correctly
 			if (substring.contains("image")) {
-				channel.sendMessage("See `/stat help` for formatting!").queue();
+				channel.sendMessage("See `intel help` for formatting!").queue();
 			} else {
 				image(channel, substring, event);
 			}
-		}else if (message.contains("/stat lnglat")) {
+		}else if (message.contains("intel lnglat")) {
 			// substring to get message
 			String substring = message.substring(message.indexOf(" ", 6) + 1);
 			// makes sure they formatted it correctly
 			if (substring.contains("lnglat")) {
-				channel.sendMessage("See `/stat help` for formatting!").queue();
+				channel.sendMessage("See `intel help` for formatting!").queue();
 			} else {
 				lnglat(channel, substring, event);
 			}
-		}else if (message.contains("/stat placeinfo")) {
+		}else if (message.contains("intel placeinfo")) {
 			// substring to get message
 			String substring = message.substring(message.indexOf(" ", 6) + 1);
 			// makes sure they formatted it correctly
 			if (substring.contains("placeinfo")) {
-				channel.sendMessage("See `/stat help` for formatting!").queue();
+				channel.sendMessage("See `intel help` for formatting!").queue();
 			} else {
 				placeinfo(channel, substring, event);
 			}
-		}else if (message.contains("/stat convertcurrency")) {
+		}else if (message.contains("intel convertcurrency")) {
 			// substring to get message
 			String substring = message.substring(message.indexOf(" ", 6) + 1);
 			// makes sure they formatted it correctly
 			if (substring.contains("convertcurrency")) {
-				channel.sendMessage("See `/stat help` for formatting!").queue();
+				channel.sendMessage("See `intel help` for formatting!").queue();
 			} else {
 				convertcurrency(channel, substring, event);
 			}
-		}else if (message.contains("/stat ipinfo")) {
+		}else if (message.contains("intel ipinfo")) {
 			// substring to get message
 			String substring = message.substring(message.indexOf(" ", 6) + 1);
 			// makes sure they formatted it correctly
 			if (substring.contains("ipinfo")) {
-				channel.sendMessage("See `/stat help` for formatting!").queue();
+				channel.sendMessage("See `intel help` for formatting!").queue();
 			} else {
 				ipinfo(channel, substring, event);
 			}
-		}else if(message.contains("/stat help")) {
+		}else if(message.contains("intel help")) {
 			help(channel);
 			//add to help list
 			// - convertCurrency
@@ -125,13 +125,13 @@ public class Guild {
 	// ping code
 	private void ping(MessageChannel channel, MessageReceivedEvent event) {
 		long time = System.currentTimeMillis();
-		channel.sendMessage("Pinging StatBot...").queue(response -> {
+		channel.sendMessage("Pinging Recon...").queue(response -> {
 			EmbedBuilder eb = new EmbedBuilder();
 			MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
 			eb.setColor(new Color(255, 105, 180));
 			eb.setTitle(event.getAuthor().getName() + "'s Ping:");
 			eb.setDescription(System.currentTimeMillis() - time + " ms");
-			eb.setFooter("Powered By StatBot");// will need to have image as second parameter eventually
+			eb.setFooter("Powered By Recon");// will need to have image as second parameter eventually
 			eb3 = eb.build();
 			channel.sendMessage(eb3).queue();
 		});
@@ -208,8 +208,8 @@ public class Guild {
 			EmbedBuilder eb = new EmbedBuilder();
 			MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
 			eb.setColor(new Color(255, 105, 180));
-			eb.setTitle("The Correct Format is /stat weather longitude,lattitude");
-			eb.setFooter("Powered By StatBot");// will need to have image as second parameter eventually
+			eb.setTitle("The Correct Format is intel weather longitude,lattitude");
+			eb.setFooter("Powered By Recon");// will need to have image as second parameter eventually
 			eb3 = eb.build();
 			channel.sendMessage(eb3).queue();
 		}
@@ -317,29 +317,11 @@ public class Guild {
 			EmbedBuilder eb = new EmbedBuilder();
 			MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
 			eb.setColor(new Color(255, 105, 180));
-			eb.setTitle("The Correct Format is /stat convertcurrency (convertFrom,convertTo)");
+			eb.setTitle("The Correct Format is intel convertcurrency (convertFrom,convertTo)");
 			eb.setFooter("Powered By ExchangeRate-API");// will need to have image as second parameter eventually
 			eb3 = eb.build();
 			channel.sendMessage(eb3).queue();
 		}
-	}
-	
-	private void help(MessageChannel channel) {
-		EmbedBuilder eb = new EmbedBuilder();
-		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
-		eb.setColor(new Color(255, 105, 180));
-		eb.setTitle("📜The Stat Bot Commands📊");
-		eb.addField("Covid Stats🦠📈", "`/stat covid (us)`", true);
-		eb.addField("Weather☁🌡", "`/stat weather (long,lat)`", true);
-		eb.addField("Name -> Age Predictions💭📊", "`/stat name (name)`", true);
-		eb.addField("Image📷🖼", "`/stat image (ImageName)`", true);
-		eb.addField("Longitude Latitude🌎🌐", "`/stat lnglat (place)`", true);
-		eb.addField("Place Information🌎🌐", "`/stat placeinfo (place)`", true);
-		eb.addField("Help🆘", "`/stat help`", true);
-		
-		eb.setFooter("Powered By StatBot");// will need to have image as second parameter eventually
-		eb3 = eb.build();
-		channel.sendMessage(eb3).queue();
 	}
 	
 	private void ipinfo(MessageChannel channel, String message, MessageReceivedEvent event) {
@@ -368,6 +350,28 @@ public class Guild {
 		eb3 = eb.build();
 		channel.sendMessage(eb3).queue();
 	}
+	
+	private void help(MessageChannel channel) {
+		EmbedBuilder eb = new EmbedBuilder();
+		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
+		eb.setColor(new Color(255, 105, 180));
+		eb.setTitle("📜The Stat Bot Commands📊");
+		eb.addField("Covid Stats🦠📈", "`intel covid (us)`", true);
+		eb.addField("Weather☁🌡", "`intel weather (long,lat)`", true);
+		eb.addField("Name -> Age Predictions💭📊", "`intel name (name)`", true);
+		eb.addField("Image📷🖼", "`intel image (ImageName)`", true);
+		eb.addField("Longitude Latitude🌎🌐", "`intel lnglat (place)`", true);
+		eb.addField("Place Information🌎🌐", "`intel placeinfo (place)`", true);
+		eb.addField("Convert Currency💶💵", "`intel convertcurrency (convert from,convert to)`", true);
+		eb.addField("IP Info💻🔗", "`intel ipinfo (ip address)`", true);
+		eb.addField("Help🆘", "`intel help`", true);
+		
+		eb.setFooter("Powered By Recon");// will need to have image as second parameter eventually
+		eb3 = eb.build();
+		channel.sendMessage(eb3).queue();
+	}
+	
+	
 	
 	
 

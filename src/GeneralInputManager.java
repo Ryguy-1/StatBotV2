@@ -31,7 +31,7 @@ public class GeneralInputManager extends ListenerAdapter {
 		// initialize JDA
 		jda = JDABuilder.createDefault(runner.getDiscordAPIKey()).addEventListeners(this).build();
 		// set status of StatBot
-		jda.getPresence().setActivity(Activity.playing("Getting all the Stats..."));
+		jda.getPresence().setActivity(Activity.playing("Gathering Reconnaissance..."));
 		// initialize
 		isWrong = false;
 		// initialize guild variables
