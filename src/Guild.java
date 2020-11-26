@@ -17,6 +17,8 @@ public class Guild {
 	private PlaceInfoByName placeInfoByName;
 	private ExchangeRates exchangeRates;
 	private IpInfo ipInfo;
+	private KanyeRest kanyeRest;
+	
 	
 	Guild(String guildId) {
 		this.guildId = guildId;
@@ -29,6 +31,7 @@ public class Guild {
 		placeInfoByName = new PlaceInfoByName("San Diego");
 		exchangeRates = new ExchangeRates("USD", "USD");
 		ipInfo = new IpInfo("161.185.160.93");
+		kanyeRest = new KanyeRest();
 		
 	}
 
@@ -110,6 +113,8 @@ public class Guild {
 			} else {
 				ipinfo(channel, substring, event);
 			}
+		}else if (message.contains("intel kanye")) {
+				kanyequote(channel, event);
 		}else if(message.contains("intel help")) {
 			help(channel);
 			//add to help list
@@ -351,11 +356,30 @@ public class Guild {
 		channel.sendMessage(eb3).queue();
 	}
 	
+	private void kanyequote(MessageChannel channel, MessageReceivedEvent event) {
+		kanyeRest.getStats();
+		EmbedBuilder eb = new EmbedBuilder();
+		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
+		eb.setColor(new Color(255, 105, 180));
+		eb.setTitle("The Prophet Speaks... 🗯");
+		// sets fields...
+		if (!kanyeRest.getResponseRaw().equals("Kanye Rest API Error")) {
+			eb.setImage("https://wpr-public.s3.amazonaws.com/wprorg/images/segments/kanye_west.jpg");
+			eb.setDescription("\""+kanyeRest.getQuote()+"\" -Kanye");
+			// end set fields...
+		} else {
+			eb.setDescription(kanyeRest.getResponseRaw() + " ☹");
+		}
+		eb.setFooter("Powered By Kanye Rest");
+		eb3 = eb.build();
+		channel.sendMessage(eb3).queue();
+	}
+	
 	private void help(MessageChannel channel) {
 		EmbedBuilder eb = new EmbedBuilder();
 		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
 		eb.setColor(new Color(255, 105, 180));
-		eb.setTitle("📜The Stat Bot Commands📊");
+		eb.setTitle("📜Gathering Reconnaissance...📊");
 		eb.addField("Covid Stats🦠📈", "`intel covid (us)`", true);
 		eb.addField("Weather☁🌡", "`intel weather (long,lat)`", true);
 		eb.addField("Name -> Age Predictions💭📊", "`intel name (name)`", true);
@@ -364,6 +388,7 @@ public class Guild {
 		eb.addField("Place Information🌎🌐", "`intel placeinfo (place)`", true);
 		eb.addField("Convert Currency💶💵", "`intel convertcurrency (convert from,convert to)`", true);
 		eb.addField("IP Info💻🔗", "`intel ipinfo (ip address)`", true);
+		eb.addField("Kanye Quotes💭", "`intel kanye`", true);
 		eb.addField("Help🆘", "`intel help`", true);
 		
 		eb.setFooter("Powered By Recon");// will need to have image as second parameter eventually
