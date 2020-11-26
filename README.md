@@ -1,6 +1,6 @@
 # StatBot - The Information Hub of Discord
 
-StatBot Gathers Information From API's Across the Web to Centralize Information In One Place 
+StatBot Gathers Information From API's Across the Web
 
 ## Inviting the Bot
 
