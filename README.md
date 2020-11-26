@@ -27,11 +27,7 @@ Command List: (visable within bot with  ```/stat help```)
 ```
 
 ## APIs Referenced
-The Covid Tracking Project
-7Timer
-Agify.io
-Unsplash
-OpenCage
+The Covid Tracking Project, 7Timer, Agify.io, Unsplash, OpenCage
 
 ## Contributing
 Seggustions are welcomed and can be done through the /seggust command from within StatBot.
