@@ -15,6 +15,8 @@ public class Guild {
 	private GetImage getImage;
 	private PlaceToLngLat placeToLngLat;
 	private PlaceInfoByName placeInfoByName;
+	private ExchangeRates exchangeRates;
+	private IpInfo ipInfo;
 	
 	Guild(String guildId) {
 		this.guildId = guildId;
@@ -25,7 +27,8 @@ public class Guild {
 		getImage = new GetImage("tree");
 		placeToLngLat = new PlaceToLngLat("San Diego");
 		placeInfoByName = new PlaceInfoByName("San Diego");
-		
+		exchangeRates = new ExchangeRates("USD", "USD");
+		ipInfo = new IpInfo("161.185.160.93");
 		
 	}
 
@@ -40,7 +43,7 @@ public class Guild {
 			String substring = message.substring(message.indexOf(" ", 6) + 1);
 			// makes sure they formatted it correctly
 			if (substring.contains("covid")) {
-				channel.sendMessage("See /stat help covid for formatting!").queue();
+				channel.sendMessage("See `/stat help` for formatting!").queue();
 			} else {
 				covid(channel, substring, event);
 			}
@@ -49,7 +52,7 @@ public class Guild {
 			String substring = message.substring(message.indexOf(" ", 6) + 1);
 			// makes sure they formatted it correctly
 			if (substring.contains("weather")) {
-				channel.sendMessage("See /stat help weather for formatting!").queue();
+				channel.sendMessage("See `/stat help` for formatting!").queue();
 			} else {
 				weather(channel, substring, event);
 			}
@@ -58,7 +61,7 @@ public class Guild {
 			String substring = message.substring(message.indexOf(" ", 6) + 1);
 			// makes sure they formatted it correctly
 			if (substring.contains("name")) {
-				channel.sendMessage("See /stat help name for formatting!").queue();
+				channel.sendMessage("See `/stat help` for formatting!").queue();
 			} else {
 				name(channel, substring, event);
 			}
@@ -67,7 +70,7 @@ public class Guild {
 			String substring = message.substring(message.indexOf(" ", 6) + 1);
 			// makes sure they formatted it correctly
 			if (substring.contains("image")) {
-				channel.sendMessage("See /stat help image for formatting!").queue();
+				channel.sendMessage("See `/stat help` for formatting!").queue();
 			} else {
 				image(channel, substring, event);
 			}
@@ -76,7 +79,7 @@ public class Guild {
 			String substring = message.substring(message.indexOf(" ", 6) + 1);
 			// makes sure they formatted it correctly
 			if (substring.contains("lnglat")) {
-				channel.sendMessage("See /stat help lnglat for formatting!").queue();
+				channel.sendMessage("See `/stat help` for formatting!").queue();
 			} else {
 				lnglat(channel, substring, event);
 			}
@@ -85,12 +88,33 @@ public class Guild {
 			String substring = message.substring(message.indexOf(" ", 6) + 1);
 			// makes sure they formatted it correctly
 			if (substring.contains("placeinfo")) {
-				channel.sendMessage("See /stat help placeinfo for formatting!").queue();
+				channel.sendMessage("See `/stat help` for formatting!").queue();
 			} else {
 				placeinfo(channel, substring, event);
 			}
+		}else if (message.contains("/stat convertcurrency")) {
+			// substring to get message
+			String substring = message.substring(message.indexOf(" ", 6) + 1);
+			// makes sure they formatted it correctly
+			if (substring.contains("convertcurrency")) {
+				channel.sendMessage("See `/stat help` for formatting!").queue();
+			} else {
+				convertcurrency(channel, substring, event);
+			}
+		}else if (message.contains("/stat ipinfo")) {
+			// substring to get message
+			String substring = message.substring(message.indexOf(" ", 6) + 1);
+			// makes sure they formatted it correctly
+			if (substring.contains("ipinfo")) {
+				channel.sendMessage("See `/stat help` for formatting!").queue();
+			} else {
+				ipinfo(channel, substring, event);
+			}
 		}else if(message.contains("/stat help")) {
 			help(channel);
+			//add to help list
+			// - convertCurrency
+			// -ipinfo
 		}
 	}
 
@@ -254,12 +278,6 @@ public class Guild {
 		eb.setTitle(message + " Information  🌎🌐");
 		// sets fields...
 		if (!placeInfoByName.getResponseRaw().equals("Place Info API Error")) {
-//			private String currency;
-//			private String roadSide;
-//			private String speedIn;
-//			private String timeZone;
-//			private int callingCode;
-//			private String lnglat = "See /stat lnglat";
 			eb.addField("Currency💵", placeInfoByName.getCurrency(), true);
 			eb.addField("Road Side🚗", placeInfoByName.getRoadSide(), true);
 			eb.addField("Speed In🚅", placeInfoByName.getSpeedIn(), true);
@@ -273,6 +291,37 @@ public class Guild {
 		eb.setFooter("Powered By OpenCage");
 		eb3 = eb.build();
 		channel.sendMessage(eb3).queue();
+	}
+	
+	private void convertcurrency(MessageChannel channel, String message, MessageReceivedEvent event) {
+		try {
+			String[] arrOfStr = message.split(",", 2);
+			System.out.println(arrOfStr[0]);
+			System.out.println(arrOfStr[1]);
+			exchangeRates.getStats(arrOfStr[0], arrOfStr[1]);
+			EmbedBuilder eb = new EmbedBuilder();
+			MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
+			eb.setColor(new Color(255, 105, 180));
+			eb.setTitle("Exchange Rate from "+arrOfStr[0]+" to "+arrOfStr[1] + "💵💶💷");
+
+			if (!exchangeRates.getResponseRaw().equals("Exchange Rate API Error")) {
+				eb.setDescription(exchangeRates.getExchangeRate()+"");
+			} else {
+				eb.setDescription(exchangeRates.getResponseRaw() + " ☹");
+			}
+			eb.setFooter("Powered By ExchangeRate-API");// will need to have image as second parameter eventually
+			eb3 = eb.build();
+			channel.sendMessage(eb3).queue();
+
+		} catch (Exception e) {
+			EmbedBuilder eb = new EmbedBuilder();
+			MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
+			eb.setColor(new Color(255, 105, 180));
+			eb.setTitle("The Correct Format is /stat convertcurrency (convertFrom,convertTo)");
+			eb.setFooter("Powered By ExchangeRate-API");// will need to have image as second parameter eventually
+			eb3 = eb.build();
+			channel.sendMessage(eb3).queue();
+		}
 	}
 	
 	private void help(MessageChannel channel) {
@@ -292,6 +341,34 @@ public class Guild {
 		eb3 = eb.build();
 		channel.sendMessage(eb3).queue();
 	}
+	
+	private void ipinfo(MessageChannel channel, String message, MessageReceivedEvent event) {
+		ipInfo.getStats(message);
+		EmbedBuilder eb = new EmbedBuilder();
+		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
+		eb.setColor(new Color(255, 105, 180));
+		eb.setTitle("IP Information for "+message+"  🔗💻");
+		// sets fields...
+		if (!ipInfo.getResponseRaw().equals("Ip Info API Error")) {
+			String[] arrOfStr = ipInfo.getLoc().split(",", 2);
+			String tempLngLat = arrOfStr[1]+","+arrOfStr[0];
+			
+			eb.addField("City", ipInfo.getCity(), true);
+			eb.addField("Region", ipInfo.getRegion(), true);
+			eb.addField("Country", ipInfo.getCountry(), true);
+			eb.addField("Lng,Lat", tempLngLat, true);
+			eb.addField("Postal", ipInfo.getPostal(), true);
+			eb.addField("Time Zone", ipInfo.getTimeZone(), true);
+			
+			// end set fields...
+		} else {
+			eb.setDescription(ipInfo.getResponseRaw() + " ☹");
+		}
+		eb.setFooter("Powered By IpInfo");
+		eb3 = eb.build();
+		channel.sendMessage(eb3).queue();
+	}
+	
 	
 
 	// method to pause for x seconds

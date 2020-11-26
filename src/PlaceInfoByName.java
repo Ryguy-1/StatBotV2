@@ -103,7 +103,6 @@ public class PlaceInfoByName {
 
 		} catch (Exception e) {
 			response = "Place Info API Error";
-			e.printStackTrace();
 		}
 	}
 
