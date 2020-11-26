@@ -49,7 +49,7 @@ public class CovidStatsAPI {
 	private int totalTestResultsIncrease = 0;
 
 	CovidStatsAPI(String location) {
-		getStats(location);
+		//getStats(location);
 	}
 
 	public void getStats(String location) {

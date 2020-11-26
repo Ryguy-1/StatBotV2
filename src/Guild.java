@@ -12,13 +12,21 @@ public class Guild {
 	private CovidStatsAPI covidStatsAPI;
 	private WeatherAPI weatherAPI;
 	private NamePredict namePredict;
-
+	private GetImage getImage;
+	private PlaceToLngLat placeToLngLat;
+	private PlaceInfoByName placeInfoByName;
+	
 	Guild(String guildId) {
 		this.guildId = guildId;
 		// put "us" in constructor as a placeholder
 		covidStatsAPI = new CovidStatsAPI("us");
 		weatherAPI = new WeatherAPI(1, 1);
 		namePredict = new NamePredict("john");
+		getImage = new GetImage("tree");
+		placeToLngLat = new PlaceToLngLat("San Diego");
+		placeInfoByName = new PlaceInfoByName("San Diego");
+		
+		
 	}
 
 	public void sendEvent(MessageReceivedEvent event) {
@@ -29,7 +37,7 @@ public class Guild {
 			ping(channel, event);
 		} else if (message.contains("/stat covid")) {
 			// substring to get message
-			String substring = message.substring(message.lastIndexOf(" ") + 1);
+			String substring = message.substring(message.indexOf(" ", 6) + 1);
 			// makes sure they formatted it correctly
 			if (substring.contains("covid")) {
 				channel.sendMessage("See /stat help covid for formatting!").queue();
@@ -38,7 +46,7 @@ public class Guild {
 			}
 		} else if (message.contains("/stat weather")) {
 			// substring to get message
-			String substring = message.substring(message.lastIndexOf(" ") + 1);
+			String substring = message.substring(message.indexOf(" ", 6) + 1);
 			// makes sure they formatted it correctly
 			if (substring.contains("weather")) {
 				channel.sendMessage("See /stat help weather for formatting!").queue();
@@ -47,12 +55,39 @@ public class Guild {
 			}
 		} else if (message.contains("/stat name")) {
 			// substring to get message
-			String substring = message.substring(message.lastIndexOf(" ") + 1);
+			String substring = message.substring(message.indexOf(" ", 6) + 1);
 			// makes sure they formatted it correctly
 			if (substring.contains("name")) {
 				channel.sendMessage("See /stat help name for formatting!").queue();
 			} else {
 				name(channel, substring, event);
+			}
+		}else if (message.contains("/stat image")) {
+			// substring to get message
+			String substring = message.substring(message.indexOf(" ", 6) + 1);
+			// makes sure they formatted it correctly
+			if (substring.contains("image")) {
+				channel.sendMessage("See /stat help image for formatting!").queue();
+			} else {
+				image(channel, substring, event);
+			}
+		}else if (message.contains("/stat lnglat")) {
+			// substring to get message
+			String substring = message.substring(message.indexOf(" ", 6) + 1);
+			// makes sure they formatted it correctly
+			if (substring.contains("lnglat")) {
+				channel.sendMessage("See /stat help lnglat for formatting!").queue();
+			} else {
+				lnglat(channel, substring, event);
+			}
+		}else if (message.contains("/stat placeinfo")) {
+			// substring to get message
+			String substring = message.substring(message.indexOf(" ", 6) + 1);
+			// makes sure they formatted it correctly
+			if (substring.contains("placeinfo")) {
+				channel.sendMessage("See /stat help placeinfo for formatting!").queue();
+			} else {
+				placeinfo(channel, substring, event);
 			}
 		}
 	}
@@ -139,7 +174,7 @@ public class Guild {
 			} else {
 				eb.setDescription(weatherAPI.getResponseRaw() + " ☹");
 			}
-			eb.setFooter("Powered By StatBot");// will need to have image as second parameter eventually
+			eb.setFooter("Powered By 7Timer");// will need to have image as second parameter eventually
 			eb3 = eb.build();
 			channel.sendMessage(eb3).queue();
 
@@ -172,6 +207,72 @@ public class Guild {
 		eb3 = eb.build();
 		channel.sendMessage(eb3).queue();
 	}
+	
+	private void image(MessageChannel channel, String message, MessageReceivedEvent event) {
+		getImage.getStats(message);
+		EmbedBuilder eb = new EmbedBuilder();
+		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
+		eb.setColor(new Color(255, 105, 180));
+		eb.setTitle("Image Delivery ✉📩: "+message);
+		// sets fields...
+		if (!getImage.getResponseRaw().equals("Image API Error")) {
+			eb.setImage(getImage.getImageURL());
+			// end set fields...
+		} else {
+			eb.setDescription(getImage.getResponseRaw() + " ☹");
+		}
+		eb.setFooter("Powered By Unsplash");
+		eb3 = eb.build();
+		channel.sendMessage(eb3).queue();
+	}
+	
+	private void lnglat(MessageChannel channel, String message, MessageReceivedEvent event) {
+		placeToLngLat.getStats(message);
+		EmbedBuilder eb = new EmbedBuilder();
+		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
+		eb.setColor(new Color(255, 105, 180));
+		eb.setTitle("Longitude and Latitude  🌎🌐: "+message);
+		// sets fields...
+		if (!placeToLngLat.getResponseRaw().equals("Place to Long Lat API Error")) {
+			eb.setDescription(placeToLngLat.getLongitude()+","+placeToLngLat.getLatitude());
+			// end set fields...
+		} else {
+			eb.setDescription(placeToLngLat.getResponseRaw() + " ☹");
+		}
+		eb.setFooter("Powered By OpenCage");
+		eb3 = eb.build();
+		channel.sendMessage(eb3).queue();
+	}
+	
+	private void placeinfo(MessageChannel channel, String message, MessageReceivedEvent event) {
+		placeInfoByName.getStats(message);
+		EmbedBuilder eb = new EmbedBuilder();
+		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
+		eb.setColor(new Color(255, 105, 180));
+		eb.setTitle(message + " Information  🌎🌐");
+		// sets fields...
+		if (!placeInfoByName.getResponseRaw().equals("Place Info API Error")) {
+//			private String currency;
+//			private String roadSide;
+//			private String speedIn;
+//			private String timeZone;
+//			private int callingCode;
+//			private String lnglat = "See /stat lnglat";
+			eb.addField("Currency💵", placeInfoByName.getCurrency(), true);
+			eb.addField("Road Side🚗", placeInfoByName.getRoadSide(), true);
+			eb.addField("Speed In🚅", placeInfoByName.getSpeedIn(), true);
+			eb.addField("Time Zone🌐", placeInfoByName.getTimeZone(), true);
+			eb.addField("Calling Code📞☎", placeInfoByName.getCallingCode()+"", true);
+			eb.addField("Longitude Latitude🌐ℹ", placeInfoByName.getlnglat(), true);
+			// end set fields...
+		} else {
+			eb.setDescription(placeInfoByName.getResponseRaw() + " ☹");
+		}
+		eb.setFooter("Powered By OpenCage");
+		eb3 = eb.build();
+		channel.sendMessage(eb3).queue();
+	}
+	
 
 	// method to pause for x seconds
 	private static void pause(long seconds) {

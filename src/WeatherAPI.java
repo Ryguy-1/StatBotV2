@@ -24,7 +24,7 @@ public class WeatherAPI {
 	WeatherAPI(double longitude, double latitude) {
 		this.longitude = longitude;
 		this.latitude = latitude;
-		getStats(longitude, latitude);
+		//getStats(longitude, latitude);
 	}
 
 	public void getStats(double longitude, double latitude) {

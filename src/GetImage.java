@@ -2,6 +2,7 @@
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import okhttp3.MediaType;
@@ -10,27 +11,26 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class NamePredict {
+public class GetImage {
 
 	private String response = "";
-	private String name;
+	private String imageName;
 	OkHttpClient client = new OkHttpClient();
 	public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 	// response variables
-	private int predictedAge;
-	private int numPeopleWithName;
+	private String imageURL;
 
-	NamePredict(String name) {
-		this.name = name;
-		//getStats(name);
+	GetImage(String imageName) {
+		this.imageName = imageName;
+		//getStats(imageName);
 	}
 
-	public void getStats(String name) {
+	public void getStats(String imageName) {
 
 		try {
-			response = doGetRequest(name);
+			response = doGetRequest(imageName);
 		} catch (IOException e) {
-			response = "Name API Error";
+			response = "Image API Error";
 			e.printStackTrace();
 		}
 		formatResponse();
@@ -41,12 +41,8 @@ public class NamePredict {
 		return this.response;
 	}
 
-	public int getPredictedAge() {
-		return this.predictedAge;
-	}
-
-	public int getNumPeopleWithName() {
-		return this.numPeopleWithName;
+	public String getImageURL() {
+		return this.imageURL;
 	}
 
 	// gets response and puts the data in variables by parsing the JSON
@@ -54,20 +50,23 @@ public class NamePredict {
 		try {
 			String jsonString = this.response; // assign your JSON String here
 			JSONObject obj = new JSONObject(jsonString);
-			predictedAge = obj.getInt("age");
-			numPeopleWithName = obj.getInt("count");
+			JSONArray results = (JSONArray) obj.get("results");
+			String temp = results.get(0).toString();
+			JSONObject objTemp = new JSONObject(temp);
+			JSONObject objTemp2 = objTemp.getJSONObject("urls");
+			this.imageURL=objTemp2.getString("regular");
 
 		} catch (Exception e) {
-			response = "Name API Error";
+			response = "Image API Error";
 		}
 	}
 
 	// code request code here
-	private String doGetRequest(String name) throws IOException {
+	private String doGetRequest(String imageName) throws IOException {
 
-		String url = "https://api.agify.io?name=" + name;
+		String url = "https://api.unsplash.com/search/photos?query="+imageName;
 
-		Request request = new Request.Builder().url(url).build();
+		Request request = new Request.Builder().url(url).header("Authorization", "Client-ID IxyJqBE-TTv97tL-jRzfDjPfx3EGfMMTjhHRAOZK6WM").build();
 		Response response = client.newCall(request).execute();
 		return response.body().string();
 	}

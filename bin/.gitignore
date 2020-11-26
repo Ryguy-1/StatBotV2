@@ -1,2 +1,5 @@
 /WeatherAPI.class
 /NamePredict.class
+/GetImage.class
+/PlaceToLngLat.class
+/PlaceInfoByName.class
