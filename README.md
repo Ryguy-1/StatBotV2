@@ -14,17 +14,24 @@ https://discord.com/api/oauth2/authorize?client_id=779185137971494932&permission
 
 StatBot has an editable prefix, defaulted to /stat.
 
-Command List: (visable within bot with  ```/stat help```)
-```
-/stat ping
-/stat covid <US> (API Not State-Specific Yet) (The Covid Tracking Project API)
-/stat weather <longitude,latitude> (Detailed Weather Predictive Data) (7Timer API)
-/stat name <name> (Predicts Your Age from Your Name) (agify.io API)
-/stat image <anything> (Gives You An Image) (Unsplash API)
-/stat lnglat <place> (Gives You the Longitude,Latitude of Anywhere in the World) (OpenCage API)
-/stat placeinfo <place> (Gives You General Information About Any Place in the World) (OpenCage API)
-/stat seggust (coming soon)
-```
+Command List: (visable within bot with  `/stat help`)
+
+`/stat ping`
+
+`/stat covid <US>` (API Not State-Specific Yet) (The Covid Tracking Project API)
+
+`/stat weather <longitude,latitude>` (Detailed Weather Predictive Data) (7Timer API)
+
+`/stat name <name>` (Predicts Your Age from Your Name) (agify.io API)
+
+`/stat image <anything>` (Gives You An Image) (Unsplash API)
+
+`/stat lnglat <place>` (Gives You the Longitude,Latitude of Anywhere in the World) (OpenCage API)
+
+`/stat placeinfo <place>` (Gives You General Information About Any Place in the World) (OpenCage API)
+
+`/stat seggust` (coming soon)
+
 
 ## APIs Referenced
 The Covid Tracking Project, 7Timer, Agify.io, Unsplash, OpenCage
