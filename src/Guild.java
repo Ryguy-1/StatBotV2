@@ -19,6 +19,7 @@ public class Guild {
 	private IpInfo ipInfo;
 	private KanyeRest kanyeRest;
 	private Jokes jokes;
+	private MovieReview review;
 
 	Guild(String guildId) {
 		this.guildId = guildId;
@@ -33,6 +34,7 @@ public class Guild {
 		ipInfo = new IpInfo("161.185.160.93");
 		kanyeRest = new KanyeRest();
 		jokes = new Jokes();
+		review = new MovieReview("Lebowski");
 
 	}
 
@@ -113,6 +115,15 @@ public class Guild {
 				channel.sendMessage("See `intel help` for formatting!").queue();
 			} else {
 				ipinfo(channel, substring, event);
+			}
+		}else if (message.contains("intel movie")) {
+			// substring to get message
+			String substring = message.substring(message.indexOf(" ", 6) + 1);
+			// makes sure they formatted it correctly
+			if (substring.contains("movie")) {
+				channel.sendMessage("See `intel help` for formatting!").queue();
+			} else {
+				movie(channel, substring, event);
 			}
 		} else if (message.contains("intel kanye")) {
 			kanyequote(channel, event);
@@ -397,6 +408,33 @@ public class Guild {
 		channel.sendMessage(eb3).queue();
 	}
 
+	
+	private void movie(MessageChannel channel, String message, MessageReceivedEvent event) {
+		review.getStats(message);
+		EmbedBuilder eb = new EmbedBuilder();
+		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
+		eb.setColor(new Color(255, 105, 180));
+		eb.setTitle("Review of: " + message + "  📜");
+		// sets fields...
+		if (!review.getResponseRaw().equals("Movie API Error")) {
+//			this.displayTitle = obj2.getString("display_title");
+//			this.rating = obj2.getString("mpaa_rating");
+//			this.summary = obj2.getString("summary_short");
+//			this.openingDate = obj2.getString("opening_date");
+			eb.addField("Title", review.getTitle(), true);
+			eb.addField("Rating", review.getRating(), true);
+			try {eb.addField("Opening Date", review.getOpeningDate(), true);}catch(Exception e) {}
+			eb.setDescription("**Summary**\n"+review.getSummary());
+
+			// end set fields...
+		} else {
+			eb.setDescription(review.getResponseRaw() + " ☹");
+		}
+		eb.setFooter("Powered By New York Times API");
+		eb3 = eb.build();
+		channel.sendMessage(eb3).queue();
+	}
+	
 	private void help(MessageChannel channel) {
 		EmbedBuilder eb = new EmbedBuilder();
 		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
@@ -412,6 +450,7 @@ public class Guild {
 		eb.addField("IP Info💻🔗", "`intel ipinfo (ip address)`", true);
 		eb.addField("Kanye Quotes💭", "`intel kanye`", true);
 		eb.addField("Uncreative Jokes😂🧺", "`intel joke`", true);
+		eb.addField("Movie Recon🎥🎬", "`intel movie (movie title)`", true);
 		eb.addField("Help🆘", "`intel help`", true);
 		
 		eb.setDescription("**[Invite Here](https://discord.com/api/oauth2/authorize?client_id=779185137971494932&permissions=522304&scope=bot)**");
