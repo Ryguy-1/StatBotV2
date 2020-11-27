@@ -18,8 +18,8 @@ public class Guild {
 	private ExchangeRates exchangeRates;
 	private IpInfo ipInfo;
 	private KanyeRest kanyeRest;
-	
-	
+	private Jokes jokes;
+
 	Guild(String guildId) {
 		this.guildId = guildId;
 		// put "us" in constructor as a placeholder
@@ -32,7 +32,8 @@ public class Guild {
 		exchangeRates = new ExchangeRates("USD", "USD");
 		ipInfo = new IpInfo("161.185.160.93");
 		kanyeRest = new KanyeRest();
-		
+		jokes = new Jokes();
+
 	}
 
 	public void sendEvent(MessageReceivedEvent event) {
@@ -68,7 +69,7 @@ public class Guild {
 			} else {
 				name(channel, substring, event);
 			}
-		}else if (message.contains("intel image")) {
+		} else if (message.contains("intel image")) {
 			// substring to get message
 			String substring = message.substring(message.indexOf(" ", 6) + 1);
 			// makes sure they formatted it correctly
@@ -77,7 +78,7 @@ public class Guild {
 			} else {
 				image(channel, substring, event);
 			}
-		}else if (message.contains("intel lnglat")) {
+		} else if (message.contains("intel lnglat")) {
 			// substring to get message
 			String substring = message.substring(message.indexOf(" ", 6) + 1);
 			// makes sure they formatted it correctly
@@ -86,7 +87,7 @@ public class Guild {
 			} else {
 				lnglat(channel, substring, event);
 			}
-		}else if (message.contains("intel placeinfo")) {
+		} else if (message.contains("intel placeinfo")) {
 			// substring to get message
 			String substring = message.substring(message.indexOf(" ", 6) + 1);
 			// makes sure they formatted it correctly
@@ -95,7 +96,7 @@ public class Guild {
 			} else {
 				placeinfo(channel, substring, event);
 			}
-		}else if (message.contains("intel convertcurrency")) {
+		} else if (message.contains("intel convertcurrency")) {
 			// substring to get message
 			String substring = message.substring(message.indexOf(" ", 6) + 1);
 			// makes sure they formatted it correctly
@@ -104,7 +105,7 @@ public class Guild {
 			} else {
 				convertcurrency(channel, substring, event);
 			}
-		}else if (message.contains("intel ipinfo")) {
+		} else if (message.contains("intel ipinfo")) {
 			// substring to get message
 			String substring = message.substring(message.indexOf(" ", 6) + 1);
 			// makes sure they formatted it correctly
@@ -113,11 +114,13 @@ public class Guild {
 			} else {
 				ipinfo(channel, substring, event);
 			}
-		}else if (message.contains("intel kanye")) {
-				kanyequote(channel, event);
-		}else if(message.contains("intel help")) {
+		} else if (message.contains("intel kanye")) {
+			kanyequote(channel, event);
+		} else if (message.contains("intel joke")) {
+			joke(channel, event);
+		} else if (message.contains("intel help")) {
 			help(channel);
-			//add to help list
+			// add to help list
 			// - convertCurrency
 			// -ipinfo
 		}
@@ -238,13 +241,13 @@ public class Guild {
 		eb3 = eb.build();
 		channel.sendMessage(eb3).queue();
 	}
-	
+
 	private void image(MessageChannel channel, String message, MessageReceivedEvent event) {
 		getImage.getStats(message);
 		EmbedBuilder eb = new EmbedBuilder();
 		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
 		eb.setColor(new Color(255, 105, 180));
-		eb.setTitle("Image Delivery ✉📩: "+message);
+		eb.setTitle("Image Delivery ✉📩: " + message);
 		// sets fields...
 		if (!getImage.getResponseRaw().equals("Image API Error")) {
 			eb.setImage(getImage.getImageURL());
@@ -256,16 +259,16 @@ public class Guild {
 		eb3 = eb.build();
 		channel.sendMessage(eb3).queue();
 	}
-	
+
 	private void lnglat(MessageChannel channel, String message, MessageReceivedEvent event) {
 		placeToLngLat.getStats(message);
 		EmbedBuilder eb = new EmbedBuilder();
 		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
 		eb.setColor(new Color(255, 105, 180));
-		eb.setTitle("Longitude and Latitude  🌎🌐: "+message);
+		eb.setTitle("Longitude and Latitude  🌎🌐: " + message);
 		// sets fields...
 		if (!placeToLngLat.getResponseRaw().equals("Place to Long Lat API Error")) {
-			eb.setDescription(placeToLngLat.getLongitude()+","+placeToLngLat.getLatitude());
+			eb.setDescription(placeToLngLat.getLongitude() + "," + placeToLngLat.getLatitude());
 			// end set fields...
 		} else {
 			eb.setDescription(placeToLngLat.getResponseRaw() + " ☹");
@@ -274,7 +277,7 @@ public class Guild {
 		eb3 = eb.build();
 		channel.sendMessage(eb3).queue();
 	}
-	
+
 	private void placeinfo(MessageChannel channel, String message, MessageReceivedEvent event) {
 		placeInfoByName.getStats(message);
 		EmbedBuilder eb = new EmbedBuilder();
@@ -287,7 +290,7 @@ public class Guild {
 			eb.addField("Road Side🚗", placeInfoByName.getRoadSide(), true);
 			eb.addField("Speed In🚅", placeInfoByName.getSpeedIn(), true);
 			eb.addField("Time Zone🌐", placeInfoByName.getTimeZone(), true);
-			eb.addField("Calling Code📞☎", placeInfoByName.getCallingCode()+"", true);
+			eb.addField("Calling Code📞☎", placeInfoByName.getCallingCode() + "", true);
 			eb.addField("Longitude Latitude🌐ℹ", placeInfoByName.getlnglat(), true);
 			// end set fields...
 		} else {
@@ -297,7 +300,7 @@ public class Guild {
 		eb3 = eb.build();
 		channel.sendMessage(eb3).queue();
 	}
-	
+
 	private void convertcurrency(MessageChannel channel, String message, MessageReceivedEvent event) {
 		try {
 			String[] arrOfStr = message.split(",", 2);
@@ -307,10 +310,10 @@ public class Guild {
 			EmbedBuilder eb = new EmbedBuilder();
 			MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
 			eb.setColor(new Color(255, 105, 180));
-			eb.setTitle("Exchange Rate from "+arrOfStr[0]+" to "+arrOfStr[1] + "💵💶💷");
+			eb.setTitle("Exchange Rate from " + arrOfStr[0] + " to " + arrOfStr[1] + "💵💶💷");
 
 			if (!exchangeRates.getResponseRaw().equals("Exchange Rate API Error")) {
-				eb.setDescription(exchangeRates.getExchangeRate()+"");
+				eb.setDescription(exchangeRates.getExchangeRate() + "");
 			} else {
 				eb.setDescription(exchangeRates.getResponseRaw() + " ☹");
 			}
@@ -328,25 +331,25 @@ public class Guild {
 			channel.sendMessage(eb3).queue();
 		}
 	}
-	
+
 	private void ipinfo(MessageChannel channel, String message, MessageReceivedEvent event) {
 		ipInfo.getStats(message);
 		EmbedBuilder eb = new EmbedBuilder();
 		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
 		eb.setColor(new Color(255, 105, 180));
-		eb.setTitle("IP Information for "+message+"  🔗💻");
+		eb.setTitle("IP Information for " + message + "  🔗💻");
 		// sets fields...
 		if (!ipInfo.getResponseRaw().equals("Ip Info API Error")) {
 			String[] arrOfStr = ipInfo.getLoc().split(",", 2);
-			String tempLngLat = arrOfStr[1]+","+arrOfStr[0];
-			
+			String tempLngLat = arrOfStr[1] + "," + arrOfStr[0];
+
 			eb.addField("City", ipInfo.getCity(), true);
 			eb.addField("Region", ipInfo.getRegion(), true);
 			eb.addField("Country", ipInfo.getCountry(), true);
 			eb.addField("Lng,Lat", tempLngLat, true);
 			eb.addField("Postal", ipInfo.getPostal(), true);
 			eb.addField("Time Zone", ipInfo.getTimeZone(), true);
-			
+
 			// end set fields...
 		} else {
 			eb.setDescription(ipInfo.getResponseRaw() + " ☹");
@@ -355,7 +358,7 @@ public class Guild {
 		eb3 = eb.build();
 		channel.sendMessage(eb3).queue();
 	}
-	
+
 	private void kanyequote(MessageChannel channel, MessageReceivedEvent event) {
 		kanyeRest.getStats();
 		EmbedBuilder eb = new EmbedBuilder();
@@ -365,7 +368,7 @@ public class Guild {
 		// sets fields...
 		if (!kanyeRest.getResponseRaw().equals("Kanye Rest API Error")) {
 			eb.setImage("https://wpr-public.s3.amazonaws.com/wprorg/images/segments/kanye_west.jpg");
-			eb.setDescription("\""+kanyeRest.getQuote()+"\" -Kanye");
+			eb.setDescription("\"" + kanyeRest.getQuote() + "\" -Kanye");
 			// end set fields...
 		} else {
 			eb.setDescription(kanyeRest.getResponseRaw() + " ☹");
@@ -375,6 +378,25 @@ public class Guild {
 		channel.sendMessage(eb3).queue();
 	}
 	
+	private void joke(MessageChannel channel, MessageReceivedEvent event) {
+		jokes.getStats();
+		EmbedBuilder eb = new EmbedBuilder();
+		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
+		eb.setColor(new Color(255, 105, 180));
+		eb.setTitle("A Joke for the Uncreative... 😂🧺");
+		// sets fields...
+		if (!jokes.getResponseRaw().equals("Joke API Error")) {
+			eb.addField("Setup", jokes.getSetup(), true);
+			eb.addField("Punchline", jokes.getPunchline(), true);
+			// end set fields...
+		} else {
+			eb.setDescription(jokes.getResponseRaw() + " ☹");
+		}
+		eb.setFooter("Powered By Official-Joke-API");
+		eb3 = eb.build();
+		channel.sendMessage(eb3).queue();
+	}
+
 	private void help(MessageChannel channel) {
 		EmbedBuilder eb = new EmbedBuilder();
 		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
@@ -389,16 +411,14 @@ public class Guild {
 		eb.addField("Convert Currency💶💵", "`intel convertcurrency (convert from,convert to)`", true);
 		eb.addField("IP Info💻🔗", "`intel ipinfo (ip address)`", true);
 		eb.addField("Kanye Quotes💭", "`intel kanye`", true);
+		eb.addField("Uncreative Jokes😂🧺", "`intel joke`", true);
 		eb.addField("Help🆘", "`intel help`", true);
 		
+		eb.setDescription("**[Invite Here](https://discord.com/api/oauth2/authorize?client_id=779185137971494932&permissions=522304&scope=bot)**");
 		eb.setFooter("Powered By Recon");// will need to have image as second parameter eventually
 		eb3 = eb.build();
 		channel.sendMessage(eb3).queue();
 	}
-	
-	
-	
-	
 
 	// method to pause for x seconds
 	private static void pause(long seconds) {
