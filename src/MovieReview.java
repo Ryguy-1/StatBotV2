@@ -79,7 +79,7 @@ public class MovieReview {
 			
 		} catch (Exception e) {
 			response = "Movie API Error";
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 
