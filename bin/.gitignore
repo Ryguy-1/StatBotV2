@@ -1,10 +1,2 @@
-/WeatherAPI.class
-/NamePredict.class
-/GetImage.class
-/PlaceToLngLat.class
-/PlaceInfoByName.class
-/ExchangeRates.class
-/IpInfo.class
-/KanyeRest.class
-/Jokes.class
-/MovieReview.class
+/PokemonInfo.class
+/NFLAPI.class

@@ -20,6 +20,7 @@ public class Guild {
 	private KanyeRest kanyeRest;
 	private Jokes jokes;
 	private MovieReview review;
+	private PokemonInfo pokemonInfo;
 
 	Guild(String guildId) {
 		this.guildId = guildId;
@@ -35,6 +36,7 @@ public class Guild {
 		kanyeRest = new KanyeRest();
 		jokes = new Jokes();
 		review = new MovieReview("Lebowski");
+		pokemonInfo = new PokemonInfo("Charizard");
 
 	}
 
@@ -116,7 +118,7 @@ public class Guild {
 			} else {
 				ipinfo(channel, substring, event);
 			}
-		}else if (message.contains("intel movie")) {
+		} else if (message.contains("intel movie")) {
 			// substring to get message
 			String substring = message.substring(message.indexOf(" ", 6) + 1);
 			// makes sure they formatted it correctly
@@ -124,6 +126,15 @@ public class Guild {
 				channel.sendMessage("See `intel help` for formatting!").queue();
 			} else {
 				movie(channel, substring, event);
+			}
+		} else if (message.contains("intel pokemon")) {
+			// substring to get message
+			String substring = message.substring(message.indexOf(" ", 6) + 1);
+			// makes sure they formatted it correctly
+			if (substring.contains("pokemon")) {
+				channel.sendMessage("See `intel help` for formatting!").queue();
+			} else {
+				pokemon(channel, substring, event);
 			}
 		} else if (message.contains("intel kanye")) {
 			kanyequote(channel, event);
@@ -388,7 +399,7 @@ public class Guild {
 		eb3 = eb.build();
 		channel.sendMessage(eb3).queue();
 	}
-	
+
 	private void joke(MessageChannel channel, MessageReceivedEvent event) {
 		jokes.getStats();
 		EmbedBuilder eb = new EmbedBuilder();
@@ -408,7 +419,6 @@ public class Guild {
 		channel.sendMessage(eb3).queue();
 	}
 
-	
 	private void movie(MessageChannel channel, String message, MessageReceivedEvent event) {
 		review.getStats(message);
 		EmbedBuilder eb = new EmbedBuilder();
@@ -423,8 +433,11 @@ public class Guild {
 //			this.openingDate = obj2.getString("opening_date");
 			eb.addField("Title", review.getTitle(), true);
 			eb.addField("Rating", review.getRating(), true);
-			try {eb.addField("Opening Date", review.getOpeningDate(), true);}catch(Exception e) {}
-			eb.setDescription("**Summary**\n"+review.getSummary());
+			try {
+				eb.addField("Opening Date", review.getOpeningDate(), true);
+			} catch (Exception e) {
+			}
+			eb.setDescription("**Summary**\n" + review.getSummary());
 
 			// end set fields...
 		} else {
@@ -434,7 +447,45 @@ public class Guild {
 		eb3 = eb.build();
 		channel.sendMessage(eb3).queue();
 	}
-	
+
+	private void pokemon(MessageChannel channel, String message, MessageReceivedEvent event) {
+		pokemonInfo.getStats(message);
+		EmbedBuilder eb = new EmbedBuilder();
+		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
+		eb.setColor(new Color(255, 105, 180));
+		eb.setTitle(message + " 🎴🃏");
+		// sets fields...
+		if (!pokemonInfo.getResponseRaw().equals("Pokemon API Error")) {
+			try {
+				eb.addField("Weight", pokemonInfo.getWeight() + "", true);
+				eb.addField("Height", pokemonInfo.getHeight() + "", true);
+				System.out.println(pokemonInfo.getImage());
+				eb.setImage(pokemonInfo.getImage());
+				
+				String moves = "**First 10 Moves**\n\n";
+				for (int i = 0; i < pokemonInfo.getMoves().size(); i++) {
+					if (i < 10) {
+						moves += i + 1 + ") " + pokemonInfo.getMoves().get(i) + "   ";
+//						if(i==4) {
+//							moves+="\n";
+//						}
+					}
+				}
+				pokemonInfo.clearMoves();
+				eb.setDescription(moves);
+			} catch (Exception e) {
+				pokemonInfo.clearMoves();
+			}
+
+			// end set fields...
+		} else {
+			eb.setDescription(pokemonInfo.getResponseRaw() + " ☹");
+		}
+		eb.setFooter("Powered By PokeAPI");
+		eb3 = eb.build();
+		channel.sendMessage(eb3).queue();
+	}
+
 	private void help(MessageChannel channel) {
 		EmbedBuilder eb = new EmbedBuilder();
 		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
@@ -451,9 +502,11 @@ public class Guild {
 		eb.addField("Kanye Quotes💭", "`intel kanye`", true);
 		eb.addField("Uncreative Jokes😂🧺", "`intel joke`", true);
 		eb.addField("Movie Recon🎥🎬", "`intel movie (movie title)`", true);
+		eb.addField("Pokemon🃏🎴", "`intel pokemon (pokemon)`", true);
 		eb.addField("Help🆘", "`intel help`", true);
-		
-		eb.setDescription("**[Invite Here](https://discord.com/api/oauth2/authorize?client_id=779185137971494932&permissions=522304&scope=bot)**");
+
+		eb.setDescription(
+				"**[Invite Here](https://discord.com/api/oauth2/authorize?client_id=779185137971494932&permissions=522304&scope=bot)**");
 		eb.setFooter("Powered By Recon");// will need to have image as second parameter eventually
 		eb3 = eb.build();
 		channel.sendMessage(eb3).queue();
