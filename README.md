@@ -16,7 +16,7 @@ Prefix: `intel`
 
 Command List: (visable within bot with  `intel help`)
 
-`/intel ping`
+`intel ping` (Pings Recon)
 
 `intel covid (us)` (API Not State-Specific Yet) (The Covid Tracking Project API)
 
