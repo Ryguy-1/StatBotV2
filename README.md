@@ -12,9 +12,9 @@ https://discord.com/api/oauth2/authorize?client_id=779185137971494932&permission
 
 ## Commands
 
-Prefix: /intel
+Prefix: `intel`
 
-Command List: (visable within bot with  `/intel help`)
+Command List: (visable within bot with  `intel help`)
 
 `/intel ping`
 
@@ -50,7 +50,7 @@ Command List: (visable within bot with  `/intel help`)
 
 `intel date (mm/dd)` (Facts about any Date) (NumbersAPI)
 
-`/stat seggust` (coming soon)
+`intel seggust` (coming soon)
 
 
 ## APIs Referenced
