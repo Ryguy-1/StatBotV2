@@ -1,6 +1,6 @@
-# StatBot - The Information Hub of Discord
+# Recon - The Information Hub of Discord
 
-StatBot Gathers Information From API's Across the Web
+Recon Gathers Information From API's Across the Web for Quick Access on Discord
 
 ## Inviting the Bot
 
@@ -12,29 +12,49 @@ https://discord.com/api/oauth2/authorize?client_id=779185137971494932&permission
 
 ## Commands
 
-StatBot has an editable prefix, defaulted to /stat.
+Prefix: /intel
 
-Command List: (visable within bot with  `/stat help`)
+Command List: (visable within bot with  `/intel help`)
 
-`/stat ping`
+`/intel ping`
 
-`/stat covid <US>` (API Not State-Specific Yet) (The Covid Tracking Project API)
+`intel covid (us)` (API Not State-Specific Yet) (The Covid Tracking Project API)
 
-`/stat weather <longitude,latitude>` (Detailed Weather Predictive Data) (7Timer API)
+`intel weather (long,lat)` (Detailed Weather Predictive Data) (7Timer API)
 
-`/stat name <name>` (Predicts Your Age from Your Name) (agify.io API)
+`intel name (name)` (Predicts Your Age from Your Name) (agify.io API)
 
-`/stat image <anything>` (Gives You An Image) (Unsplash API)
+`intel image (ImageName)` (Gives You An Image) (Unsplash API)
 
-`/stat lnglat <place>` (Gives You the Longitude,Latitude of Anywhere in the World) (OpenCage API)
+`intel lnglat (place)` (Gives You the Longitude,Latitude of Anywhere in the World) (OpenCage API)
 
-`/stat placeinfo <place>` (Gives You General Information About Any Place in the World) (OpenCage API)
+`intel placeinfo (place)` (Gives You General Information About Any Place in the World) (OpenCage API)
+
+`intel convertcurrency (convert from,convert to)` (Currency Conversion Rates) (ExchangeRate-API)
+
+`intel ipinfo (ip address)` (Geographical Information about any IP) (IpInfo API)
+
+`intel kanye` (Kanye Quotes) (Kanye Rest API)
+
+`intel joke` (Amazing Jokes) (Official-Joke-API)
+
+`intel movie (movie title)` (Information about any Movie) (New York Times Movie API)
+
+`intel pokemon (pokemon)` (Pokemon Information and Pictures) (PokeAPI)
+
+`intel dog` (Dog Pictures) (Dog API)
+
+`intel cat` (Cat Pictures) (Cat API)
+
+`intel number (number)` (Facts about any Number) (NumbersAPI)
+
+`intel date (mm/dd)` (Facts about any Date) (NumbersAPI)
 
 `/stat seggust` (coming soon)
 
 
 ## APIs Referenced
-The Covid Tracking Project, 7Timer, Agify.io, Unsplash, OpenCage
+The Covid Tracking Project, 7Timer, Agify.io, Unsplash, OpenCage, ExchangeRate-API, IpInfo, Kanye Rest, Official-Joke-API, New York Times Movie API, PokeAPI, Dog API, Cat API, NumbersAPI
 
 ## Contributing
 Seggustions are welcomed and can be done through the /seggust command from within StatBot.
