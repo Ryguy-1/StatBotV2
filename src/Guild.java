@@ -21,6 +21,10 @@ public class Guild {
 	private Jokes jokes;
 	private MovieReview review;
 	private PokemonInfo pokemonInfo;
+	private Dog dog;
+	private Cat cat;
+	private NumberInfo numberInfo;
+	private Date date;
 
 	Guild(String guildId) {
 		this.guildId = guildId;
@@ -37,6 +41,10 @@ public class Guild {
 		jokes = new Jokes();
 		review = new MovieReview("Lebowski");
 		pokemonInfo = new PokemonInfo("Charizard");
+		dog = new Dog();
+		cat = new Cat();
+		numberInfo = new NumberInfo("42");
+		date = new Date("4/30");
 
 	}
 
@@ -136,11 +144,33 @@ public class Guild {
 			} else {
 				pokemon(channel, substring, event);
 			}
+		} else if (message.contains("intel number")) {
+			// substring to get message
+			String substring = message.substring(message.indexOf(" ", 6) + 1);
+			// makes sure they formatted it correctly
+			if (substring.contains("number")) {
+				channel.sendMessage("See `intel help` for formatting!").queue();
+			} else {
+				number(channel, substring, event);
+			}
+		}  else if (message.contains("intel date")) {
+			// substring to get message
+			String substring = message.substring(message.indexOf(" ", 6) + 1);
+			// makes sure they formatted it correctly
+			if (substring.contains("date")) {
+				channel.sendMessage("See `intel help` for formatting!").queue();
+			} else {
+				date(channel, substring, event);
+			}
 		} else if (message.contains("intel kanye")) {
 			kanyequote(channel, event);
 		} else if (message.contains("intel joke")) {
 			joke(channel, event);
-		} else if (message.contains("intel help")) {
+		} else if (message.contains("intel dog")) {
+			dog(channel, event);
+		}else if (message.contains("intel cat")) {
+			cat(channel, event);
+		}else if (message.contains("intel help")) {
 			help(channel);
 			// add to help list
 			// - convertCurrency
@@ -486,6 +516,80 @@ public class Guild {
 		channel.sendMessage(eb3).queue();
 	}
 
+	private void dog(MessageChannel channel, MessageReceivedEvent event) {
+		dog.getStats();
+		EmbedBuilder eb = new EmbedBuilder();
+		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
+		eb.setColor(new Color(255, 105, 180));
+		eb.setTitle("Dog🐶🐕‍");
+		// sets fields...
+		if (!dog.getResponseRaw().equals("Dog API Error")) {
+			eb.setImage(dog.getImageURL());
+			// end set fields...
+		} else {
+			eb.setDescription(dog.getResponseRaw() + " ☹");
+		}
+		eb.setFooter("Powered By Dog API");
+		eb3 = eb.build();
+		channel.sendMessage(eb3).queue();
+	}
+	
+	private void cat(MessageChannel channel, MessageReceivedEvent event) {
+		cat.getStats();
+		EmbedBuilder eb = new EmbedBuilder();
+		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
+		eb.setColor(new Color(255, 105, 180));
+		eb.setTitle("Cat🐱🐈");
+		// sets fields...
+		if (!cat.getResponseRaw().equals("Cat API Error")) {
+			eb.setImage(cat.getImageURL());
+			// end set fields...
+		} else {
+			eb.setDescription(cat.getResponseRaw() + " ☹");
+		}
+		eb.setFooter("Powered By Cat API");
+		eb3 = eb.build();
+		channel.sendMessage(eb3).queue();
+	}
+	
+	private void number(MessageChannel channel, String message, MessageReceivedEvent event) {
+		numberInfo.getStats(message);
+		EmbedBuilder eb = new EmbedBuilder();
+		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
+		eb.setColor(new Color(255, 105, 180));
+		eb.setTitle(message + " 🔢");
+		// sets fields...
+		if (!numberInfo.getResponseRaw().equals("Number API Error")) {
+			eb.setDescription(numberInfo.getResponseRaw());
+
+			// end set fields...
+		} else {
+			eb.setDescription(numberInfo.getResponseRaw() + " ☹");
+		}
+		eb.setFooter("Powered By NumbersAPI");
+		eb3 = eb.build();
+		channel.sendMessage(eb3).queue();
+	}
+	
+	private void date(MessageChannel channel, String message, MessageReceivedEvent event) {
+		date.getStats(message);
+		EmbedBuilder eb = new EmbedBuilder();
+		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
+		eb.setColor(new Color(255, 105, 180));
+		eb.setTitle(message + " 🔢");
+		// sets fields...
+		if (!date.getResponseRaw().equals("Date API Error")) {
+			eb.setDescription(date.getResponseRaw());
+
+			// end set fields...
+		} else {
+			eb.setDescription(date.getResponseRaw() + " ☹");
+		}
+		eb.setFooter("Powered By NumbersAPI");
+		eb3 = eb.build();
+		channel.sendMessage(eb3).queue();
+	}
+	
 	private void help(MessageChannel channel) {
 		EmbedBuilder eb = new EmbedBuilder();
 		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
@@ -503,6 +607,10 @@ public class Guild {
 		eb.addField("Uncreative Jokes😂🧺", "`intel joke`", true);
 		eb.addField("Movie Recon🎥🎬", "`intel movie (movie title)`", true);
 		eb.addField("Pokemon🃏🎴", "`intel pokemon (pokemon)`", true);
+		eb.addField("Dog🐶🐕‍", "`intel dog`", true);
+		eb.addField("Cat🐱🐈", "`intel cat`", true);
+		eb.addField("Number🔢", "`intel number (number)`", true);
+		eb.addField("Date🔢", "`intel date (mm/dd)`", true);
 		eb.addField("Help🆘", "`intel help`", true);
 
 		eb.setDescription(
