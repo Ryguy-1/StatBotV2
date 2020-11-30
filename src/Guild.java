@@ -162,6 +162,15 @@ public class Guild {
 			} else {
 				date(channel, substring, event);
 			}
+		} else if (message.contains("intel google")) {
+			// substring to get message
+			String substring = message.substring(message.indexOf(" ", 6) + 1);
+			// makes sure they formatted it correctly
+			if (substring.contains("google")) {
+				channel.sendMessage("See `intel help` for formatting!").queue();
+			} else {
+				google(channel, substring, event);
+			}
 		} else if (message.contains("intel kanye")) {
 			kanyequote(channel, event);
 		} else if (message.contains("intel joke")) {
@@ -590,11 +599,75 @@ public class Guild {
 		channel.sendMessage(eb3).queue();
 	}
 	
+	
+	private void google(MessageChannel channel, String message, MessageReceivedEvent event) {
+
+		channel.sendMessage("Gathering Recon On "+message+"... 🔎").queue();
+
+		Thread t1 = new Thread(() -> {
+			int inUseIndex = -1;
+
+			for (int i = 0; i < GeneralInputManager.userBots.size(); i++) {
+				if (GeneralInputManager.userBots.get(i).isInUse() == false) {
+					GeneralInputManager.userBots.get(i).setAndStart(message);
+					inUseIndex = i;
+					break;
+				}
+			}
+			
+			// Initialized to -1 and if not -1 then there is a bot available. If is -1 that
+			// means capacity is slammed at that moment.
+			if (inUseIndex != -1) {
+				
+				//asks SeleniumBot class every second if it has the result yet
+				do {
+					System.out.println("");
+				} while (GeneralInputManager.userBots.get(inUseIndex).isDone() == false);
+				
+				
+				try {
+					channel.sendMessage("Your search for "+message+"...🔎");
+
+					channel.sendFile(GeneralInputManager.userBots.get(inUseIndex).getFileFile(), "User Thread.jpg").queue();
+				} catch (Exception e) {
+					EmbedBuilder eb = new EmbedBuilder();
+					MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null,
+							null);
+
+					eb.setColor(new Color(255, 105, 180));
+					eb.setTitle(
+							"Unexpected Error... Please wait a few seconds and try again or join our **Support Server** for help and questions!");
+					eb3 = eb.build();
+
+					channel.sendMessage(eb3).queue();
+				}
+				// if there is not enough capacity with the amount of scrapers at the moment.
+			} else {
+				EmbedBuilder eb = new EmbedBuilder();
+				MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null,
+						null);
+
+				eb.setColor(new Color(255, 105, 180));
+				eb.setTitle(
+						"Not Enough Capacity at the Moment! Wait a few seconds and try again or join our **Support Server** for help and questions!");
+				eb3 = eb.build();
+
+				channel.sendMessage(eb3).queue();
+			}
+
+		});
+		t1.start();
+		
+		
+	}
+	
+	
 	private void help(MessageChannel channel) {
 		EmbedBuilder eb = new EmbedBuilder();
 		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
 		eb.setColor(new Color(255, 105, 180));
 		eb.setTitle("📜Gathering Reconnaissance...📊");
+		eb.addField("Google🔎🔍", "`intel google (anything)`", true);
 		eb.addField("Covid Stats🦠📈", "`intel covid (us)`", true);
 		eb.addField("Weather☁🌡", "`intel weather (long,lat)`", true);
 		eb.addField("Name -> Age Predictions💭📊", "`intel name (name)`", true);

@@ -24,8 +24,18 @@ public class GeneralInputManager extends ListenerAdapter {
 	private ArrayList<String> guildIds;
 	private ArrayList<String> guildNames;
 	private ArrayList<Guild> guilds;
+	
+	//scrapers for users
+	public static ArrayList<SeleniumBot> userBots = new ArrayList<SeleniumBot>();
+	//4 probably for final version
+	public static final int capacity = 4;
 
 	GeneralInputManager() throws LoginException {
+		//sets property for google scraping
+		System.setProperty("webdriver.chrome.driver", "C:\\Selenium\\chromedriver.exe");
+		for (int i = 0; i <	capacity; i++) {
+			userBots.add(new SeleniumBot());
+		}
 		// initialize Runner
 		runner = new Runner();
 		// initialize JDA
@@ -38,6 +48,9 @@ public class GeneralInputManager extends ListenerAdapter {
 		guildIds = new ArrayList<String>();
 		guildNames = new ArrayList<String>();
 		guilds = new ArrayList<Guild>();
+		
+		
+
 	}
 
 	public void onMessageReceived(MessageReceivedEvent event) {
