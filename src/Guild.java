@@ -197,7 +197,7 @@ public class Guild {
 		channel.sendMessage("Pinging Recon...").queue(response -> {
 			EmbedBuilder eb = new EmbedBuilder();
 			MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
-			eb.setColor(new Color(255, 105, 180));
+			eb.setColor(new Color(255, 255, 255));
 			eb.setTitle(event.getAuthor().getName() + "'s Ping:");
 			eb.setDescription(System.currentTimeMillis() - time + " ms");
 			eb.setFooter("Powered By Recon");// will need to have image as second parameter eventually
@@ -211,7 +211,7 @@ public class Guild {
 		covidStatsAPI.getStats(message);
 		EmbedBuilder eb = new EmbedBuilder();
 		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
-		eb.setColor(new Color(255, 105, 180));
+		eb.setColor(new Color(255, 255, 255));
 		eb.setTitle("Covid Stats 🦠📈");
 		// sets fields...
 		if (!covidStatsAPI.getResponseRaw()
@@ -252,7 +252,7 @@ public class Guild {
 			weatherAPI.getStats(Double.parseDouble(arrOfStr[0]), Double.parseDouble(arrOfStr[1]));
 			EmbedBuilder eb = new EmbedBuilder();
 			MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
-			eb.setColor(new Color(255, 105, 180));
+			eb.setColor(new Color(255, 255, 255));
 			eb.setTitle("Weather ☁🌡");
 
 			if (!weatherAPI.getResponseRaw().equals("Weather API Error")) {
@@ -276,7 +276,7 @@ public class Guild {
 		} catch (Exception e) {
 			EmbedBuilder eb = new EmbedBuilder();
 			MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
-			eb.setColor(new Color(255, 105, 180));
+			eb.setColor(new Color(255, 255, 255));
 			eb.setTitle("The Correct Format is intel weather longitude,lattitude");
 			eb.setFooter("Powered By Recon");// will need to have image as second parameter eventually
 			eb3 = eb.build();
@@ -288,7 +288,7 @@ public class Guild {
 		namePredict.getStats(message);
 		EmbedBuilder eb = new EmbedBuilder();
 		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
-		eb.setColor(new Color(255, 105, 180));
+		eb.setColor(new Color(255, 255, 255));
 		eb.setTitle("NamePredict 💭📊");
 		// sets fields...
 		if (!namePredict.getResponseRaw().equals("Name API Error")) {
@@ -307,7 +307,7 @@ public class Guild {
 		getImage.getStats(message);
 		EmbedBuilder eb = new EmbedBuilder();
 		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
-		eb.setColor(new Color(255, 105, 180));
+		eb.setColor(new Color(255, 255, 255));
 		eb.setTitle("Image Delivery ✉📩: " + message);
 		// sets fields...
 		if (!getImage.getResponseRaw().equals("Image API Error")) {
@@ -325,7 +325,7 @@ public class Guild {
 		placeToLngLat.getStats(message);
 		EmbedBuilder eb = new EmbedBuilder();
 		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
-		eb.setColor(new Color(255, 105, 180));
+		eb.setColor(new Color(255, 255, 255));
 		eb.setTitle("Longitude and Latitude  🌎🌐: " + message);
 		// sets fields...
 		if (!placeToLngLat.getResponseRaw().equals("Place to Long Lat API Error")) {
@@ -343,7 +343,7 @@ public class Guild {
 		placeInfoByName.getStats(message);
 		EmbedBuilder eb = new EmbedBuilder();
 		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
-		eb.setColor(new Color(255, 105, 180));
+		eb.setColor(new Color(255, 255, 255));
 		eb.setTitle(message + " Information  🌎🌐");
 		// sets fields...
 		if (!placeInfoByName.getResponseRaw().equals("Place Info API Error")) {
@@ -370,7 +370,7 @@ public class Guild {
 			exchangeRates.getStats(arrOfStr[0], arrOfStr[1]);
 			EmbedBuilder eb = new EmbedBuilder();
 			MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
-			eb.setColor(new Color(255, 105, 180));
+			eb.setColor(new Color(255, 255, 255));
 			eb.setTitle("Exchange Rate from " + arrOfStr[0] + " to " + arrOfStr[1] + "💵💶💷");
 
 			if (!exchangeRates.getResponseRaw().equals("Exchange Rate API Error")) {
@@ -385,7 +385,7 @@ public class Guild {
 		} catch (Exception e) {
 			EmbedBuilder eb = new EmbedBuilder();
 			MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
-			eb.setColor(new Color(255, 105, 180));
+			eb.setColor(new Color(255, 255, 255));
 			eb.setTitle("The Correct Format is intel convertcurrency (convertFrom,convertTo)");
 			eb.setFooter("Powered By ExchangeRate-API");// will need to have image as second parameter eventually
 			eb3 = eb.build();
@@ -397,7 +397,7 @@ public class Guild {
 		ipInfo.getStats(message);
 		EmbedBuilder eb = new EmbedBuilder();
 		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
-		eb.setColor(new Color(255, 105, 180));
+		eb.setColor(new Color(255, 255, 255));
 		eb.setTitle("IP Information for " + message + "  🔗💻");
 		// sets fields...
 		if (!ipInfo.getResponseRaw().equals("Ip Info API Error")) {
@@ -424,7 +424,7 @@ public class Guild {
 		kanyeRest.getStats();
 		EmbedBuilder eb = new EmbedBuilder();
 		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
-		eb.setColor(new Color(255, 105, 180));
+		eb.setColor(new Color(255, 255, 255));
 		eb.setTitle("The Prophet Speaks... 🗯");
 		// sets fields...
 		if (!kanyeRest.getResponseRaw().equals("Kanye Rest API Error")) {
@@ -443,7 +443,7 @@ public class Guild {
 		jokes.getStats();
 		EmbedBuilder eb = new EmbedBuilder();
 		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
-		eb.setColor(new Color(255, 105, 180));
+		eb.setColor(new Color(255, 255, 255));
 		eb.setTitle("A Joke for the Uncreative... 😂🧺");
 		// sets fields...
 		if (!jokes.getResponseRaw().equals("Joke API Error")) {
@@ -462,7 +462,7 @@ public class Guild {
 		review.getStats(message);
 		EmbedBuilder eb = new EmbedBuilder();
 		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
-		eb.setColor(new Color(255, 105, 180));
+		eb.setColor(new Color(255, 255, 255));
 		eb.setTitle("Review of: " + message + "  📜");
 		// sets fields...
 		if (!review.getResponseRaw().equals("Movie API Error")) {
@@ -491,7 +491,7 @@ public class Guild {
 		pokemonInfo.getStats(message);
 		EmbedBuilder eb = new EmbedBuilder();
 		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
-		eb.setColor(new Color(255, 105, 180));
+		eb.setColor(new Color(255, 255, 255));
 		eb.setTitle(message + " 🎴🃏");
 		// sets fields...
 		if (!pokemonInfo.getResponseRaw().equals("Pokemon API Error")) {
@@ -529,7 +529,7 @@ public class Guild {
 		dog.getStats();
 		EmbedBuilder eb = new EmbedBuilder();
 		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
-		eb.setColor(new Color(255, 105, 180));
+		eb.setColor(new Color(255, 255, 255));
 		eb.setTitle("Dog🐶🐕‍");
 		// sets fields...
 		if (!dog.getResponseRaw().equals("Dog API Error")) {
@@ -547,7 +547,7 @@ public class Guild {
 		cat.getStats();
 		EmbedBuilder eb = new EmbedBuilder();
 		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
-		eb.setColor(new Color(255, 105, 180));
+		eb.setColor(new Color(255, 255, 255));
 		eb.setTitle("Cat🐱🐈");
 		// sets fields...
 		if (!cat.getResponseRaw().equals("Cat API Error")) {
@@ -565,7 +565,7 @@ public class Guild {
 		numberInfo.getStats(message);
 		EmbedBuilder eb = new EmbedBuilder();
 		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
-		eb.setColor(new Color(255, 105, 180));
+		eb.setColor(new Color(255, 255, 255));
 		eb.setTitle(message + " 🔢");
 		// sets fields...
 		if (!numberInfo.getResponseRaw().equals("Number API Error")) {
@@ -584,7 +584,7 @@ public class Guild {
 		date.getStats(message);
 		EmbedBuilder eb = new EmbedBuilder();
 		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
-		eb.setColor(new Color(255, 105, 180));
+		eb.setColor(new Color(255, 255, 255));
 		eb.setTitle(message + " 🔢");
 		// sets fields...
 		if (!date.getResponseRaw().equals("Date API Error")) {
@@ -634,7 +634,7 @@ public class Guild {
 					MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null,
 							null);
 
-					eb.setColor(new Color(255, 105, 180));
+					eb.setColor(new Color(255, 255, 255));
 					eb.setTitle(
 							"Unexpected Error... Please wait a few seconds and try again or join our **Support Server** for help and questions!");
 					eb3 = eb.build();
@@ -647,7 +647,7 @@ public class Guild {
 				MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null,
 						null);
 
-				eb.setColor(new Color(255, 105, 180));
+				eb.setColor(new Color(255, 255, 255));
 				eb.setTitle(
 						"Not Enough Capacity at the Moment! Wait a few seconds and try again or join our **Support Server** for help and questions!");
 				eb3 = eb.build();
@@ -665,7 +665,7 @@ public class Guild {
 	private void help(MessageChannel channel) {
 		EmbedBuilder eb = new EmbedBuilder();
 		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
-		eb.setColor(new Color(255, 105, 180));
+		eb.setColor(new Color(255, 255, 255));
 		eb.setTitle("📜Gathering Reconnaissance...📊");
 		eb.addField("Google🔎🔍", "`intel google (anything)`", true);
 		eb.addField("Covid Stats🦠📈", "`intel covid (us)`", true);
