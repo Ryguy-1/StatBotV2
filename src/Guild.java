@@ -621,7 +621,7 @@ public class Guild {
 				
 				//asks SeleniumBot class every second if it has the result yet
 				do {
-					System.out.println("");
+					pauseMilliseconds(100);
 				} while (GeneralInputManager.userBots.get(inUseIndex).isDone() == false);
 				
 				
@@ -694,13 +694,23 @@ public class Guild {
 	}
 
 	// method to pause for x seconds
-	private static void pause(long seconds) {
+	private static void pauseSeconds(long seconds) {
 		try {
 			TimeUnit.SECONDS.sleep(seconds);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	private static void pauseMilliseconds(long milliseconds) {
+		try {
+			TimeUnit.MILLISECONDS.sleep(milliseconds);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 }
