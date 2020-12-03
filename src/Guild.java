@@ -155,7 +155,7 @@ public class Guild {
 			} else {
 				number(channel, substring, event);
 			}
-		}  else if (message.contains("intel date")) {
+		} else if (message.contains("intel date")) {
 			// substring to get message
 			String substring = message.substring(message.indexOf(" ", 6) + 1);
 			// makes sure they formatted it correctly
@@ -179,9 +179,9 @@ public class Guild {
 			joke(channel, event);
 		} else if (message.contains("intel dog")) {
 			dog(channel, event);
-		}else if (message.contains("intel cat")) {
+		} else if (message.contains("intel cat")) {
 			cat(channel, event);
-		}else if (message.contains("intel help")) {
+		} else if (message.contains("intel help")) {
 			help(channel);
 			// add to help list
 			// - convertCurrency
@@ -199,7 +199,7 @@ public class Guild {
 		channel.sendMessage("Pinging Recon...").queue(response -> {
 			EmbedBuilder eb = new EmbedBuilder();
 			MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
-			eb.setColor(new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256))); //256 non-inclusive
+			eb.setColor(new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256))); // 256 non-inclusive
 			eb.setTitle(event.getAuthor().getName() + "'s Ping:");
 			eb.setDescription(System.currentTimeMillis() - time + " ms");
 			eb.setFooter("Powered By Recon");// will need to have image as second parameter eventually
@@ -502,7 +502,7 @@ public class Guild {
 				eb.addField("Height", pokemonInfo.getHeight() + "", true);
 				System.out.println(pokemonInfo.getImage());
 				eb.setImage(pokemonInfo.getImage());
-				
+
 				String moves = "**First 10 Moves**\n\n";
 				for (int i = 0; i < pokemonInfo.getMoves().size(); i++) {
 					if (i < 10) {
@@ -544,7 +544,7 @@ public class Guild {
 		eb3 = eb.build();
 		channel.sendMessage(eb3).queue();
 	}
-	
+
 	private void cat(MessageChannel channel, MessageReceivedEvent event) {
 		cat.getStats();
 		EmbedBuilder eb = new EmbedBuilder();
@@ -562,7 +562,7 @@ public class Guild {
 		eb3 = eb.build();
 		channel.sendMessage(eb3).queue();
 	}
-	
+
 	private void number(MessageChannel channel, String message, MessageReceivedEvent event) {
 		numberInfo.getStats(message);
 		EmbedBuilder eb = new EmbedBuilder();
@@ -581,7 +581,7 @@ public class Guild {
 		eb3 = eb.build();
 		channel.sendMessage(eb3).queue();
 	}
-	
+
 	private void date(MessageChannel channel, String message, MessageReceivedEvent event) {
 		date.getStats(message);
 		EmbedBuilder eb = new EmbedBuilder();
@@ -600,11 +600,10 @@ public class Guild {
 		eb3 = eb.build();
 		channel.sendMessage(eb3).queue();
 	}
-	
-	
+
 	private void google(MessageChannel channel, String message, MessageReceivedEvent event) {
 
-		channel.sendMessage("Gathering Recon On "+message+"... 🔎").queue();
+		channel.sendMessage("Gathering Recon On " + message + "... 🔎").queue();
 
 		Thread t1 = new Thread(() -> {
 			int inUseIndex = -1;
@@ -616,40 +615,50 @@ public class Guild {
 					break;
 				}
 			}
-			
+
 			// Initialized to -1 and if not -1 then there is a bot available. If is -1 that
 			// means capacity is slammed at that moment.
 			if (inUseIndex != -1) {
-				
-				//asks SeleniumBot class every second if it has the result yet
+
+				// asks SeleniumBot class every second if it has the result yet
 				do {
 					pauseMilliseconds(10);
 				} while (GeneralInputManager.userBots.get(inUseIndex).isDone() == false);
-				
-				
-				try {
-					channel.sendMessage("Your search for "+message+"...🔎");
 
-					channel.sendFile(GeneralInputManager.userBots.get(inUseIndex).getFileFile(), "User Thread.jpg").queue();
-					
+				try {
+					channel.sendMessage("Your search for " + message + "...🔎");
+
+					channel.sendFile(GeneralInputManager.userBots.get(inUseIndex).getFileFile(), "User Thread.jpg")
+							.queue();
+
 					EmbedBuilder eb = new EmbedBuilder();
 					MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null,
 							null);
 
 					eb.setColor(new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
-					eb.setTitle(
-							"**URL Redirects...🔗🖱**");
+					eb.setTitle("**"+message.toUpperCase()+"🔗🖱**", GeneralInputManager.userBots.get(inUseIndex).getCurrentURL());
 					String temp = "";
-					for (int i = 0; i < 12; i++) { //only top 12 links or blank spaces
-						try {temp+="["+GeneralInputManager.userBots.get(inUseIndex).getLinkTitles().get(i)+"]("+GeneralInputManager.userBots.get(inUseIndex).getLinkURLs().get(i)+")\n\n";}catch(Exception e){}
+					for (int i = 0; i < 12; i++) { // only top 12 links or blank spaces
+						try {
+							if(!GeneralInputManager.userBots.get(inUseIndex).getLinkTitles().get(i).equals("")) {
+							temp += "[" + GeneralInputManager.userBots.get(inUseIndex).getLinkTitles().get(i) + "]("
+									+ GeneralInputManager.userBots.get(inUseIndex).getLinkURLs().get(i) + ")\n\n";
+							}
+						} catch (Exception e) {
+						}
 					}
-					GeneralInputManager.userBots.get(inUseIndex).clearLinks(); //necessarry to clear the links for next user
+					GeneralInputManager.userBots.get(inUseIndex).clearLinks(); // necessarry to clear the links for next
+																				// user
 					eb.setDescription(temp);
-					eb.setFooter("Powered By Google", "https://images.theconversation.com/files/93616/original/image-20150902-6700-t2axrz.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=1000&fit=clip"); //url to google logo
+					eb.setFooter("Powered By Google",
+							"https://images.theconversation.com/files/93616/original/image-20150902-6700-t2axrz.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=1000&fit=clip"); // url
+																																										// to
+																																										// google
+																																										// logo
 					eb3 = eb.build();
 
 					channel.sendMessage(eb3).queue();
-					
+
 				} catch (Exception e) {
 					EmbedBuilder eb = new EmbedBuilder();
 					MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null,
@@ -679,9 +688,7 @@ public class Guild {
 		});
 		t1.start();
 	}
-	
-	
-	
+
 	private void help(MessageChannel channel) {
 		EmbedBuilder eb = new EmbedBuilder();
 		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
@@ -722,7 +729,7 @@ public class Guild {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private static void pauseMilliseconds(long milliseconds) {
 		try {
 			TimeUnit.MILLISECONDS.sleep(milliseconds);
@@ -730,7 +737,7 @@ public class Guild {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 
 }

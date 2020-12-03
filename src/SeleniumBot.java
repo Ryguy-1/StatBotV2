@@ -105,6 +105,9 @@ public class SeleniumBot {
 		linkURLs.clear();
 	}
 	
+	public String getCurrentURL() {
+		return driver.getCurrentUrl();
+	}
 	public boolean isInUse() {
 		return this.isInUse;
 	}
