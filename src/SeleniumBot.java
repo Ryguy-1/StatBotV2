@@ -1,29 +1,20 @@
 
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
-
-import javax.imageio.ImageIO;
-import javax.swing.JOptionPane;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.OutputType;
-import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-import com.sun.jna.FromNativeContext;
-
-//creates new Selenium Monitoring Bots. Has a member variable for which site it is monitoring.
+//creates new Selenium Bots
 public class SeleniumBot {
 
 	private ChromeDriver driver;
@@ -34,45 +25,64 @@ public class SeleniumBot {
 	private File imageFile;
 	private boolean isInUse = false;
 	private boolean isDone = true;
-
-	private String message = "";
+	private ArrayList<String> linkTitles = new ArrayList<String>();
+	private ArrayList<String> linkURLs = new ArrayList<String>();
 	
+	
+	
+	private String message = "";
+
 	private JavascriptExecutor js;
 
-	
-	SeleniumBot(){
+	SeleniumBot() {
 		isActive = true;
 		// isAvailable = false;
 		initializeBot();
-		runBot();
 	}
-	
+
 	public void runBot() {
-			t1 = new Thread(() -> {
-				while (true) {
 
-					if (!message.equals("")) {
-						
-						driver.get("https://www.google.com/");
-						WebElement searchBar = driver.findElement(By.name("q"));
-						searchBar.sendKeys(message);
-						searchBar.sendKeys(Keys.ENTER);
-						pause(2);
-
-						try {
-							this.imageFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-						} catch (Exception e2) {
-							System.out.println("image retrieval error");
-						}
+		t1 = new Thread(() -> {
+			if (!message.equals("")) {
+				driver.get("https://www.google.com/");
+				WebElement searchBar = driver.findElement(By.name("q"));
+				searchBar.sendKeys(message);
+				searchBar.sendKeys(Keys.ENTER);
+//////////////////////////////////////////////////// Gets the Names of the different google links and main website on every other line -> Sometimes blank
+				try {
+					System.out.println(driver.findElementsByClassName("yuRUbf").size());
+					for (int i = 5; i < 6; i++) {
+						System.out.println(driver.findElementsByClassName("yuRUbf").get(i).getText());
+						this.linkTitles.add(driver.findElementsByClassName("yuRUbf").get(i).getText());
 					}
-					isDone = true;
-					message = "";
-					pause(1);
+				} catch (Exception e) {
+					System.out.println("link title error");
 				}
-			});
-			t1.start();
+				
+				try {
+					for (int i = 5; i < 6; i++) {
+						WebElement div = driver.findElementsByClassName("yuRUbf").get(i);
+						System.out.println(div.findElement(By.cssSelector("a")).getAttribute("href"));
+					}
+				}catch(Exception e) {
+					System.out.println("href error");
+				}
+				
+////////////////////////////////////////////////////
+
+				try {
+					this.imageFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+				} catch (Exception e2) {
+					System.out.println("Screenshot Error...");
+				}
+			}
+			isDone = true;
+			message = "";
+
+		});
+		t1.start();
 	}
-	
+
 	public void setIsActiveTrue() {
 		isActive = true;
 	}
@@ -84,18 +94,37 @@ public class SeleniumBot {
 		return tempFile;
 	}
 
+	public ArrayList<String> getLinkTitles(){
+		ArrayList<String> temp = new ArrayList<String>();
+		for (int i = 0; i < linkTitles.size(); i++) {
+			temp.add(linkTitles.get(i));
+		}
+		linkTitles.clear();
+		return temp;
+	}
+	
+	public ArrayList<String> getLinkURLs(){
+		ArrayList<String> temp = new ArrayList<String>();
+		for (int i = 0; i < linkURLs.size(); i++) {
+			temp.add(linkURLs.get(i));
+		}
+		linkURLs.clear();
+		return temp;
+	}
+	
 	public boolean isInUse() {
 		return this.isInUse;
 	}
-	
+
 	public boolean isDone() {
 		return this.isDone;
 	}
-	
+
 	public void setAndStart(String message) {
 		this.isDone = false;
 		this.isInUse = true;
 		this.message = message;
+		runBot();
 	}
 
 	public void quitBot() {
@@ -106,25 +135,24 @@ public class SeleniumBot {
 	public void initializeBot() {
 
 		ChromeOptions options = new ChromeOptions();
-		options.addArguments("--disable-notifications", "--headless"); // "--disable-notifications", "--start-maximized", "--headless"
+		options.addArguments("--disable-notifications", "--headless"); // "--disable-notifications",
+																		// "--start-maximized", "--headless"
 		driver = new ChromeDriver(options);
 
 		js = (JavascriptExecutor) driver;
 		resizeWindow(driver, 1500, 1200);
-		
-		
-		
-		//setup bot for safe search
-		
+
+		// set up bot for safe search
+
 		driver.get("https://www.google.com/");
 		WebElement searchBar = driver.findElement(By.name("q"));
 		searchBar.sendKeys("google");
 		searchBar.sendKeys(Keys.ENTER);
-		pause(2);
-		
+		// may have to change for different internet connections
+		pauseSeconds(2);
+
 		driver.findElementById("abar_button_opt").click();
 		driver.findElementById("safesearch").click();
-		
 
 	}
 
@@ -135,13 +163,23 @@ public class SeleniumBot {
 
 	}
 
-	public static void pause(long seconds) {
+	public static void pauseSeconds(long seconds) {
 		try {
 			TimeUnit.SECONDS.sleep(seconds);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	private static void pauseMilliseconds(long milliseconds) {
+		try {
+			TimeUnit.MILLISECONDS.sleep(milliseconds);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 }

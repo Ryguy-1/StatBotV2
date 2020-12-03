@@ -28,7 +28,7 @@ public class GeneralInputManager extends ListenerAdapter {
 	//scrapers for users
 	public static ArrayList<SeleniumBot> userBots = new ArrayList<SeleniumBot>();
 	//4 probably for final version
-	public static final int capacity = 4;
+	public static final int capacity = 1;
 
 	GeneralInputManager() throws LoginException {
 		//sets property for google scraping

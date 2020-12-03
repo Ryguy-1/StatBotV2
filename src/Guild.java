@@ -621,7 +621,7 @@ public class Guild {
 				
 				//asks SeleniumBot class every second if it has the result yet
 				do {
-					pauseMilliseconds(100);
+					pauseMilliseconds(10);
 				} while (GeneralInputManager.userBots.get(inUseIndex).isDone() == false);
 				
 				
@@ -657,9 +657,8 @@ public class Guild {
 
 		});
 		t1.start();
-		
-		
 	}
+	
 	
 	
 	private void help(MessageChannel channel) {
