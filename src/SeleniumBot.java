@@ -51,8 +51,7 @@ public class SeleniumBot {
 //////////////////////////////////////////////////// Gets the Names of the different google links and main website on every other line -> Sometimes blank
 				try {
 					System.out.println(driver.findElementsByClassName("yuRUbf").size());
-					for (int i = 5; i < 6; i++) {
-						System.out.println(driver.findElementsByClassName("yuRUbf").get(i).getText());
+					for (int i = 0; i < driver.findElementsByClassName("yuRUbf").size(); i++) {
 						this.linkTitles.add(driver.findElementsByClassName("yuRUbf").get(i).getText());
 					}
 				} catch (Exception e) {
@@ -60,9 +59,8 @@ public class SeleniumBot {
 				}
 				
 				try {
-					for (int i = 5; i < 6; i++) {
-						WebElement div = driver.findElementsByClassName("yuRUbf").get(i);
-						System.out.println(div.findElement(By.cssSelector("a")).getAttribute("href"));
+					for (int i = 0; i < driver.findElementsByClassName("yuRUbf").size(); i++) {
+						this.linkURLs.add(driver.findElementsByClassName("yuRUbf").get(i).findElement(By.cssSelector("a")).getAttribute("href"));
 					}
 				}catch(Exception e) {
 					System.out.println("href error");
@@ -95,21 +93,16 @@ public class SeleniumBot {
 	}
 
 	public ArrayList<String> getLinkTitles(){
-		ArrayList<String> temp = new ArrayList<String>();
-		for (int i = 0; i < linkTitles.size(); i++) {
-			temp.add(linkTitles.get(i));
-		}
-		linkTitles.clear();
-		return temp;
+		return this.linkTitles;
 	}
 	
 	public ArrayList<String> getLinkURLs(){
-		ArrayList<String> temp = new ArrayList<String>();
-		for (int i = 0; i < linkURLs.size(); i++) {
-			temp.add(linkURLs.get(i));
-		}
+		return this.linkURLs;
+	}
+	
+	public void clearLinks(){
+		linkTitles.clear();
 		linkURLs.clear();
-		return temp;
 	}
 	
 	public boolean isInUse() {

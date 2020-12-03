@@ -629,6 +629,25 @@ public class Guild {
 					channel.sendMessage("Your search for "+message+"...🔎");
 
 					channel.sendFile(GeneralInputManager.userBots.get(inUseIndex).getFileFile(), "User Thread.jpg").queue();
+					
+					EmbedBuilder eb = new EmbedBuilder();
+					MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null,
+							null);
+
+					eb.setColor(new Color(255, 255, 255));
+					eb.setTitle(
+							"**URL Redirects...🔗🖱**");
+					String temp = "";
+					for (int i = 0; i < 12; i++) { //only top 12 links or blank spaces
+						try {temp+="["+GeneralInputManager.userBots.get(inUseIndex).getLinkTitles().get(i)+"]("+GeneralInputManager.userBots.get(inUseIndex).getLinkURLs().get(i)+")\n\n";}catch(Exception e){}
+					}
+					GeneralInputManager.userBots.get(inUseIndex).clearLinks(); //necessarry to clear the links for next user
+					eb.setDescription(temp);
+					eb.setFooter("Powered By Google", "https://images.theconversation.com/files/93616/original/image-20150902-6700-t2axrz.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=1000&fit=clip"); //url to google logo
+					eb3 = eb.build();
+
+					channel.sendMessage(eb3).queue();
+					
 				} catch (Exception e) {
 					EmbedBuilder eb = new EmbedBuilder();
 					MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null,
