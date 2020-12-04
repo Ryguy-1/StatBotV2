@@ -23,18 +23,18 @@ public class Stonks {
 	private double lowPrice = 0;
 	private double currentPrice = 0;
 	private double previousClosePrice = 0;
-	
-	//more response variables
+
+	// more response variables
 
 	Stonks() {
-		
+
 	}
 
 	public void getStats(String stockName) {
-		
+
 		try {
 			priceResponse = getPrice(stockName);
-			//otherInfoResponse = getInfo(stockName);
+			// otherInfoResponse = getInfo(stockName);
 		} catch (IOException e) {
 			priceResponse = "Stonk API Error";
 			e.printStackTrace();
@@ -42,36 +42,37 @@ public class Stonks {
 		formatResponse();
 		System.out.println(priceResponse);
 	}
-	//returns Price Response
+
+	// returns Price Response
 	public String getResponseRaw() {
 		return this.priceResponse;
 	}
+
 ///////////////////////
 	public double getOpenPrice() {
 		return this.openPrice;
 	}
-	
+
 	public double getHighPrice() {
 		return this.highPrice;
 	}
-	
+
 	public double getLowPrice() {
 		return this.lowPrice;
 	}
-	
+
 	public double getCurrentPrice() {
 		return this.currentPrice;
 	}
-	
+
 	public double getPreviousClosePrice() {
 		return this.previousClosePrice;
 	}
 ///////////////////////	
-	
 
 	// gets response and puts the data in variables by parsing the JSON
 	private void formatResponse() {
-		//first responses
+		// first responses
 		try {
 			String jsonString = this.priceResponse; // assign your JSON String here
 			JSONObject obj = new JSONObject(jsonString);
@@ -80,40 +81,32 @@ public class Stonks {
 			this.lowPrice = obj.getDouble("l");
 			this.currentPrice = obj.getDouble("c");
 			this.previousClosePrice = obj.getDouble("pc");
-			
-			if(openPrice == 0) {
+
+			if (openPrice == 0) {
 				priceResponse = "Stonk API Error";
 			}
-			
+
 		} catch (Exception e) {
 			priceResponse = "Stonk API Error";
 		}
-		//second responses
-		
-		
-		
-		
-		
+		// second responses
+
 	}
 
 	// code request code here
 	private String getPrice(String stockName) throws IOException {
-		//https://ipinfo.io/161.185.160.93/geo
-		String url = "https://finnhub.io/api/v1/quote?symbol="+stockName.toUpperCase()+"&token=bv4m3e748v6qpate5vhg";
-
-		Request request = new Request.Builder().url(url).build();
-		Response response = client.newCall(request).execute();
-		return response.body().string();
+		// https://ipinfo.io/161.185.160.93/geo
+		String url = "https://finnhub.io/api/v1/quote?symbol=" + stockName.toUpperCase()
+				+ "&token=bv4m3e748v6qpate5vhg";
+		try {
+			Request request = new Request.Builder().url(url).build();
+			Response response = client.newCall(request).execute();
+			return response.body().string();
+		} catch (Exception e) {
+			return null;
+		}
 	}
-	
-	private String getInfo(String stockName) throws IOException {
-		//https://ipinfo.io/161.185.160.93/geo
-		String url = "https://finnhub.io/api/v1/stock/metric?symbol="+stockName.toUpperCase()+"&metric=all&token=bv4m3e748v6qpate5vhg";
 
-		Request request = new Request.Builder().url(url).build();
-		Response response = client.newCall(request).execute();
-		return response.body().string();
-	}
 
 	// post requests handled here -> Not used for this API
 	private String doPostRequest(String url, String json) throws IOException {
