@@ -50,14 +50,18 @@ Command List: (visable within bot with  `intel help`)
 
 `intel date (mm/dd)` (Facts about any Date) (NumbersAPI)
 
-`intel seggust` (coming soon)
+`intel minecraft (server address)` (Minecraft Server Info) (api.mcsrvstat.us)
+
+`intel stonk (stock symbol)` (Current Stock Ticker Information) (Finnhub.io)
+
+`intel detailstonk (stock symbol)` (Detailed Stock Information) (Finnhub.io)
 
 
 ## APIs Referenced
-The Covid Tracking Project, 7Timer, Agify.io, Unsplash, OpenCage, ExchangeRate-API, IpInfo, Kanye Rest, Official-Joke-API, New York Times Movie API, PokeAPI, Dog API, Cat API, NumbersAPI
+The Covid Tracking Project, 7Timer, Agify.io, Unsplash, OpenCage, ExchangeRate-API, IpInfo, Kanye Rest, Official-Joke-API, New York Times Movie API, PokeAPI, Dog API, Cat API, NumbersAPI, api.mcsrvstat.us, Finnhub.io
 
 ## Contributing
-Seggustions are welcomed and can be done through the /seggust command from within StatBot.
+Seggustions are welcomed and can be done through the /seggust command from within StatBot. (Coming Soon)
 
 If there are any publicly available APIs which the community would like to see, let us know and we will do our best to implement the feature ASAP!
 
