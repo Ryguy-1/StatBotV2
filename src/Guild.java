@@ -26,6 +26,11 @@ public class Guild {
 	private Cat cat;
 	private NumberInfo numberInfo;
 	private Date date;
+	private MinecraftServer minecraft;
+	private Stonks stonks;
+	private StonksDetailed detailStonks;
+	
+	
 	private Random random = new Random();
 
 	Guild(String guildId) {
@@ -47,7 +52,9 @@ public class Guild {
 		cat = new Cat();
 		numberInfo = new NumberInfo("42");
 		date = new Date("4/30");
-
+		minecraft = new MinecraftServer();
+		stonks = new Stonks();
+		detailStonks = new StonksDetailed();
 	}
 
 	public void sendEvent(MessageReceivedEvent event) {
@@ -119,11 +126,11 @@ public class Guild {
 			} else {
 				convertcurrency(channel, substring, event);
 			}
-		} else if (message.contains("intel ipinfo")) {
+		} else if (message.contains("intel ip")) {
 			// substring to get message
 			String substring = message.substring(message.indexOf(" ", 6) + 1);
 			// makes sure they formatted it correctly
-			if (substring.contains("ipinfo")) {
+			if (substring.contains("ip")) {
 				channel.sendMessage("See `intel help` for formatting!").queue();
 			} else {
 				ipinfo(channel, substring, event);
@@ -173,7 +180,34 @@ public class Guild {
 			} else {
 				google(channel, substring, event);
 			}
-		} else if (message.contains("intel kanye")) {
+		}else if (message.contains("intel minecraft")) {
+			// substring to get message
+			String substring = message.substring(message.indexOf(" ", 6) + 1);
+			// makes sure they formatted it correctly
+			if (substring.contains("minecraft")) {
+				channel.sendMessage("See `intel help` for formatting!").queue();
+			} else {
+				minecraft(channel, substring, event);
+			}
+		} else if (message.contains("intel stonk")) {
+			// substring to get message
+			String substring = message.substring(message.indexOf(" ", 6) + 1);
+			// makes sure they formatted it correctly
+			if (substring.contains("stonk")) {
+				channel.sendMessage("See `intel help` for formatting!").queue();
+			} else {
+				stonk(channel, substring, event);
+			}
+		} else if (message.contains("intel detailstonk")) {
+			// substring to get message
+			String substring = message.substring(message.indexOf(" ", 6) + 1);
+			// makes sure they formatted it correctly
+			if (substring.contains("detailstonk")) {
+				channel.sendMessage("See `intel help` for formatting!").queue();
+			} else {
+				detailStonk(channel, substring, event);
+			}
+		}  else if (message.contains("intel kanye")) {
 			kanyequote(channel, event);
 		} else if (message.contains("intel joke")) {
 			joke(channel, event);
@@ -689,6 +723,119 @@ public class Guild {
 		t1.start();
 	}
 
+	private void minecraft(MessageChannel channel, String message, MessageReceivedEvent event) {
+		minecraft.getStats(message);
+		EmbedBuilder eb = new EmbedBuilder();
+		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
+		eb.setColor(new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
+		eb.setTitle(minecraft.getHostName() + " 🏦");
+		// sets fields...
+		if (!minecraft.getResponseRaw().equals("Minecraft API Error")) {
+//			private String ip = "";
+//			private int port = 0;
+//			private String motd = "";
+//			private int playersOnline = 0;
+//			private int playersMax = 0;
+//			private String version = "";
+//			private boolean online = false;
+//			private String hostName = "";
+
+			
+			eb.addField("IP", minecraft.getIp(), true);
+			eb.addField("Port", minecraft.getPort()+"", true);
+			eb.addField("MOTD", minecraft.getMOTD(), true);
+			eb.addField("Players Online", minecraft.getPlayersOnline()+"", true);
+			eb.addField("Players Max", minecraft.getPlayersMax()+"", true);
+			eb.addField("Version", minecraft.getVersion(), true);
+			eb.addField("Online", String.valueOf(minecraft.getOnlineStatus()), true);
+			eb.addField("Host Name", minecraft.getHostName(), true);
+			
+			
+			// end set fields...
+		} else {
+			eb.setDescription(minecraft.getResponseRaw() + " ☹");
+		}
+		eb.setFooter("Powered By api.mcsrvstat.us");
+		eb3 = eb.build();
+		channel.sendMessage(eb3).queue();
+	}
+	
+	private void stonk(MessageChannel channel, String message, MessageReceivedEvent event) {
+		stonks.getStats(message);
+		EmbedBuilder eb = new EmbedBuilder();
+		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
+		eb.setTitle(message.toUpperCase() + " 📈");
+		// sets fields...
+		if (!stonks.getResponseRaw().equals("Stonk API Error")) {
+			eb.addField("Current Price", "$"+stonks.getCurrentPrice()+"", true);
+			eb.addField("Open Price", "$"+stonks.getOpenPrice()+"", true);
+			eb.addField("High price", "$"+stonks.getHighPrice()+"", true);
+			eb.addField("Low Price", "$"+stonks.getLowPrice()+"", true);
+			eb.addField("Previous Close Price", "$"+stonks.getPreviousClosePrice()+"", true);
+			
+			if(stonks.getCurrentPrice()>stonks.getOpenPrice()) {
+				//set to green up arrow
+				eb.setColor(new Color(0, 255, 0));
+				eb.setTitle(message.toUpperCase() + " 📈");
+				eb.setThumbnail("https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Solid_green.svg/1200px-Solid_green.svg.png");
+			}else if(stonks.getCurrentPrice()<stonks.getOpenPrice()) {
+				eb.setColor(new Color(255, 0, 0));
+				eb.setTitle(message.toUpperCase() + " 📉");
+				eb.setThumbnail("https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Red.svg/768px-Red.svg.png");
+			}
+			
+			
+			
+			
+			// end set fields...
+		} else {
+			eb.setDescription(stonks.getResponseRaw() + " ☹");
+		}
+		eb.setFooter("Powered By Finnhub.io");
+		eb3 = eb.build();
+		channel.sendMessage(eb3).queue();
+	}
+	
+	private void detailStonk(MessageChannel channel, String message, MessageReceivedEvent event) {
+		detailStonks.getStats(message);
+		EmbedBuilder eb = new EmbedBuilder();
+		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
+		eb.setColor(new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
+		eb.setTitle(message.toUpperCase() + " 📊");
+		// sets fields...
+		if (!detailStonks.getResponseRaw().equals("Stonk API Error")) {
+			
+
+
+			eb.addField("52 Week High", detailStonks.get52WeekHigh()+"", true);
+			eb.addField("52 Week Low", detailStonks.get52WeekLow()+"", true);
+			eb.addField("52 Week Price Return Daily", detailStonks.get52WeekPriceReturnDaily()+"", true);
+			eb.addField("5 Day price Return Daily", detailStonks.get5DayPriceReturnDaily()+"", true);
+			eb.addField("Dividend Yield Indicated Annual", detailStonks.getDividendYieldIndicatedAnnual()+"", true);
+			eb.addField("Current Ev/Free Cash Flow Annual", detailStonks.getCurrentEvOverFreeCashFlowAnnual()+"", true);
+			eb.addField("Eps Growth 3 Year", detailStonks.getEpsGrowth3Year()+"", true);
+			eb.addField("Eps Growth 5 Year", detailStonks.getEpsGrowth5Year()+"", true);
+			eb.addField("Eps Growth TTM Yoy", detailStonks.getEpsGrowthTTMYoy()+"", true);
+			eb.addField("Market Cap in Millions", detailStonks.getMarketCapitalizationInMillions()+"", true);
+			eb.addField("Operating Margin 5 Year", detailStonks.getOperatingMargin5Y()+"", true);
+			eb.addField("Operating Margin Annual", detailStonks.getOperatingMarginAnnual()+"", true);
+			eb.addField("Pe Basic Excluding Extra TTM", detailStonks.getPeBasicExclExtraTTM()+"", true);
+			eb.addField("Price Relative to S&P 500 52 Week", detailStonks.getPriceRelativeToSandP50052Week()+"", true);
+			eb.addField("Revenue Growth 3 Year", detailStonks.getRevenueGrowth3Y()+"", true);
+			eb.addField("Revenue Growth 5 Year", detailStonks.getRevenueGrowth5Y()+"", true);
+			eb.addField("Revenue Growth TTM Yoy", detailStonks.getRevenueGrowthTTMYoy()+"", true);
+
+			// end set fields...
+		} else {
+			eb.setDescription(detailStonks.getResponseRaw() + " ☹");
+		}
+		eb.setFooter("Powered By Finnhub.io");
+		eb3 = eb.build();
+		channel.sendMessage(eb3).queue();
+	}
+	
+	
+	
 	private void help(MessageChannel channel) {
 		EmbedBuilder eb = new EmbedBuilder();
 		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
@@ -702,7 +849,7 @@ public class Guild {
 		eb.addField("Longitude Latitude🌎🌐", "`intel lnglat (place)`", true);
 		eb.addField("Place Information🌎🌐", "`intel placeinfo (place)`", true);
 		eb.addField("Convert Currency💶💵", "`intel convertcurrency (convert from,convert to)`", true);
-		eb.addField("IP Info💻🔗", "`intel ipinfo (ip address)`", true);
+		eb.addField("IP Info💻🔗", "`intel ip (ip address)`", true);
 		eb.addField("Kanye Quotes💭", "`intel kanye`", true);
 		eb.addField("Uncreative Jokes😂🧺", "`intel joke`", true);
 		eb.addField("Movie Recon🎥🎬", "`intel movie (movie title)`", true);
@@ -711,6 +858,10 @@ public class Guild {
 		eb.addField("Cat🐱🐈", "`intel cat`", true);
 		eb.addField("Number🔢", "`intel number (number)`", true);
 		eb.addField("Date🔢", "`intel date (mm/dd)`", true);
+		eb.addField("Minecraft Server Info🏦", "`intel minecraft (server address)`", true);
+		eb.addField("Stonks📊", "`intel stonk (stock symbol)`", true);
+		eb.addField("Detailed Stonks📊", "`intel detailstonk (stock symbol)`", true);
+		eb.addField("Ping🏓", "`intel ping`", true);
 		eb.addField("Help🆘", "`intel help`", true);
 
 		eb.setDescription(

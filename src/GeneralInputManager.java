@@ -28,7 +28,7 @@ public class GeneralInputManager extends ListenerAdapter {
 	//scrapers for users
 	public static ArrayList<SeleniumBot> userBots = new ArrayList<SeleniumBot>();
 	//3 probably for final version
-	public static final int capacity = 1;
+	public static final int capacity = 2;
 
 	GeneralInputManager() throws LoginException {
 		//sets property for google scraping
@@ -41,7 +41,7 @@ public class GeneralInputManager extends ListenerAdapter {
 		// initialize JDA
 		jda = JDABuilder.createDefault(runner.getDiscordAPIKey()).addEventListeners(this).build();
 		// set status of StatBot
-		jda.getPresence().setActivity(Activity.playing("Gathering Reconnaissance..."));
+		jda.getPresence().setActivity(Activity.watching("👓"));
 		// initialize
 		isWrong = false;
 		// initialize guild variables
