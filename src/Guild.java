@@ -9,6 +9,10 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class Guild {
+	
+	private final int amountRPS = 5;
+	
+
 	private String guildId;
 	private CovidStatsAPI covidStatsAPI;
 	private WeatherAPI weatherAPI;
@@ -224,6 +228,8 @@ public class Guild {
 			dog(channel, event);
 		} else if (message.contains("intel cat")) {
 			cat(channel, event);
+		} else if (message.contains("intel balance")) {
+			getBalance(channel, event);
 		} else if (message.contains("intel help")) {
 			help(channel);
 			// add to help list
@@ -862,25 +868,39 @@ public class Guild {
 		}
 		//wins
 		else if(message.equalsIgnoreCase("rock") && computerChoice == 2) {
-			channel.sendMessage("Computer Chose Scissors. You won 1 Dollar!").queue();
-			addCashFromEvent(event, 1);
+			channel.sendMessage("Computer Chose Scissors. You won "+amountRPS+" Dollar(s)!").queue();
+			addCashFromEvent(event, amountRPS);
 		}else if(message.equalsIgnoreCase("paper") && computerChoice == 0) {
-			channel.sendMessage("Computer Chose Rock. You won 1 Dollar!").queue();
-			addCashFromEvent(event, 1);
+			channel.sendMessage("Computer Chose Rock. You won "+amountRPS+" Dollar(s)!").queue();
+			addCashFromEvent(event, amountRPS);
 		}else if(message.equalsIgnoreCase("scissors") && computerChoice == 1) {
-			channel.sendMessage("Computer Chose Paper. You won 1 Dollar!").queue();
-			addCashFromEvent(event, 1);
+			channel.sendMessage("Computer Chose Paper. You won "+amountRPS+" Dollar(s)!").queue();
+			addCashFromEvent(event, amountRPS);
 		}
 		//losses
 		else if(message.equalsIgnoreCase("rock") && computerChoice == 1) {
-			channel.sendMessage("Computer Chose Paper. You lost 1 Dollar!").queue();
-			addCashFromEvent(event, -1);
+			channel.sendMessage("Computer Chose Paper. You lost "+amountRPS+" Dollar(s)!").queue();
+			addCashFromEvent(event, -amountRPS);
 		}else if(message.equalsIgnoreCase("paper") && computerChoice == 2) {
-			channel.sendMessage("Computer Chose Scissors. You lost 1 Dollar!").queue();
-			addCashFromEvent(event, -1);
+			channel.sendMessage("Computer Chose Scissors. You lost "+amountRPS+" Dollar(s)!").queue();
+			addCashFromEvent(event, -amountRPS);
 		}else if(message.equalsIgnoreCase("scissors") && computerChoice == 0) {
-			channel.sendMessage("Computer Chose Rock. You lost 1 Dollar!").queue();
-			addCashFromEvent(event, -1);
+			channel.sendMessage("Computer Chose Rock. You lost "+amountRPS+" Dollar(s)!").queue();
+			addCashFromEvent(event, -amountRPS);
+		}
+	}
+	
+	private void getBalance(MessageChannel channel, MessageReceivedEvent event) {
+		for (int i = 0; i < GeneralInputManager.readWrite.getUsers().size(); i++) {
+			if(event.getAuthor().getId().equals(GeneralInputManager.readWrite.getUsers().get(i).getId())) {
+				EmbedBuilder eb = new EmbedBuilder();
+				MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
+				eb.setColor(new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
+				eb.setTitle(event.getAuthor().getName()+"'s Balance");
+				eb.setDescription("**Balance: **"+GeneralInputManager.readWrite.getUsers().get(i).getCash());// will need to have image as second parameter eventually
+				eb3 = eb.build();
+				channel.sendMessage(eb3).queue();
+			}
 		}
 	}
 	
@@ -909,6 +929,8 @@ public class Guild {
 		eb.addField("Minecraft Server Info🏦", "`intel minecraft (server address)`", true);
 		eb.addField("Stonks📊", "`intel stonk (stock symbol)`", true);
 		eb.addField("Detailed Stonks📊", "`intel detailstonk (stock symbol)`", true);
+		eb.addField("(Economy) Rock Paper Scissors✂", "`intel rps (rock/paper/scissors)`", true);
+		eb.addField("(Economy) Balance💰", "`intel balance`", true);
 		eb.addField("Ping🏓", "`intel ping`", true);
 		eb.addField("Help🆘", "`intel help`", true);
 
