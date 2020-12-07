@@ -207,6 +207,15 @@ public class Guild {
 			} else {
 				detailStonk(channel, substring, event);
 			}
+		}else if (message.contains("intel rps")) {
+			// substring to get message
+			String substring = message.substring(message.indexOf(" ", 6) + 1);
+			// makes sure they formatted it correctly
+			if (substring.contains("rps")) {
+				channel.sendMessage("See `intel help` for formatting!").queue();
+			} else {
+				rps(channel, substring, event);
+			}
 		}  else if (message.contains("intel kanye")) {
 			kanyequote(channel, event);
 		} else if (message.contains("intel joke")) {
@@ -834,7 +843,46 @@ public class Guild {
 		channel.sendMessage(eb3).queue();
 	}
 	
+	private void rps(MessageChannel channel, String message, MessageReceivedEvent event) {
+		
+		System.out.println("rpssss " + message);
+
+		
+		int computerChoice = random.nextInt(3);
+		
+		//0=rock, 1=paper, 2=scissors
 	
+		//ties
+		if(message.equalsIgnoreCase("rock") && computerChoice == 0) {
+			channel.sendMessage("Computer Chose Rock. Tie.").queue();
+		}else if(message.equalsIgnoreCase("paper") && computerChoice == 1) {
+			channel.sendMessage("Computer Chose Paper. Tie.").queue();
+		}else if(message.equalsIgnoreCase("scissors") && computerChoice == 2) {
+			channel.sendMessage("Computer Chose Scissors. Tie.").queue();
+		}
+		//wins
+		else if(message.equalsIgnoreCase("rock") && computerChoice == 2) {
+			channel.sendMessage("Computer Chose Scissors. You won 1 Dollar!").queue();
+			addCashFromEvent(event, 1);
+		}else if(message.equalsIgnoreCase("paper") && computerChoice == 0) {
+			channel.sendMessage("Computer Chose Rock. You won 1 Dollar!").queue();
+			addCashFromEvent(event, 1);
+		}else if(message.equalsIgnoreCase("scissors") && computerChoice == 1) {
+			channel.sendMessage("Computer Chose Paper. You won 1 Dollar!").queue();
+			addCashFromEvent(event, 1);
+		}
+		//losses
+		else if(message.equalsIgnoreCase("rock") && computerChoice == 1) {
+			channel.sendMessage("Computer Chose Paper. You lost 1 Dollar!").queue();
+			addCashFromEvent(event, -1);
+		}else if(message.equalsIgnoreCase("paper") && computerChoice == 2) {
+			channel.sendMessage("Computer Chose Scissors. You lost 1 Dollar!").queue();
+			addCashFromEvent(event, -1);
+		}else if(message.equalsIgnoreCase("scissors") && computerChoice == 0) {
+			channel.sendMessage("Computer Chose Rock. You lost 1 Dollar!").queue();
+			addCashFromEvent(event, -1);
+		}
+	}
 	
 	private void help(MessageChannel channel) {
 		EmbedBuilder eb = new EmbedBuilder();
@@ -871,6 +919,20 @@ public class Guild {
 		channel.sendMessage(eb3).queue();
 	}
 
+	
+	
+	private void addCashFromEvent(MessageReceivedEvent event, int cash) {
+		for (int i = 0; i < GeneralInputManager.readWrite.getUsers().size(); i++) {
+			if(GeneralInputManager.readWrite.getUsers().get(i).getId().equals(event.getAuthor().getId())) {
+				GeneralInputManager.readWrite.getUsers().get(i).addCash(cash);
+				GeneralInputManager.readWrite.updateUserJSON(GeneralInputManager.readWrite.getUsers().get(i));
+			}
+		}
+	}
+	
+	
+	
+	
 	// method to pause for x seconds
 	private static void pauseSeconds(long seconds) {
 		try {

@@ -3,6 +3,8 @@ import java.util.ArrayList;
 
 import javax.security.auth.login.LoginException;
 
+import org.json.JSONWriter;
+
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -19,6 +21,8 @@ public class GeneralInputManager extends ListenerAdapter {
 	private boolean isWrong;
 	// number of Guilds
 	private int numGuilds;
+	//JSON Reader
+	public static JSONReadWrite readWrite;
 
 	// guild variables
 	private ArrayList<String> guildIds;
@@ -28,7 +32,7 @@ public class GeneralInputManager extends ListenerAdapter {
 	//scrapers for users
 	public static ArrayList<SeleniumBot> userBots = new ArrayList<SeleniumBot>();
 	//3 probably for final version
-	public static final int capacity = 2;
+	public static final int capacity = 0;
 
 	GeneralInputManager() throws LoginException {
 		//sets property for google scraping
@@ -49,14 +53,25 @@ public class GeneralInputManager extends ListenerAdapter {
 		guildNames = new ArrayList<String>();
 		guilds = new ArrayList<Guild>();
 		
+		readWrite = new JSONReadWrite();
+		//read and set
+		readWrite.readAndSet();
+		
+		System.out.println("The Current Members Are: ");
+		for (int i = 0; i < readWrite.getUsers().size(); i++) {
+			System.out.println(readWrite.getUsers().get(i).getName()+ " with: $"+readWrite.getUsers().get(i).getCash());
+		}
 		
 
 	}
+	
 
 	public void onMessageReceived(MessageReceivedEvent event) {
-
 		// will not respond to bots
 		if (!event.getAuthor().isBot()) {
+			//updates the JSON file
+			updateUserJSON(event);
+			
 			boolean inGuilds = false;
 			// checks if in a guild
 			for (int i = 0; i < this.guildIds.size(); i++) {
@@ -127,4 +142,17 @@ public class GeneralInputManager extends ListenerAdapter {
 			}
 		}
 	}
+	
+	
+	private void updateUserJSON(MessageReceivedEvent event) {
+		if(readWrite.userIsInList(event.getAuthor().getId())==false) {
+			System.out.println("not in list");
+				readWrite.addUserJSON("100", event.getGuild().getName(), event.getGuild().getId()+"", event.getAuthor().getName(), event.getAuthor().getId()+"");
+		}
+	}
+	
+	
+	
+	
+	
 }
