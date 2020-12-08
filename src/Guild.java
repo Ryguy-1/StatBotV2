@@ -330,7 +330,7 @@ public class Guild {
 			if (!weatherAPI.getResponseRaw().equals("Weather API Error")) {
 				for (int i = 0; i < weatherAPI.getResponseArray().length; i++) {
 					eb.addField("Hour " + (i + 1) * 3,
-							"Weather: " + weatherAPI.getResponseArray()[i][5] + "\nPrecipitation: "
+							"Temp Farenheit: " + (Integer.parseInt(weatherAPI.getResponseArray()[i][6])*1.8+32) + "\nWeather: " + weatherAPI.getResponseArray()[i][5] + "\nPrecipitation: "
 									+ weatherAPI.getResponseArray()[i][1] + "\nPrecipitation Amount: "
 									+ weatherAPI.getResponseArray()[i][4] + "\nWind Direction: "
 									+ weatherAPI.getResponseArray()[i][2] + "\nWind Speed: "

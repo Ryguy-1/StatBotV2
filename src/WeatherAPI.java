@@ -36,9 +36,6 @@ public class WeatherAPI {
 			e.printStackTrace();
 		}
 		formatResponse();
-		System.out.println(response);
-		System.out.println(responses[0][0] + " is the first timestamp");
-		System.out.println(responses[0][4]+ " is the first windspeed");
 	}
 
 	public String getResponseRaw() {
@@ -130,10 +127,12 @@ public class WeatherAPI {
 				}
 				// index 5 = weather
 				responses[i][5] = objTemp.getString("weather");
-
+				//index 6 = temperature celcius
+				responses[i][6] = objTemp.getInt("temp2m")+"";
 			}
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			response = "Weather API Error";
 		}
 	}
