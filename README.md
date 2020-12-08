@@ -14,37 +14,37 @@ https://discord.com/api/oauth2/authorize?client_id=779185137971494932&permission
 
 Prefix: `intel`
 
+**=================Utility=================**
+
 Command List: (visable within bot with  `intel help`)
 
 `intel ping` (Pings Recon)
 
+**=================miscellaneous=================**
+
+`intel google (anything)` (Google Search) (Powered by Google)
+
 `intel covid (us)` (API Not State-Specific Yet) (The Covid Tracking Project API)
-
-`intel weather (long,lat)` (Detailed Weather Predictive Data) (7Timer API)
-
-`intel name (name)` (Predicts Your Age from Your Name) (agify.io API)
 
 `intel image (ImageName)` (Gives You An Image) (Unsplash API)
 
-`intel lnglat (place)` (Gives You the Longitude,Latitude of Anywhere in the World) (OpenCage API)
-
-`intel placeinfo (place)` (Gives You General Information About Any Place in the World) (OpenCage API)
-
-`intel convertcurrency (convert from,convert to)` (Currency Conversion Rates) (ExchangeRate-API)
-
 `intel ipinfo (ip address)` (Geographical Information about any IP) (IpInfo API)
+
+`intel movie (movie title)` (Information about any Movie) (New York Times Movie API)
+
+**=================Economy=================**
+
+`intel balance` (Current Balance)
+
+`intel rps (rock/paper/scissors)` (Rock Paper Scissors Gamble)
+
+**=================Fun=================**
+
+`intel name (name)` (Predicts Your Age from Your Name) (agify.io API)
 
 `intel kanye` (Kanye Quotes) (Kanye Rest API)
 
 `intel joke` (Amazing Jokes) (Official-Joke-API)
-
-`intel movie (movie title)` (Information about any Movie) (New York Times Movie API)
-
-`intel pokemon (pokemon)` (Pokemon Information and Pictures) (PokeAPI)
-
-`intel dog` (Dog Pictures) (Dog API)
-
-`intel cat` (Cat Pictures) (Cat API)
 
 `intel number (number)` (Facts about any Number) (NumbersAPI)
 
@@ -52,13 +52,32 @@ Command List: (visable within bot with  `intel help`)
 
 `intel minecraft (server address)` (Minecraft Server Info) (api.mcsrvstat.us)
 
+**=================Animals/Characters=================**
+
+`intel dog` (Dog Pictures) (Dog API)
+
+`intel cat` (Cat Pictures) (Cat API)
+
+`intel pokemon (pokemon)` (Pokemon Information and Pictures) (PokeAPI)
+
+**=================Geography=================**
+
+`intel weather (long,lat)` (Detailed Weather Predictive Data) (7Timer API)
+
+`intel lnglat (place)` (Gives You the Longitude,Latitude of Anywhere in the World) (OpenCage API)
+
+`intel placeinfo (place)` (Gives You General Information About Any Place in the World) (OpenCage API)
+
+**=================Stonks/Currency=================**
+
 `intel stonk (stock symbol)` (Current Stock Ticker Information) (Finnhub.io)
 
 `intel detailstonk (stock symbol)` (Detailed Stock Information) (Finnhub.io)
 
+`intel convertcurrency (convert from,convert to)` (Currency Conversion Rates) (ExchangeRate-API)
 
 ## APIs Referenced
-The Covid Tracking Project, 7Timer, Agify.io, Unsplash, OpenCage, ExchangeRate-API, IpInfo, Kanye Rest, Official-Joke-API, New York Times Movie API, PokeAPI, Dog API, Cat API, NumbersAPI, api.mcsrvstat.us, Finnhub.io
+Google, The Covid Tracking Project, 7Timer, Agify.io, Unsplash, OpenCage, ExchangeRate-API, IpInfo, Kanye Rest, Official-Joke-API, New York Times Movie API, PokeAPI, Dog API, Cat API, NumbersAPI, api.mcsrvstat.us, Finnhub.io
 
 ## Contributing
 Seggustions are welcomed and can be done through the /seggust command from within StatBot. (Coming Soon)
