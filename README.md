@@ -20,7 +20,7 @@ Command List: (visable within bot with  `intel help`)
 
 `intel ping` (Pings Recon)
 
-**=================miscellaneous=================**
+**=================Miscellaneous=================**
 
 `intel google (anything)` (Google Search) (Powered by Google)
 
