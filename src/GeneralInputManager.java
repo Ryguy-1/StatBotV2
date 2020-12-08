@@ -21,23 +21,23 @@ public class GeneralInputManager extends ListenerAdapter {
 	private boolean isWrong;
 	// number of Guilds
 	private int numGuilds;
-	//JSON Reader
+	// JSON Reader
 	public static JSONReadWrite readWrite;
 
 	// guild variables
 	private ArrayList<String> guildIds;
 	private ArrayList<String> guildNames;
 	private ArrayList<Guild> guilds;
-	
-	//scrapers for users
+
+	// scrapers for users
 	public static ArrayList<SeleniumBot> userBots = new ArrayList<SeleniumBot>();
-	//3 probably for final version
-	public static final int capacity = 0;
+	// 3 probably for final version
+	public static final int capacity = 2;
 
 	GeneralInputManager() throws LoginException {
-		//sets property for google scraping
+		// sets property for google scraping
 		System.setProperty("webdriver.chrome.driver", "C:\\Selenium\\chromedriver.exe");
-		for (int i = 0; i <	capacity; i++) {
+		for (int i = 0; i < capacity; i++) {
 			userBots.add(new SeleniumBot());
 		}
 		// initialize Runner
@@ -45,33 +45,32 @@ public class GeneralInputManager extends ListenerAdapter {
 		// initialize JDA
 		jda = JDABuilder.createDefault(runner.getDiscordAPIKey()).addEventListeners(this).build();
 		// set status of StatBot
-		jda.getPresence().setActivity(Activity.watching("👓"));
+		jda.getPresence().setActivity(Activity.watching("👓   (intel help)"));
 		// initialize
 		isWrong = false;
 		// initialize guild variables
 		guildIds = new ArrayList<String>();
 		guildNames = new ArrayList<String>();
 		guilds = new ArrayList<Guild>();
-		
+
 		readWrite = new JSONReadWrite();
-		//read and set
+		// read and set
 		readWrite.readAndSet();
-		
+
 		System.out.println("The Current Members Are: ");
 		for (int i = 0; i < readWrite.getUsers().size(); i++) {
-			System.out.println(readWrite.getUsers().get(i).getName()+ " with: $"+readWrite.getUsers().get(i).getCash());
+			System.out.println(
+					readWrite.getUsers().get(i).getName() + " with: $" + readWrite.getUsers().get(i).getCash());
 		}
-		
 
 	}
-	
 
 	public void onMessageReceived(MessageReceivedEvent event) {
 		// will not respond to bots
 		if (!event.getAuthor().isBot()) {
-			//updates the JSON file
+			// updates the JSON file
 			updateUserJSON(event);
-			
+
 			boolean inGuilds = false;
 			// checks if in a guild
 			for (int i = 0; i < this.guildIds.size(); i++) {
@@ -101,21 +100,21 @@ public class GeneralInputManager extends ListenerAdapter {
 				// == false
 				this.numGuilds = jda.getGuilds().size();
 				try {
-					System.out.println("Here1");
+
 					this.guildIds.add(event.getGuild().getId());
-					System.out.println("Here2");
+
 					this.guildNames.add(event.getGuild().getName());
-					System.out.println("Here3");
+
 					try {
 						// adds new input manager for the new guild
 						this.guilds.add(new Guild(event.getGuild().getId()));
 					} catch (Exception e) {
-						System.out.println("no add guild");
+
 					}
 					// sends the event just put in to the latest created inputManager. This ensures
 					// no messages go unheard.
 					this.guilds.get(this.guilds.size() - 1).sendEvent(event);
-					System.out.println("Here4");
+
 				} catch (Exception e) {
 					// if you try to access the bot by talking directly to it. And message has not
 					// been printed out already.
@@ -142,17 +141,13 @@ public class GeneralInputManager extends ListenerAdapter {
 			}
 		}
 	}
-	
-	
+
 	private void updateUserJSON(MessageReceivedEvent event) {
-		if(readWrite.userIsInList(event.getAuthor().getId())==false) {
-			System.out.println("not in list");
-				readWrite.addUserJSON("100", event.getGuild().getName(), event.getGuild().getId()+"", event.getAuthor().getName(), event.getAuthor().getId()+"");
+		if (readWrite.userIsInList(event.getAuthor().getId()) == false) {
+			System.out.println("New User");
+			readWrite.addUserJSON("100", event.getGuild().getName(), event.getGuild().getId() + "",
+					event.getAuthor().getName(), event.getAuthor().getId() + "");
 		}
 	}
-	
-	
-	
-	
-	
+
 }

@@ -67,6 +67,7 @@ public class Guild {
 		if (message.contains("intel ping")) {
 			// pings server
 			ping(channel, event);
+			System.out.println("ping");
 		} else if (message.contains("intel covid")) {
 			// substring to get message
 			String substring = message.substring(message.indexOf(" ", 6) + 1);
@@ -75,6 +76,7 @@ public class Guild {
 				channel.sendMessage("See `intel help` for formatting!").queue();
 			} else {
 				covid(channel, substring, event);
+				System.out.println("covid");
 			}
 		} else if (message.contains("intel weather")) {
 			// substring to get message
@@ -84,6 +86,7 @@ public class Guild {
 				channel.sendMessage("See `intel help` for formatting!").queue();
 			} else {
 				weather(channel, substring, event);
+				System.out.println("weather");
 			}
 		} else if (message.contains("intel name")) {
 			// substring to get message
@@ -93,6 +96,7 @@ public class Guild {
 				channel.sendMessage("See `intel help` for formatting!").queue();
 			} else {
 				name(channel, substring, event);
+				System.out.println("name");
 			}
 		} else if (message.contains("intel image")) {
 			// substring to get message
@@ -102,6 +106,7 @@ public class Guild {
 				channel.sendMessage("See `intel help` for formatting!").queue();
 			} else {
 				image(channel, substring, event);
+				System.out.println("image");
 			}
 		} else if (message.contains("intel lnglat")) {
 			// substring to get message
@@ -111,6 +116,7 @@ public class Guild {
 				channel.sendMessage("See `intel help` for formatting!").queue();
 			} else {
 				lnglat(channel, substring, event);
+				System.out.println("lnglat");
 			}
 		} else if (message.contains("intel placeinfo")) {
 			// substring to get message
@@ -120,6 +126,7 @@ public class Guild {
 				channel.sendMessage("See `intel help` for formatting!").queue();
 			} else {
 				placeinfo(channel, substring, event);
+				System.out.println("placeinfo");
 			}
 		} else if (message.contains("intel convertcurrency")) {
 			// substring to get message
@@ -129,6 +136,7 @@ public class Guild {
 				channel.sendMessage("See `intel help` for formatting!").queue();
 			} else {
 				convertcurrency(channel, substring, event);
+				System.out.println("convertcurrency");
 			}
 		} else if (message.contains("intel ip")) {
 			// substring to get message
@@ -138,6 +146,7 @@ public class Guild {
 				channel.sendMessage("See `intel help` for formatting!").queue();
 			} else {
 				ipinfo(channel, substring, event);
+				System.out.println("ipinfo");
 			}
 		} else if (message.contains("intel movie")) {
 			// substring to get message
@@ -147,6 +156,7 @@ public class Guild {
 				channel.sendMessage("See `intel help` for formatting!").queue();
 			} else {
 				movie(channel, substring, event);
+				System.out.println("movie");
 			}
 		} else if (message.contains("intel pokemon")) {
 			// substring to get message
@@ -156,6 +166,7 @@ public class Guild {
 				channel.sendMessage("See `intel help` for formatting!").queue();
 			} else {
 				pokemon(channel, substring, event);
+				System.out.println("pokemon");
 			}
 		} else if (message.contains("intel number")) {
 			// substring to get message
@@ -165,6 +176,7 @@ public class Guild {
 				channel.sendMessage("See `intel help` for formatting!").queue();
 			} else {
 				number(channel, substring, event);
+				System.out.println("number");
 			}
 		} else if (message.contains("intel date")) {
 			// substring to get message
@@ -174,6 +186,7 @@ public class Guild {
 				channel.sendMessage("See `intel help` for formatting!").queue();
 			} else {
 				date(channel, substring, event);
+				System.out.println("date");
 			}
 		} else if (message.contains("intel google")) {
 			// substring to get message
@@ -183,6 +196,7 @@ public class Guild {
 				channel.sendMessage("See `intel help` for formatting!").queue();
 			} else {
 				google(channel, substring, event);
+				System.out.println("google");
 			}
 		}else if (message.contains("intel minecraft")) {
 			// substring to get message
@@ -192,6 +206,7 @@ public class Guild {
 				channel.sendMessage("See `intel help` for formatting!").queue();
 			} else {
 				minecraft(channel, substring, event);
+				System.out.println("minecraft");
 			}
 		} else if (message.contains("intel stonk")) {
 			// substring to get message
@@ -201,6 +216,7 @@ public class Guild {
 				channel.sendMessage("See `intel help` for formatting!").queue();
 			} else {
 				stonk(channel, substring, event);
+				System.out.println("stonk");
 			}
 		} else if (message.contains("intel detailstonk")) {
 			// substring to get message
@@ -210,6 +226,7 @@ public class Guild {
 				channel.sendMessage("See `intel help` for formatting!").queue();
 			} else {
 				detailStonk(channel, substring, event);
+				System.out.println("detailstonk");
 			}
 		}else if (message.contains("intel rps")) {
 			// substring to get message
@@ -219,22 +236,26 @@ public class Guild {
 				channel.sendMessage("See `intel help` for formatting!").queue();
 			} else {
 				rps(channel, substring, event);
+				System.out.println("rock paper scissors");
 			}
 		}  else if (message.contains("intel kanye")) {
 			kanyequote(channel, event);
+			System.out.println("kanye");
 		} else if (message.contains("intel joke")) {
 			joke(channel, event);
+			System.out.println("joke");
 		} else if (message.contains("intel dog")) {
 			dog(channel, event);
+			System.out.println("dog");
 		} else if (message.contains("intel cat")) {
 			cat(channel, event);
+			System.out.println("cat");
 		} else if (message.contains("intel balance")) {
 			getBalance(channel, event);
+			System.out.println("getBalance");
 		} else if (message.contains("intel help")) {
 			help(channel);
-			// add to help list
-			// - convertCurrency
-			// -ipinfo
+			System.out.println("help");
 		}
 	}
 
