@@ -4,14 +4,14 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class Guild {
-	
+
 	private final int amountRPS = 5;
-	
 
 	private String guildId;
 	private CovidStatsAPI covidStatsAPI;
@@ -33,8 +33,7 @@ public class Guild {
 	private MinecraftServer minecraft;
 	private Stonks stonks;
 	private StonksDetailed detailStonks;
-	
-	
+
 	private Random random = new Random();
 
 	Guild(String guildId) {
@@ -198,7 +197,7 @@ public class Guild {
 				google(channel, substring, event);
 				System.out.println("google");
 			}
-		}else if (message.contains("intel minecraft")) {
+		} else if (message.contains("intel minecraft")) {
 			// substring to get message
 			String substring = message.substring(message.indexOf(" ", 6) + 1);
 			// makes sure they formatted it correctly
@@ -228,7 +227,7 @@ public class Guild {
 				detailStonk(channel, substring, event);
 				System.out.println("detailstonk");
 			}
-		}else if (message.contains("intel rps")) {
+		} else if (message.contains("intel rps")) {
 			// substring to get message
 			String substring = message.substring(message.indexOf(" ", 6) + 1);
 			// makes sure they formatted it correctly
@@ -238,7 +237,17 @@ public class Guild {
 				rps(channel, substring, event);
 				System.out.println("rock paper scissors");
 			}
-		}  else if (message.contains("intel kanye")) {
+		} else if (message.contains("intel donate")) {
+			// substring to get message
+			String substring = message.substring(message.indexOf(" ", 6) + 1);
+			// makes sure they formatted it correctly
+			if (substring.contains("donate") || event.getMessage().getMentionedMembers().size() != 1) {
+				channel.sendMessage("See `intel help` for formatting!").queue();
+			} else {
+				System.out.println("donate");
+				donate(channel, event);
+			}
+		} else if (message.contains("intel kanye")) {
 			kanyequote(channel, event);
 			System.out.println("kanye");
 		} else if (message.contains("intel joke")) {
@@ -330,7 +339,8 @@ public class Guild {
 			if (!weatherAPI.getResponseRaw().equals("Weather API Error")) {
 				for (int i = 0; i < weatherAPI.getResponseArray().length; i++) {
 					eb.addField("Hour " + (i + 1) * 3,
-							"Temp Farenheit: " + (Integer.parseInt(weatherAPI.getResponseArray()[i][6])*1.8+32) + "\nWeather: " + weatherAPI.getResponseArray()[i][5] + "\nPrecipitation: "
+							"Temp Farenheit: " + (Integer.parseInt(weatherAPI.getResponseArray()[i][6]) * 1.8 + 32)
+									+ "\nWeather: " + weatherAPI.getResponseArray()[i][5] + "\nPrecipitation: "
 									+ weatherAPI.getResponseArray()[i][1] + "\nPrecipitation Amount: "
 									+ weatherAPI.getResponseArray()[i][4] + "\nWind Direction: "
 									+ weatherAPI.getResponseArray()[i][2] + "\nWind Speed: "
@@ -706,13 +716,14 @@ public class Guild {
 							null);
 
 					eb.setColor(new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
-					eb.setTitle("**"+message.toUpperCase()+"🔗🖱**", GeneralInputManager.userBots.get(inUseIndex).getCurrentURL());
+					eb.setTitle("**" + message.toUpperCase() + "🔗🖱**",
+							GeneralInputManager.userBots.get(inUseIndex).getCurrentURL());
 					String temp = "";
 					for (int i = 0; i < 12; i++) { // only top 12 links or blank spaces
 						try {
-							if(!GeneralInputManager.userBots.get(inUseIndex).getLinkTitles().get(i).equals("")) {
-							temp += "[" + GeneralInputManager.userBots.get(inUseIndex).getLinkTitles().get(i) + "]("
-									+ GeneralInputManager.userBots.get(inUseIndex).getLinkURLs().get(i) + ")\n\n";
+							if (!GeneralInputManager.userBots.get(inUseIndex).getLinkTitles().get(i).equals("")) {
+								temp += "[" + GeneralInputManager.userBots.get(inUseIndex).getLinkTitles().get(i) + "]("
+										+ GeneralInputManager.userBots.get(inUseIndex).getLinkURLs().get(i) + ")\n\n";
 							}
 						} catch (Exception e) {
 						}
@@ -776,17 +787,15 @@ public class Guild {
 //			private boolean online = false;
 //			private String hostName = "";
 
-			
 			eb.addField("IP", minecraft.getIp(), true);
-			eb.addField("Port", minecraft.getPort()+"", true);
+			eb.addField("Port", minecraft.getPort() + "", true);
 			eb.addField("MOTD", minecraft.getMOTD(), true);
-			eb.addField("Players Online", minecraft.getPlayersOnline()+"", true);
-			eb.addField("Players Max", minecraft.getPlayersMax()+"", true);
+			eb.addField("Players Online", minecraft.getPlayersOnline() + "", true);
+			eb.addField("Players Max", minecraft.getPlayersMax() + "", true);
 			eb.addField("Version", minecraft.getVersion(), true);
 			eb.addField("Online", String.valueOf(minecraft.getOnlineStatus()), true);
 			eb.addField("Host Name", minecraft.getHostName(), true);
-			
-			
+
 			// end set fields...
 		} else {
 			eb.setDescription(minecraft.getResponseRaw() + " ☹");
@@ -795,7 +804,7 @@ public class Guild {
 		eb3 = eb.build();
 		channel.sendMessage(eb3).queue();
 	}
-	
+
 	private void stonk(MessageChannel channel, String message, MessageReceivedEvent event) {
 		stonks.getStats(message);
 		EmbedBuilder eb = new EmbedBuilder();
@@ -803,26 +812,24 @@ public class Guild {
 		eb.setTitle(message.toUpperCase() + " 📈");
 		// sets fields...
 		if (!stonks.getResponseRaw().equals("Stonk API Error")) {
-			eb.addField("Current Price", "$"+stonks.getCurrentPrice()+"", true);
-			eb.addField("Open Price", "$"+stonks.getOpenPrice()+"", true);
-			eb.addField("High price", "$"+stonks.getHighPrice()+"", true);
-			eb.addField("Low Price", "$"+stonks.getLowPrice()+"", true);
-			eb.addField("Previous Close Price", "$"+stonks.getPreviousClosePrice()+"", true);
-			
-			if(stonks.getCurrentPrice()>stonks.getOpenPrice()) {
-				//set to green up arrow
+			eb.addField("Current Price", "$" + stonks.getCurrentPrice() + "", true);
+			eb.addField("Open Price", "$" + stonks.getOpenPrice() + "", true);
+			eb.addField("High price", "$" + stonks.getHighPrice() + "", true);
+			eb.addField("Low Price", "$" + stonks.getLowPrice() + "", true);
+			eb.addField("Previous Close Price", "$" + stonks.getPreviousClosePrice() + "", true);
+
+			if (stonks.getCurrentPrice() > stonks.getOpenPrice()) {
+				// set to green up arrow
 				eb.setColor(new Color(0, 255, 0));
 				eb.setTitle(message.toUpperCase() + " 📈");
-				eb.setThumbnail("https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Solid_green.svg/1200px-Solid_green.svg.png");
-			}else if(stonks.getCurrentPrice()<stonks.getOpenPrice()) {
+				eb.setThumbnail(
+						"https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Solid_green.svg/1200px-Solid_green.svg.png");
+			} else if (stonks.getCurrentPrice() < stonks.getOpenPrice()) {
 				eb.setColor(new Color(255, 0, 0));
 				eb.setTitle(message.toUpperCase() + " 📉");
 				eb.setThumbnail("https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Red.svg/768px-Red.svg.png");
 			}
-			
-			
-			
-			
+
 			// end set fields...
 		} else {
 			eb.setDescription(stonks.getResponseRaw() + " ☹");
@@ -831,7 +838,7 @@ public class Guild {
 		eb3 = eb.build();
 		channel.sendMessage(eb3).queue();
 	}
-	
+
 	private void detailStonk(MessageChannel channel, String message, MessageReceivedEvent event) {
 		detailStonks.getStats(message);
 		EmbedBuilder eb = new EmbedBuilder();
@@ -840,26 +847,26 @@ public class Guild {
 		eb.setTitle(message.toUpperCase() + " 📊");
 		// sets fields...
 		if (!detailStonks.getResponseRaw().equals("Stonk API Error")) {
-			
 
-
-			eb.addField("52 Week High", detailStonks.get52WeekHigh()+"", true);
-			eb.addField("52 Week Low", detailStonks.get52WeekLow()+"", true);
-			eb.addField("52 Week Price Return Daily", detailStonks.get52WeekPriceReturnDaily()+"", true);
-			eb.addField("5 Day price Return Daily", detailStonks.get5DayPriceReturnDaily()+"", true);
-			eb.addField("Dividend Yield Indicated Annual", detailStonks.getDividendYieldIndicatedAnnual()+"", true);
-			eb.addField("Current Ev/Free Cash Flow Annual", detailStonks.getCurrentEvOverFreeCashFlowAnnual()+"", true);
-			eb.addField("Eps Growth 3 Year", detailStonks.getEpsGrowth3Year()+"", true);
-			eb.addField("Eps Growth 5 Year", detailStonks.getEpsGrowth5Year()+"", true);
-			eb.addField("Eps Growth TTM Yoy", detailStonks.getEpsGrowthTTMYoy()+"", true);
-			eb.addField("Market Cap in Millions", detailStonks.getMarketCapitalizationInMillions()+"", true);
-			eb.addField("Operating Margin 5 Year", detailStonks.getOperatingMargin5Y()+"", true);
-			eb.addField("Operating Margin Annual", detailStonks.getOperatingMarginAnnual()+"", true);
-			eb.addField("Pe Basic Excluding Extra TTM", detailStonks.getPeBasicExclExtraTTM()+"", true);
-			eb.addField("Price Relative to S&P 500 52 Week", detailStonks.getPriceRelativeToSandP50052Week()+"", true);
-			eb.addField("Revenue Growth 3 Year", detailStonks.getRevenueGrowth3Y()+"", true);
-			eb.addField("Revenue Growth 5 Year", detailStonks.getRevenueGrowth5Y()+"", true);
-			eb.addField("Revenue Growth TTM Yoy", detailStonks.getRevenueGrowthTTMYoy()+"", true);
+			eb.addField("52 Week High", detailStonks.get52WeekHigh() + "", true);
+			eb.addField("52 Week Low", detailStonks.get52WeekLow() + "", true);
+			eb.addField("52 Week Price Return Daily", detailStonks.get52WeekPriceReturnDaily() + "", true);
+			eb.addField("5 Day price Return Daily", detailStonks.get5DayPriceReturnDaily() + "", true);
+			eb.addField("Dividend Yield Indicated Annual", detailStonks.getDividendYieldIndicatedAnnual() + "", true);
+			eb.addField("Current Ev/Free Cash Flow Annual", detailStonks.getCurrentEvOverFreeCashFlowAnnual() + "",
+					true);
+			eb.addField("Eps Growth 3 Year", detailStonks.getEpsGrowth3Year() + "", true);
+			eb.addField("Eps Growth 5 Year", detailStonks.getEpsGrowth5Year() + "", true);
+			eb.addField("Eps Growth TTM Yoy", detailStonks.getEpsGrowthTTMYoy() + "", true);
+			eb.addField("Market Cap in Millions", detailStonks.getMarketCapitalizationInMillions() + "", true);
+			eb.addField("Operating Margin 5 Year", detailStonks.getOperatingMargin5Y() + "", true);
+			eb.addField("Operating Margin Annual", detailStonks.getOperatingMarginAnnual() + "", true);
+			eb.addField("Pe Basic Excluding Extra TTM", detailStonks.getPeBasicExclExtraTTM() + "", true);
+			eb.addField("Price Relative to S&P 500 52 Week", detailStonks.getPriceRelativeToSandP50052Week() + "",
+					true);
+			eb.addField("Revenue Growth 3 Year", detailStonks.getRevenueGrowth3Y() + "", true);
+			eb.addField("Revenue Growth 5 Year", detailStonks.getRevenueGrowth5Y() + "", true);
+			eb.addField("Revenue Growth TTM Yoy", detailStonks.getRevenueGrowthTTMYoy() + "", true);
 
 			// end set fields...
 		} else {
@@ -869,62 +876,128 @@ public class Guild {
 		eb3 = eb.build();
 		channel.sendMessage(eb3).queue();
 	}
-	
+
 	private void rps(MessageChannel channel, String message, MessageReceivedEvent event) {
-		
+
 		System.out.println("rpssss " + message);
 
-		
 		int computerChoice = random.nextInt(3);
-		
-		//0=rock, 1=paper, 2=scissors
-	
-		//ties
-		if(message.equalsIgnoreCase("rock") && computerChoice == 0) {
+
+		// 0=rock, 1=paper, 2=scissors
+
+		// ties
+		if (message.equalsIgnoreCase("rock") && computerChoice == 0) {
 			channel.sendMessage("Computer Chose Rock. Tie.").queue();
-		}else if(message.equalsIgnoreCase("paper") && computerChoice == 1) {
+		} else if (message.equalsIgnoreCase("paper") && computerChoice == 1) {
 			channel.sendMessage("Computer Chose Paper. Tie.").queue();
-		}else if(message.equalsIgnoreCase("scissors") && computerChoice == 2) {
+		} else if (message.equalsIgnoreCase("scissors") && computerChoice == 2) {
 			channel.sendMessage("Computer Chose Scissors. Tie.").queue();
 		}
-		//wins
-		else if(message.equalsIgnoreCase("rock") && computerChoice == 2) {
-			channel.sendMessage("Computer Chose Scissors. You won "+amountRPS+" Dollar(s)!").queue();
+		// wins
+		else if (message.equalsIgnoreCase("rock") && computerChoice == 2) {
+			channel.sendMessage("Computer Chose Scissors. You won " + amountRPS + " Dollar(s)!").queue();
 			addCashFromEvent(event, amountRPS);
-		}else if(message.equalsIgnoreCase("paper") && computerChoice == 0) {
-			channel.sendMessage("Computer Chose Rock. You won "+amountRPS+" Dollar(s)!").queue();
+		} else if (message.equalsIgnoreCase("paper") && computerChoice == 0) {
+			channel.sendMessage("Computer Chose Rock. You won " + amountRPS + " Dollar(s)!").queue();
 			addCashFromEvent(event, amountRPS);
-		}else if(message.equalsIgnoreCase("scissors") && computerChoice == 1) {
-			channel.sendMessage("Computer Chose Paper. You won "+amountRPS+" Dollar(s)!").queue();
+		} else if (message.equalsIgnoreCase("scissors") && computerChoice == 1) {
+			channel.sendMessage("Computer Chose Paper. You won " + amountRPS + " Dollar(s)!").queue();
 			addCashFromEvent(event, amountRPS);
 		}
-		//losses
-		else if(message.equalsIgnoreCase("rock") && computerChoice == 1) {
-			channel.sendMessage("Computer Chose Paper. You lost "+amountRPS+" Dollar(s)!").queue();
+		// losses
+		else if (message.equalsIgnoreCase("rock") && computerChoice == 1) {
+			channel.sendMessage("Computer Chose Paper. You lost " + amountRPS + " Dollar(s)!").queue();
 			addCashFromEvent(event, -amountRPS);
-		}else if(message.equalsIgnoreCase("paper") && computerChoice == 2) {
-			channel.sendMessage("Computer Chose Scissors. You lost "+amountRPS+" Dollar(s)!").queue();
+		} else if (message.equalsIgnoreCase("paper") && computerChoice == 2) {
+			channel.sendMessage("Computer Chose Scissors. You lost " + amountRPS + " Dollar(s)!").queue();
 			addCashFromEvent(event, -amountRPS);
-		}else if(message.equalsIgnoreCase("scissors") && computerChoice == 0) {
-			channel.sendMessage("Computer Chose Rock. You lost "+amountRPS+" Dollar(s)!").queue();
+		} else if (message.equalsIgnoreCase("scissors") && computerChoice == 0) {
+			channel.sendMessage("Computer Chose Rock. You lost " + amountRPS + " Dollar(s)!").queue();
 			addCashFromEvent(event, -amountRPS);
 		}
 	}
-	
+
 	private void getBalance(MessageChannel channel, MessageReceivedEvent event) {
 		for (int i = 0; i < GeneralInputManager.readWrite.getUsers().size(); i++) {
-			if(event.getAuthor().getId().equals(GeneralInputManager.readWrite.getUsers().get(i).getId())) {
+			if (event.getAuthor().getId().equals(GeneralInputManager.readWrite.getUsers().get(i).getId())) {
 				EmbedBuilder eb = new EmbedBuilder();
-				MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
+				MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null,
+						null);
 				eb.setColor(new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
-				eb.setTitle(event.getAuthor().getName()+"'s Balance");
-				eb.setDescription("**Balance: **"+GeneralInputManager.readWrite.getUsers().get(i).getCash());// will need to have image as second parameter eventually
+				eb.setTitle(event.getAuthor().getName() + "'s Balance");
+				eb.setDescription("**Balance: **" + GeneralInputManager.readWrite.getUsers().get(i).getCash());// will
+																												// need
+																												// to
+																												// have
+																												// image
+																												// as
+																												// second
+																												// parameter
+																												// eventually
 				eb3 = eb.build();
 				channel.sendMessage(eb3).queue();
 			}
 		}
 	}
-	
+
+	private void donate(MessageChannel channel, MessageReceivedEvent event) {
+		String amount = "";
+		String message = event.getMessage().getContentRaw();
+		System.out.println(event.getMessage().getContentRaw());
+		try {
+			amount = message.substring(message.indexOf('$') + 1);
+		} catch (Exception e) {
+			channel.sendMessage("See `intel help` for formatting!").queue();
+		}
+		System.out.println("amount = " + amount);
+
+		boolean donated = false;
+		
+		for (int i = 0; i < GeneralInputManager.readWrite.getUsers().size(); i++) {
+			System.out.println(GeneralInputManager.readWrite.getUsers().get(i).getId() + "|||"
+					+ event.getMessage().getMentionedMembers().get(0).getId());
+			if (GeneralInputManager.readWrite.getUsers().get(i).getId()
+					.equals(event.getMessage().getMentionedMembers().get(0).getId())) {
+				try {
+					// subtracts from author balance
+					if (authorHasCash(event, Integer.parseInt(amount))) {
+						subtractCashFromEvent(event, Integer.parseInt(amount));
+						// adds to mentioned balance
+						addCashTo(event.getMessage().getMentionedMembers().get(0), Integer.parseInt(amount));
+						donated = true;
+						// sends message
+						EmbedBuilder eb = new EmbedBuilder();
+						MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null,
+								null, null);
+						eb.setColor(new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
+						// sets fields...
+						eb.setTitle("**Donated!** New Balances..");
+						eb.addField(event.getAuthor().getName(), getUserCash(event.getAuthor().getId()), true);
+						eb.addField(event.getMessage().getMentionedMembers().get(0).getEffectiveName(),
+								getUserCash(event.getMessage().getMentionedMembers().get(0).getId()), true);
+						eb.setFooter("Powered By Recon");
+						eb3 = eb.build();
+						channel.sendMessage(eb3).queue();
+					}
+				} catch (Exception e) {
+					channel.sendMessage("See `intel help` for formatting!").queue();
+					donated = true;
+				}
+			}
+		}
+		if(!donated) {
+			EmbedBuilder eb = new EmbedBuilder();
+			MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null,
+					null, null);
+			eb.setColor(new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
+			// sets fields...
+			eb.setTitle("**Cannot Donate to Non-Users!**");
+			eb.setFooter("Powered By Recon");
+			eb3 = eb.build();
+			channel.sendMessage(eb3).queue();
+		}
+	}
+
 	private void help(MessageChannel channel) {
 		EmbedBuilder eb = new EmbedBuilder();
 		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
@@ -952,6 +1025,7 @@ public class Guild {
 		eb.addField("Detailed Stonks📊", "`intel detailstonk (stock symbol)`", true);
 		eb.addField("(Economy) Rock Paper Scissors✂", "`intel rps (rock/paper/scissors)`", true);
 		eb.addField("(Economy) Balance💰", "`intel balance`", true);
+		eb.addField("(Economy) Donate👬", "`intel donate (@User) ($amount)`", true);
 		eb.addField("Ping🏓", "`intel ping`", true);
 		eb.addField("Help🆘", "`intel help`", true);
 
@@ -962,20 +1036,66 @@ public class Guild {
 		channel.sendMessage(eb3).queue();
 	}
 
-	
-	
 	private void addCashFromEvent(MessageReceivedEvent event, int cash) {
 		for (int i = 0; i < GeneralInputManager.readWrite.getUsers().size(); i++) {
-			if(GeneralInputManager.readWrite.getUsers().get(i).getId().equals(event.getAuthor().getId())) {
+			if (GeneralInputManager.readWrite.getUsers().get(i).getId().equals(event.getAuthor().getId())) {
 				GeneralInputManager.readWrite.getUsers().get(i).addCash(cash);
 				GeneralInputManager.readWrite.updateUserJSON(GeneralInputManager.readWrite.getUsers().get(i));
 			}
 		}
 	}
-	
-	
-	
-	
+
+	private void subtractCashFromEvent(MessageReceivedEvent event, int cash) {
+		for (int i = 0; i < GeneralInputManager.readWrite.getUsers().size(); i++) {
+			if (GeneralInputManager.readWrite.getUsers().get(i).getId().equals(event.getAuthor().getId())) {
+				GeneralInputManager.readWrite.getUsers().get(i).subtractCash(cash);
+				GeneralInputManager.readWrite.updateUserJSON(GeneralInputManager.readWrite.getUsers().get(i));
+			}
+		}
+	}
+
+	private void addCashTo(Member m, int cash) {
+		for (int i = 0; i < GeneralInputManager.readWrite.getUsers().size(); i++) {
+			if (GeneralInputManager.readWrite.getUsers().get(i).getId().equals(m.getId())) {
+				GeneralInputManager.readWrite.getUsers().get(i).addCash(cash);
+				GeneralInputManager.readWrite.updateUserJSON(GeneralInputManager.readWrite.getUsers().get(i));
+			}
+		}
+
+	}
+
+	private void subtractCashFrom(Member m, int cash) {
+		for (int i = 0; i < GeneralInputManager.readWrite.getUsers().size(); i++) {
+			if (GeneralInputManager.readWrite.getUsers().get(i).getId().equals(m.getId())) {
+				GeneralInputManager.readWrite.getUsers().get(i).subtractCash(cash);
+				GeneralInputManager.readWrite.updateUserJSON(GeneralInputManager.readWrite.getUsers().get(i));
+			}
+		}
+	}
+
+	private boolean authorHasCash(MessageReceivedEvent event, int cash) {
+		for (int i = 0; i < GeneralInputManager.readWrite.getUsers().size(); i++) {
+			if (GeneralInputManager.readWrite.getUsers().get(i).getId().equals(event.getAuthor().getId())) {
+				if (Integer.parseInt(GeneralInputManager.readWrite.getUsers().get(i).getCash()) >= cash) {
+					return true;
+				}
+				return false;
+			}
+		}
+
+		// should never be here..
+		return false;
+	}
+
+	private String getUserCash(String id) {
+		for (int i = 0; i < GeneralInputManager.readWrite.getUsers().size(); i++) {
+			if (GeneralInputManager.readWrite.getUsers().get(i).getId().equals(id)) {
+				return GeneralInputManager.readWrite.getUsers().get(i).getCash();
+			}
+		}
+		return "";
+	}
+
 	// method to pause for x seconds
 	private static void pauseSeconds(long seconds) {
 		try {

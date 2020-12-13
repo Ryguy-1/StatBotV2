@@ -36,6 +36,20 @@ public class User {
 			e.printStackTrace();
 		}
 	}
+	
+	public void subtractCash(int cash) {
+		try {
+			int tempCurrent = Integer.parseInt(this.cash);
+			tempCurrent-=cash;
+			if(tempCurrent<0) {
+				tempCurrent=0;
+			}
+			this.cash = tempCurrent+"";
+			System.out.println("cash now "+ this.cash);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	public void setName(String name) {
 		this.name = name;

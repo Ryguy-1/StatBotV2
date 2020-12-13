@@ -66,6 +66,7 @@ public class GeneralInputManager extends ListenerAdapter {
 	}
 
 	public void onMessageReceived(MessageReceivedEvent event) {
+		
 		// will not respond to bots
 		if (!event.getAuthor().isBot()) {
 			// updates the JSON file
