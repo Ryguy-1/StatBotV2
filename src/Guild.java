@@ -1,5 +1,6 @@
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -11,7 +12,9 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class Guild {
 
-	private final int amountRPS = 5;
+	private final int amountRPS = 20;
+	private final int amountPerCommand = 1;
+	private final int googleCost = 10;
 
 	private String guildId;
 	private CovidStatsAPI covidStatsAPI;
@@ -60,10 +63,13 @@ public class Guild {
 		detailStonks = new StonksDetailed();
 	}
 
+	// economy commands and help do not earn you money
+
 	public void sendEvent(MessageReceivedEvent event) {
 		String message = event.getMessage().getContentRaw();
 		MessageChannel channel = event.getChannel();
 		if (message.contains("intel ping")) {
+			addCashFromEvent(event, amountPerCommand);
 			// pings server
 			ping(channel, event);
 			System.out.println("ping");
@@ -74,6 +80,7 @@ public class Guild {
 			if (substring.contains("covid")) {
 				channel.sendMessage("See `intel help` for formatting!").queue();
 			} else {
+				addCashFromEvent(event, amountPerCommand);
 				covid(channel, substring, event);
 				System.out.println("covid");
 			}
@@ -84,6 +91,7 @@ public class Guild {
 			if (substring.contains("weather")) {
 				channel.sendMessage("See `intel help` for formatting!").queue();
 			} else {
+				addCashFromEvent(event, amountPerCommand);
 				weather(channel, substring, event);
 				System.out.println("weather");
 			}
@@ -94,6 +102,7 @@ public class Guild {
 			if (substring.contains("name")) {
 				channel.sendMessage("See `intel help` for formatting!").queue();
 			} else {
+				addCashFromEvent(event, amountPerCommand);
 				name(channel, substring, event);
 				System.out.println("name");
 			}
@@ -104,6 +113,7 @@ public class Guild {
 			if (substring.contains("image")) {
 				channel.sendMessage("See `intel help` for formatting!").queue();
 			} else {
+				addCashFromEvent(event, amountPerCommand);
 				image(channel, substring, event);
 				System.out.println("image");
 			}
@@ -114,6 +124,7 @@ public class Guild {
 			if (substring.contains("lnglat")) {
 				channel.sendMessage("See `intel help` for formatting!").queue();
 			} else {
+				addCashFromEvent(event, amountPerCommand);
 				lnglat(channel, substring, event);
 				System.out.println("lnglat");
 			}
@@ -124,6 +135,7 @@ public class Guild {
 			if (substring.contains("placeinfo")) {
 				channel.sendMessage("See `intel help` for formatting!").queue();
 			} else {
+				addCashFromEvent(event, amountPerCommand);
 				placeinfo(channel, substring, event);
 				System.out.println("placeinfo");
 			}
@@ -134,6 +146,7 @@ public class Guild {
 			if (substring.contains("convertcurrency")) {
 				channel.sendMessage("See `intel help` for formatting!").queue();
 			} else {
+				addCashFromEvent(event, amountPerCommand);
 				convertcurrency(channel, substring, event);
 				System.out.println("convertcurrency");
 			}
@@ -144,6 +157,7 @@ public class Guild {
 			if (substring.contains("ip")) {
 				channel.sendMessage("See `intel help` for formatting!").queue();
 			} else {
+				addCashFromEvent(event, amountPerCommand);
 				ipinfo(channel, substring, event);
 				System.out.println("ipinfo");
 			}
@@ -154,6 +168,7 @@ public class Guild {
 			if (substring.contains("movie")) {
 				channel.sendMessage("See `intel help` for formatting!").queue();
 			} else {
+				addCashFromEvent(event, amountPerCommand);
 				movie(channel, substring, event);
 				System.out.println("movie");
 			}
@@ -164,6 +179,7 @@ public class Guild {
 			if (substring.contains("pokemon")) {
 				channel.sendMessage("See `intel help` for formatting!").queue();
 			} else {
+				addCashFromEvent(event, amountPerCommand);
 				pokemon(channel, substring, event);
 				System.out.println("pokemon");
 			}
@@ -174,6 +190,7 @@ public class Guild {
 			if (substring.contains("number")) {
 				channel.sendMessage("See `intel help` for formatting!").queue();
 			} else {
+				addCashFromEvent(event, amountPerCommand);
 				number(channel, substring, event);
 				System.out.println("number");
 			}
@@ -184,6 +201,7 @@ public class Guild {
 			if (substring.contains("date")) {
 				channel.sendMessage("See `intel help` for formatting!").queue();
 			} else {
+				addCashFromEvent(event, amountPerCommand);
 				date(channel, substring, event);
 				System.out.println("date");
 			}
@@ -194,8 +212,14 @@ public class Guild {
 			if (substring.contains("google")) {
 				channel.sendMessage("See `intel help` for formatting!").queue();
 			} else {
-				google(channel, substring, event);
-				System.out.println("google");
+				// check if have enough money and if so subtract amount from balance
+				if (authorHasCash(event, googleCost)) {
+					subtractCashFromEvent(event, googleCost);
+					google(channel, substring, event);
+					System.out.println("google");
+				} else {
+					channel.sendMessage("You don't have $" + googleCost + " to search Google :( ").queue();
+				}
 			}
 		} else if (message.contains("intel minecraft")) {
 			// substring to get message
@@ -204,6 +228,7 @@ public class Guild {
 			if (substring.contains("minecraft")) {
 				channel.sendMessage("See `intel help` for formatting!").queue();
 			} else {
+				addCashFromEvent(event, amountPerCommand);
 				minecraft(channel, substring, event);
 				System.out.println("minecraft");
 			}
@@ -214,6 +239,7 @@ public class Guild {
 			if (substring.contains("stonk")) {
 				channel.sendMessage("See `intel help` for formatting!").queue();
 			} else {
+				addCashFromEvent(event, amountPerCommand);
 				stonk(channel, substring, event);
 				System.out.println("stonk");
 			}
@@ -224,6 +250,7 @@ public class Guild {
 			if (substring.contains("detailstonk")) {
 				channel.sendMessage("See `intel help` for formatting!").queue();
 			} else {
+				addCashFromEvent(event, amountPerCommand);
 				detailStonk(channel, substring, event);
 				System.out.println("detailstonk");
 			}
@@ -248,15 +275,22 @@ public class Guild {
 				donate(channel, event);
 			}
 		} else if (message.contains("intel kanye")) {
+			addCashFromEvent(event, amountPerCommand);
 			kanyequote(channel, event);
 			System.out.println("kanye");
+		} else if (message.contains("intel leaderboard")) {
+			leaderboard(channel);
+			System.out.println("leaderboard");
 		} else if (message.contains("intel joke")) {
+			addCashFromEvent(event, amountPerCommand);
 			joke(channel, event);
 			System.out.println("joke");
 		} else if (message.contains("intel dog")) {
+			addCashFromEvent(event, amountPerCommand);
 			dog(channel, event);
 			System.out.println("dog");
 		} else if (message.contains("intel cat")) {
+			addCashFromEvent(event, amountPerCommand);
 			cat(channel, event);
 			System.out.println("cat");
 		} else if (message.contains("intel balance")) {
@@ -952,7 +986,7 @@ public class Guild {
 		System.out.println("amount = " + amount);
 
 		boolean donated = false;
-		
+
 		for (int i = 0; i < GeneralInputManager.readWrite.getUsers().size(); i++) {
 			System.out.println(GeneralInputManager.readWrite.getUsers().get(i).getId() + "|||"
 					+ event.getMessage().getMentionedMembers().get(0).getId());
@@ -985,10 +1019,9 @@ public class Guild {
 				}
 			}
 		}
-		if(!donated) {
+		if (!donated) {
 			EmbedBuilder eb = new EmbedBuilder();
-			MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null,
-					null, null);
+			MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
 			eb.setColor(new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
 			// sets fields...
 			eb.setTitle("**Cannot Donate to Non-Users!**");
@@ -996,6 +1029,38 @@ public class Guild {
 			eb3 = eb.build();
 			channel.sendMessage(eb3).queue();
 		}
+	}
+
+	private void leaderboard(MessageChannel channel) {
+		ArrayList<User> users = new ArrayList<User>();
+		ArrayList<User> sortedUsers = new ArrayList<User>();
+		// copy users over
+		for (int i = 0; i < GeneralInputManager.readWrite.getUsers().size(); i++) {
+			users.add(GeneralInputManager.readWrite.getUsers().get(i));
+		}
+		// sort and take out highest each time and add to leaderbaord list
+		while (users.size() != 0) {
+			int userIndex = 0;
+			for (int i = 0; i < users.size(); i++) {
+				if (Integer.parseInt(users.get(i).getCash()) > Integer.parseInt(users.get(userIndex).getCash())) {
+					userIndex = i;
+				}
+			}
+			sortedUsers.add(users.get(userIndex));
+			users.remove(userIndex);
+		}
+		// send sortedUsers in order with the cash values
+		EmbedBuilder eb = new EmbedBuilder();
+		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
+		eb.setColor(new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
+		eb.setTitle("Leaderboard📊");
+		for (int i = 0; i < sortedUsers.size(); i++) {
+			eb.addField(sortedUsers.get(i).getName(), "$" + sortedUsers.get(i).getCash(), true);
+		}
+		eb.setFooter("Powered by Recon");
+		eb3 = eb.build();
+		channel.sendMessage(eb3).queue();
+
 	}
 
 	private void help(MessageChannel channel) {
@@ -1030,7 +1095,8 @@ public class Guild {
 		eb.addField("Help🆘", "`intel help`", true);
 
 		eb.setDescription(
-				"**[Invite Here](https://discord.com/api/oauth2/authorize?client_id=779185137971494932&permissions=522304&scope=bot)**");
+				"**[🌟Invite Here🌟](https://discord.com/api/oauth2/authorize?client_id=779185137971494932&permissions=522304&scope=bot)** \n\n **Economy:** $ are earned by using"
+						+ " commands! Each command (except economy and help commands) used gains you $1 💵. You can also gamble this money and donate it to other users. 💰 \n\n");
 		eb.setFooter("Powered By Recon");// will need to have image as second parameter eventually
 		eb3 = eb.build();
 		channel.sendMessage(eb3).queue();
