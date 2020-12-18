@@ -1039,7 +1039,7 @@ public class Guild {
 			users.add(GeneralInputManager.readWrite.getUsers().get(i));
 		}
 		// sort and take out highest each time and add to leaderbaord list
-		while (users.size() != 0) {
+		while (users.size() != 0 && sortedUsers.size()<10) {
 			int userIndex = 0;
 			for (int i = 0; i < users.size(); i++) {
 				if (Integer.parseInt(users.get(i).getCash()) > Integer.parseInt(users.get(userIndex).getCash())) {
