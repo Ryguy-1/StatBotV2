@@ -12,9 +12,9 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class Guild {
 
-	private final int amountRPS = 20;
-	private final int amountPerCommand = 1;
-	private final int googleCost = 10;
+	private final int amountRPS = 10;
+	private final int amountPerCommand = 2;
+	private final int googleCost = 20;
 
 	private String guildId;
 	private CovidStatsAPI covidStatsAPI;
@@ -69,7 +69,6 @@ public class Guild {
 		String message = event.getMessage().getContentRaw();
 		MessageChannel channel = event.getChannel();
 		if (message.contains("intel ping")) {
-			addCashFromEvent(event, amountPerCommand);
 			// pings server
 			ping(channel, event);
 			System.out.println("ping");
@@ -279,7 +278,7 @@ public class Guild {
 			kanyequote(channel, event);
 			System.out.println("kanye");
 		} else if (message.contains("intel leaderboard")) {
-			leaderboard(channel);
+			leaderboard(channel, event);
 			System.out.println("leaderboard");
 		} else if (message.contains("intel joke")) {
 			addCashFromEvent(event, amountPerCommand);
@@ -1031,35 +1030,46 @@ public class Guild {
 		}
 	}
 
-	private void leaderboard(MessageChannel channel) {
-		ArrayList<User> users = new ArrayList<User>();
-		ArrayList<User> sortedUsers = new ArrayList<User>();
-		// copy users over
-		for (int i = 0; i < GeneralInputManager.readWrite.getUsers().size(); i++) {
-			users.add(GeneralInputManager.readWrite.getUsers().get(i));
-		}
-		// sort and take out highest each time and add to leaderbaord list
-		while (users.size() != 0 && sortedUsers.size()<10) {
-			int userIndex = 0;
-			for (int i = 0; i < users.size(); i++) {
-				if (Integer.parseInt(users.get(i).getCash()) > Integer.parseInt(users.get(userIndex).getCash())) {
-					userIndex = i;
-				}
-			}
-			sortedUsers.add(users.get(userIndex));
-			users.remove(userIndex);
-		}
-		// send sortedUsers in order with the cash values
-		EmbedBuilder eb = new EmbedBuilder();
-		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
-		eb.setColor(new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
-		eb.setTitle("Leaderboard📊");
-		for (int i = 0; i < sortedUsers.size(); i++) {
-			eb.addField(sortedUsers.get(i).getName(), "$" + sortedUsers.get(i).getCash(), true);
-		}
-		eb.setFooter("Powered by Recon");
-		eb3 = eb.build();
-		channel.sendMessage(eb3).queue();
+	private void leaderboard(MessageChannel channel, MessageReceivedEvent event) {
+//		ArrayList<User> users = new ArrayList<User>();
+//		ArrayList<User> sortedUsers = new ArrayList<User>();
+//		// copy users over
+//		for (int i = 0; i < GeneralInputManager.readWrite.getUsers().size(); i++) {
+//			for (int j = 0; j < event.getGuild().getMembers().size(); j++) {
+//				if(GeneralInputManager.readWrite.getUsers().get(i).getId().equals(event.getGuild().getMembers().get(j).getId())) {
+//						users.add(GeneralInputManager.readWrite.getUsers().get(i));
+//				}
+//			}
+//				System.out.println("LEADERBOARD TESTING: members = " + event.getGuild().getMembers().size());
+//				for (int j = 0; j < event.getGuild().getMembers().size(); j++) {
+//					
+//				}
+//				
+//				System.out.println("This User Id is: "+ event.getAuthor().getId());
+//			
+//		}
+//		// sort and take out highest each time and add to leaderbaord list
+//		while (users.size() != 0 && sortedUsers.size()<10) {
+//			int userIndex = 0;
+//			for (int i = 0; i < users.size(); i++) {
+//				if (Integer.parseInt(users.get(i).getCash()) > Integer.parseInt(users.get(userIndex).getCash())) {
+//					userIndex = i;
+//				}
+//			}
+//			sortedUsers.add(users.get(userIndex));
+//			users.remove(userIndex);
+//		}
+//		// send sortedUsers in order with the cash values
+//		EmbedBuilder eb = new EmbedBuilder();
+//		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
+//		eb.setColor(new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
+//		eb.setTitle("Leaderboard📊");
+//		for (int i = 0; i < sortedUsers.size(); i++) {
+//			eb.addField(sortedUsers.get(i).getName(), "$" + sortedUsers.get(i).getCash(), true);
+//		}
+//		eb.setFooter("Powered by Recon");
+//		eb3 = eb.build();
+//		channel.sendMessage(eb3).queue();
 
 	}
 
@@ -1068,36 +1078,40 @@ public class Guild {
 		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
 		eb.setColor(new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
 		eb.setTitle("📜Gathering Reconnaissance...📊");
-		eb.addField("Google🔎🔍", "`intel google (anything)`", true);
-		eb.addField("Covid Stats🦠📈", "`intel covid (us)`", true);
-		eb.addField("Weather☁🌡", "`intel weather (long,lat)`", true);
-		eb.addField("Name -> Age Predictions💭📊", "`intel name (name)`", true);
-		eb.addField("Image📷🖼", "`intel image (ImageName)`", true);
-		eb.addField("Longitude Latitude🌎🌐", "`intel lnglat (place)`", true);
-		eb.addField("Place Information🌎🌐", "`intel placeinfo (place)`", true);
-		eb.addField("Convert Currency💶💵", "`intel convertcurrency (convert from,convert to)`", true);
-		eb.addField("IP Info💻🔗", "`intel ip (ip address)`", true);
-		eb.addField("Kanye Quotes💭", "`intel kanye`", true);
-		eb.addField("Uncreative Jokes😂🧺", "`intel joke`", true);
-		eb.addField("Movie Recon🎥🎬", "`intel movie (movie title)`", true);
-		eb.addField("Pokemon🃏🎴", "`intel pokemon (pokemon)`", true);
-		eb.addField("Dog🐶🐕‍", "`intel dog`", true);
-		eb.addField("Cat🐱🐈", "`intel cat`", true);
-		eb.addField("Number🔢", "`intel number (number)`", true);
-		eb.addField("Date🔢", "`intel date (mm/dd)`", true);
-		eb.addField("Minecraft Server Info🏦", "`intel minecraft (server address)`", true);
-		eb.addField("Stonks📊", "`intel stonk (stock symbol)`", true);
-		eb.addField("Detailed Stonks📊", "`intel detailstonk (stock symbol)`", true);
-		eb.addField("(Economy) Rock Paper Scissors✂", "`intel rps (rock/paper/scissors)`", true);
+		eb.addField("Google🔎🔍 (-$"+googleCost+")", "`intel google (anything)`", false);
+		eb.addField("Covid Stats🦠📈 (+$"+amountPerCommand+")", "`intel covid (us)`", true);
+		eb.addField("Weather☁🌡 (+$"+amountPerCommand+")", "`intel weather (long,lat)`", true);
+		eb.addField("Name -> Age Predictions💭📊 (+$"+amountPerCommand+")", "`intel name (name)`", true);
+		eb.addField("Image📷🖼 (+$"+amountPerCommand+")", "`intel image (ImageName)`", true);
+		eb.addField("Longitude Latitude🌎🌐 (+$"+amountPerCommand+")", "`intel lnglat (place)`", true);
+		eb.addField("Place Information🌎🌐 (+$"+amountPerCommand+")", "`intel placeinfo (place)`", true);
+		eb.addField("Convert Currency💶💵 (+$"+amountPerCommand+")", "`intel convertcurrency (convert from,convert to)`", true);
+		eb.addField("IP Info💻🔗 (+$"+amountPerCommand+")", "`intel ip (ip address)`", true);
+		eb.addField("Kanye Quotes💭 (+$"+amountPerCommand+")", "`intel kanye`", true);
+		eb.addField("Uncreative Jokes😂🧺 (+$"+amountPerCommand+")", "`intel joke`", true);
+		eb.addField("Movie Recon🎥🎬 (+$"+amountPerCommand+")", "`intel movie (movie title)`", true);
+		eb.addField("Pokemon🃏🎴 (+$"+amountPerCommand+")", "`intel pokemon (pokemon)`", true);
+		eb.addField("Dog🐶🐕‍ (+$"+amountPerCommand+")", "`intel dog`", true);
+		eb.addField("Cat🐱🐈 (+$"+amountPerCommand+")", "`intel cat`", true);
+		eb.addField("Number🔢 (+$"+amountPerCommand+")", "`intel number (number)`", true);
+		eb.addField("Date🔢 (+$"+amountPerCommand+")", "`intel date (mm/dd)`", true);
+		eb.addField("Minecraft Server Info🏦 (+$"+amountPerCommand+")", "`intel minecraft (server address)`", true);
+		eb.addField("Stonks📊 (+$"+amountPerCommand+")", "`intel stonk (stock symbol)`", true);
+		eb.addField("Detailed Stonks📊 (+$"+amountPerCommand+")", "`intel detailstonk (stock symbol)`", true);
+		eb.addField("(Economy) Rock Paper Scissors✂ (+/-$"+amountRPS+")", "`intel rps (rock/paper/scissors)`", true);
 		eb.addField("(Economy) Balance💰", "`intel balance`", true);
+		//eb.addField("(Economy) Leaderboard📊", "`intel leaderboard`", true);
 		eb.addField("(Economy) Donate👬", "`intel donate (@User) ($amount)`", true);
 		eb.addField("Ping🏓", "`intel ping`", true);
 		eb.addField("Help🆘", "`intel help`", true);
 
 		eb.setDescription(
-				"**[🌟Invite Here🌟](https://discord.com/api/oauth2/authorize?client_id=779185137971494932&permissions=522304&scope=bot)** \n\n **Economy:** $ are earned by using"
-						+ " commands! Each command (except economy and help commands) used gains you $1 💵. You can also gamble this money and donate it to other users. 💰 \n\n");
-		eb.setFooter("Powered By Recon");// will need to have image as second parameter eventually
+				"**[🌟Invite Here🌟](https://discord.com/api/oauth2/authorize?client_id=779185137971494932&permissions=522304&scope=bot)** \n\n **Welcome to Recon!🦅**"
+				+ " This bot allows plugins to a lot of useful APIs to get you good/hilarious information on basically anything."
+				+ " All API commands give you $"+amountPerCommand+" which you can spend on the all powerful Google command for $"+googleCost+"! \n\n**Economy:** Dollars are earned by using"
+						+ " commands! Each command (except economy and help commands) used gains you $"+amountPerCommand+" 💵. You can also gamble this money and donate it to other users. 💰 \n\n");
+		eb.setFooter("Powered By Recon", "https://cdn0.iconfinder.com/data/icons/user-interface-167/32/ui-02-512.png");// will need to have image as second parameter eventually
+		eb.setThumbnail("https://cdn0.iconfinder.com/data/icons/user-interface-167/32/ui-02-512.png");
 		eb3 = eb.build();
 		channel.sendMessage(eb3).queue();
 	}
