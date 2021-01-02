@@ -371,6 +371,7 @@ public class Guild {
 
 			if (!weatherAPI.getResponseRaw().equals("Weather API Error")) {
 				for (int i = 0; i < weatherAPI.getResponseArray().length; i++) {
+					//System.out.println("weather api celcius = " + weatherAPI.getResponseArray()[i][6]);
 					eb.addField("Hour " + (i + 1) * 3,
 							"Temp Farenheit: " + (Integer.parseInt(weatherAPI.getResponseArray()[i][6]) * 1.8 + 32)
 									+ "\nWeather: " + weatherAPI.getResponseArray()[i][5] + "\nPrecipitation: "
@@ -969,6 +970,8 @@ public class Guild {
 																												// eventually
 				eb3 = eb.build();
 				channel.sendMessage(eb3).queue();
+				
+				
 			}
 		}
 	}
