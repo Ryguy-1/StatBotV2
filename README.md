@@ -13,6 +13,9 @@ https://discord.com/api/oauth2/authorize?client_id=779185137971494932&permission
 ## Commands
 
 Prefix: `intel`
+**=================Google=================**
+
+`intel google (anything)` (Google Search) (Powered by Google)
 
 **=================Utility=================**
 
@@ -21,8 +24,6 @@ Command List: (visable within bot with  `intel help`)
 `intel ping` (Pings Recon)
 
 **=================Miscellaneous=================**
-
-`intel google (anything)` (Google Search) (Powered by Google)
 
 `intel covid (us)` (API Not State-Specific Yet) (The Covid Tracking Project API)
 
@@ -35,6 +36,8 @@ Command List: (visable within bot with  `intel help`)
 **=================Economy=================**
 
 `intel balance` (Current Balance)
+
+`intel donate (@User) ($X)` (Current Balance)
 
 `intel rps (rock/paper/scissors)` (Rock Paper Scissors Gamble)
 
