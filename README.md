@@ -12,16 +12,16 @@ https://discord.com/api/oauth2/authorize?client_id=779185137971494932&permission
 
 ## Commands
 
-Prefix: `intel`
+Prefix: `intel` Command List: (visable within bot with  `intel help`)
 **=================Google=================**
 
 `intel google (anything)` (Google Search) (Powered by Google)
 
 **=================Utility=================**
 
-Command List: (visable within bot with  `intel help`)
-
 `intel ping` (Pings Recon)
+
+`intel help` (Command List)
 
 **=================Miscellaneous=================**
 
