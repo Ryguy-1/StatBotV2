@@ -783,7 +783,7 @@ public class Guild {
 					eb.setTitle(
 							"Unexpected Error... Please wait a few seconds and try again or join our **Support Server** for help and questions!");
 					eb3 = eb.build();
-
+					
 					channel.sendMessage(eb3).queue();
 				}
 				// if there is not enough capacity with the amount of scrapers at the moment.
@@ -796,7 +796,10 @@ public class Guild {
 				eb.setTitle(
 						"Not Enough Capacity at the Moment! Wait a few seconds and try again or join our **Support Server** for help and questions!");
 				eb3 = eb.build();
-
+				
+				//since was not able to use the command, gives back the google cash
+				addCashFromEvent(event, googleCost);
+				
 				channel.sendMessage(eb3).queue();
 			}
 
@@ -1109,7 +1112,7 @@ public class Guild {
 		eb.addField("Help🆘", "`intel help`", true);
 
 		eb.setDescription(
-				"**[🌟Invite Here🌟](https://discord.com/api/oauth2/authorize?client_id=779185137971494932&permissions=522304&scope=bot)** \n\n **Welcome to Recon!🦅**"
+				"**[🌟Invite Here🌟](https://discord.com/api/oauth2/authorize?client_id=779185137971494932&permissions=522304&scope=bot)** \n\n **Welcome to Recon!🔎**"
 				+ " This bot allows plugins to a lot of useful APIs to get you good/hilarious information on basically anything."
 				+ " All API commands give you $"+amountPerCommand+" which you can spend on the all powerful Google command for $"+googleCost+"! \n\n**Economy:** Dollars are earned by using"
 						+ " commands! Each command (except economy and help commands) used gains you $"+amountPerCommand+" 💵. You can also gamble this money and donate it to other users. 💰 \n\n");
