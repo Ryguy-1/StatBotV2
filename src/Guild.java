@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -13,8 +14,10 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 public class Guild {
 
 	private final int amountRPS = 10;
-	private final int amountPerCommand = 2;
+	private final int amountPerCommand = 5;
 	private final int googleCost = 20;
+	private final int treasureGained = 250;
+	private final int treasureCost = 5;
 
 	private String guildId;
 	private CovidStatsAPI covidStatsAPI;
@@ -263,7 +266,17 @@ public class Guild {
 				rps(channel, substring, event);
 				System.out.println("rock paper scissors");
 			}
-		} else if (message.contains("intel donate")) {
+		} else if (message.contains("intel poll")) {
+			// substring to get message
+			String substring = message.substring(message.indexOf(" ", 6) + 1);
+			// makes sure they formatted it correctly
+			if (substring.contains("poll")) {
+				channel.sendMessage("See `intel help` for formatting!").queue();
+			} else {
+				poll(channel, substring, event);
+				System.out.println("poll");
+			}
+		}else if (message.contains("intel donate")) {
 			// substring to get message
 			String substring = message.substring(message.indexOf(" ", 6) + 1);
 			// makes sure they formatted it correctly
@@ -272,6 +285,16 @@ public class Guild {
 			} else {
 				System.out.println("donate");
 				donate(channel, event);
+			}
+		}else if (message.contains("intel roast")) {
+			// substring to get message
+			String substring = message.substring(message.indexOf(" ", 6) + 1);
+			// makes sure they formatted it correctly
+			if (substring.contains("roast") || event.getMessage().getMentionedMembers().size() != 1) {
+				channel.sendMessage("See `intel help` for formatting!").queue();
+			} else {
+				System.out.println("roast");
+				roast(channel, event);
 			}
 		} else if (message.contains("intel kanye")) {
 			addCashFromEvent(event, amountPerCommand);
@@ -295,11 +318,37 @@ public class Guild {
 		} else if (message.contains("intel balance")) {
 			getBalance(channel, event);
 			System.out.println("getBalance");
-		} else if (message.contains("intel help")) {
+		} else if (message.contains("intel hunt")) {
+			treasure(channel, event);
+			System.out.println("hunt");
+		}  else if (message.contains("intel help")) {
 			help(channel);
 			System.out.println("help");
+		} else if (message.contains("intel utility")) {
+			utility(channel);
+			System.out.println("utility");
+		} else if (message.contains("intel miscellaneous")) {
+			miscellaneous(channel);
+			System.out.println("miscellaneous");
+		} else if (message.contains("intel economy")) {
+			economy(channel);
+			System.out.println("economy");
+		} else if (message.contains("intel fun")) {
+			fun(channel);
+			System.out.println("fun");
+		} else if (message.contains("intel animals")) {
+			animals(channel);
+			System.out.println("animals");
+		} else if (message.contains("intel geography")) {
+			geography(channel);
+			System.out.println("geography");
+		} else if (message.contains("intel money")) {
+			money(channel);
+			System.out.println("money");
 		}
 	}
+
+	
 
 	public String getGuildId() {
 		return this.guildId;
@@ -371,7 +420,8 @@ public class Guild {
 
 			if (!weatherAPI.getResponseRaw().equals("Weather API Error")) {
 				for (int i = 0; i < weatherAPI.getResponseArray().length; i++) {
-					//System.out.println("weather api celcius = " + weatherAPI.getResponseArray()[i][6]);
+					// System.out.println("weather api celcius = " +
+					// weatherAPI.getResponseArray()[i][6]);
 					eb.addField("Hour " + (i + 1) * 3,
 							"Temp Farenheit: " + (Integer.parseInt(weatherAPI.getResponseArray()[i][6]) * 1.8 + 32)
 									+ "\nWeather: " + weatherAPI.getResponseArray()[i][5] + "\nPrecipitation: "
@@ -783,7 +833,7 @@ public class Guild {
 					eb.setTitle(
 							"Unexpected Error... Please wait a few seconds and try again or join our **Support Server** for help and questions!");
 					eb3 = eb.build();
-					
+
 					channel.sendMessage(eb3).queue();
 				}
 				// if there is not enough capacity with the amount of scrapers at the moment.
@@ -796,10 +846,10 @@ public class Guild {
 				eb.setTitle(
 						"Not Enough Capacity at the Moment! Wait a few seconds and try again or join our **Support Server** for help and questions!");
 				eb3 = eb.build();
-				
-				//since was not able to use the command, gives back the google cash
+
+				// since was not able to use the command, gives back the google cash
 				addCashFromEvent(event, googleCost);
-				
+
 				channel.sendMessage(eb3).queue();
 			}
 
@@ -973,8 +1023,45 @@ public class Guild {
 																												// eventually
 				eb3 = eb.build();
 				channel.sendMessage(eb3).queue();
-				
-				
+
+			}
+		}
+	}
+	
+	
+	private void treasure(MessageChannel channel, MessageReceivedEvent event) {
+		subtractCashFromEvent(event, treasureCost);
+		int temp = random.nextInt(100);
+		if(temp<=98) {
+			for (int i = 0; i < GeneralInputManager.readWrite.getUsers().size(); i++) {
+				if (event.getAuthor().getId().equals(GeneralInputManager.readWrite.getUsers().get(i).getId())) {
+					EmbedBuilder eb = new EmbedBuilder();
+					MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null,
+							null);
+					eb.setColor(new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
+					eb.setTitle(event.getAuthor().getName() + "'s Balance");
+					eb.addField("Treasure?" , "Failed to Find Treasure 😞", true);
+					eb.addField("**Balance: **" , GeneralInputManager.readWrite.getUsers().get(i).getCash(), true);
+					eb3 = eb.build();
+					channel.sendMessage(eb3).queue();
+
+				}
+			}
+		}else {
+			addCashFromEvent(event, treasureGained);
+			for (int i = 0; i < GeneralInputManager.readWrite.getUsers().size(); i++) {
+				if (event.getAuthor().getId().equals(GeneralInputManager.readWrite.getUsers().get(i).getId())) {
+					EmbedBuilder eb = new EmbedBuilder();
+					MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null,
+							null);
+					eb.setColor(new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
+					eb.setTitle(event.getAuthor().getName() + "'s Balance");
+					eb.addField("Treasure?" , "You found "+treasureGained + " 💵s!", true);
+					eb.addField("**Balance: **" , GeneralInputManager.readWrite.getUsers().get(i).getCash(), true);
+					eb3 = eb.build();
+					channel.sendMessage(eb3).queue();
+
+				}
 			}
 		}
 	}
@@ -1000,6 +1087,7 @@ public class Guild {
 				try {
 					// subtracts from author balance
 					if (authorHasCash(event, Integer.parseInt(amount))) {
+
 						subtractCashFromEvent(event, Integer.parseInt(amount));
 						// adds to mentioned balance
 						addCashTo(event.getMessage().getMentionedMembers().get(0), Integer.parseInt(amount));
@@ -1025,17 +1113,77 @@ public class Guild {
 			}
 		}
 		if (!donated) {
-			EmbedBuilder eb = new EmbedBuilder();
-			MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
-			eb.setColor(new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
-			// sets fields...
-			eb.setTitle("**Cannot Donate to Non-Users!**");
-			eb.setFooter("Powered By Recon");
-			eb3 = eb.build();
-			channel.sendMessage(eb3).queue();
+			if (authorHasCash(event, Integer.parseInt(amount))) {
+				EmbedBuilder eb = new EmbedBuilder();
+				MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null,
+						null);
+				eb.setColor(new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
+				// sets fields...
+				eb.setTitle("**Cannot Donate to Non-Users!**");
+				eb.setFooter("Powered By Recon");
+				eb3 = eb.build();
+				channel.sendMessage(eb3).queue();
+			}else {
+				EmbedBuilder eb = new EmbedBuilder();
+				MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null,
+						null);
+				eb.setColor(new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
+				// sets fields...
+				eb.setTitle("**You don't have enough cash! 💵**");
+				eb.setFooter("Powered By Recon");
+				eb3 = eb.build();
+				channel.sendMessage(eb3).queue();
+			}
 		}
 	}
 
+	private void roast(MessageChannel channel, MessageReceivedEvent event) {
+		addCashFromEvent(event, amountPerCommand);
+		String[] roasts = {"You're as useless as the 'ueue' in 'queue'.", "Mirrors can't talk. Lucky for you, they can't laugh either.", "You're the reason the gene pool needs a lifeguard",
+				"If I had a face like yours, I'd sue my parents.", "You must have been born on a highway cos' that's where the most accidents happen.",
+				"If I had a dollar for every time you said something smart, I'd be broke.", "When you were born, the doctor threw you out the window and the window threw you back."};
+		String nickname = event.getMessage().getMentionedMembers().get(0).getEffectiveName();
+		int rand = random.nextInt(roasts.length);
+		EmbedBuilder eb = new EmbedBuilder();
+		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null,
+				null);
+		eb.setColor(new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
+		// sets fields...
+		eb.setTitle("**"+nickname+", **");
+		eb.setDescription("**"+roasts[rand]+"**");
+		eb.setImage("https://media1.giphy.com/media/RdKjAkFTNZkWUGyRXF/giphy.gif");
+		eb.setFooter("Powered By Recon");
+		eb3 = eb.build();
+		channel.sendMessage(eb3).queue();
+		
+	}
+	
+	private void poll(MessageChannel channel, String substring, MessageReceivedEvent event) {
+		addCashFromEvent(event, amountPerCommand);
+		getImage.getStats(substring);
+		String nickname = event.getAuthor().getName();
+		EmbedBuilder eb = new EmbedBuilder();
+		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null,
+				null);
+		eb.setColor(new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
+		// sets fields...
+		eb.setTitle("**"+nickname+"'s Poll **");
+		eb.setDescription("**"+substring+"**");
+		if (!getImage.getResponseRaw().equals("Image API Error")) {
+			eb.setImage(getImage.getImageURL());
+			// end set fields...
+		} else {
+			eb.setDescription("No Image Found");
+		}
+		eb.setFooter("Powered By Recon");
+		eb3 = eb.build();
+		Message msg = channel.sendMessage(eb3).complete();
+		msg.addReaction("👍").queue();
+		msg.addReaction("👎").queue();
+		msg.addReaction("❓").queue();
+	}
+	
+	
 	private void leaderboard(MessageChannel channel, MessageReceivedEvent event) {
 //		ArrayList<User> users = new ArrayList<User>();
 //		ArrayList<User> sortedUsers = new ArrayList<User>();
@@ -1084,43 +1232,211 @@ public class Guild {
 		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
 		eb.setColor(new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
 		eb.setTitle("📜Gathering Reconnaissance...📊");
-		eb.addField("Google🔎🔍 (-$"+googleCost+")", "`intel google (anything)`", false);
-		eb.addField("Covid Stats🦠📈 (+$"+amountPerCommand+")", "`intel covid (us)`", true);
-		eb.addField("Weather☁🌡 (+$"+amountPerCommand+")", "`intel weather (long,lat)`", true);
-		eb.addField("Name -> Age Predictions💭📊 (+$"+amountPerCommand+")", "`intel name (name)`", true);
-		eb.addField("Image📷🖼 (+$"+amountPerCommand+")", "`intel image (ImageName)`", true);
-		eb.addField("Longitude Latitude🌎🌐 (+$"+amountPerCommand+")", "`intel lnglat (place)`", true);
-		eb.addField("Place Information🌎🌐 (+$"+amountPerCommand+")", "`intel placeinfo (place)`", true);
-		eb.addField("Convert Currency💶💵 (+$"+amountPerCommand+")", "`intel convertcurrency (convert from,convert to)`", true);
-		eb.addField("IP Info💻🔗 (+$"+amountPerCommand+")", "`intel ip (ip address)`", true);
-		eb.addField("Kanye Quotes💭 (+$"+amountPerCommand+")", "`intel kanye`", true);
-		eb.addField("Uncreative Jokes😂🧺 (+$"+amountPerCommand+")", "`intel joke`", true);
-		eb.addField("Movie Recon🎥🎬 (+$"+amountPerCommand+")", "`intel movie (movie title)`", true);
-		eb.addField("Pokemon🃏🎴 (+$"+amountPerCommand+")", "`intel pokemon (pokemon)`", true);
-		eb.addField("Dog🐶🐕‍ (+$"+amountPerCommand+")", "`intel dog`", true);
-		eb.addField("Cat🐱🐈 (+$"+amountPerCommand+")", "`intel cat`", true);
-		eb.addField("Number🔢 (+$"+amountPerCommand+")", "`intel number (number)`", true);
-		eb.addField("Date🔢 (+$"+amountPerCommand+")", "`intel date (mm/dd)`", true);
-		eb.addField("Minecraft Server Info🏦 (+$"+amountPerCommand+")", "`intel minecraft (server address)`", true);
-		eb.addField("Stonks📊 (+$"+amountPerCommand+")", "`intel stonk (stock symbol)`", true);
-		eb.addField("Detailed Stonks📊 (+$"+amountPerCommand+")", "`intel detailstonk (stock symbol)`", true);
-		eb.addField("(Economy) Rock Paper Scissors✂ (+/-$"+amountRPS+")", "`intel rps (rock/paper/scissors)`", true);
-		eb.addField("(Economy) Balance💰", "`intel balance`", true);
-		//eb.addField("(Economy) Leaderboard📊", "`intel leaderboard`", true);
-		eb.addField("(Economy) Donate👬", "`intel donate (@User) ($amount)`", true);
-		eb.addField("Ping🏓", "`intel ping`", true);
-		eb.addField("Help🆘", "`intel help`", true);
+		eb.addField("Google🔎🔍 (-$" + googleCost + ")", "`intel google (anything)`", true);
+		eb.addField("Utility 📜", "`intel utility`", true);
+		eb.addField("Miscellaneous 🎱", "`intel miscellaneous`", true);
+		eb.addField("Economy 📈", "`intel economy`", true);
+		eb.addField("Fun 🎈", "`intel fun`", true);
+		eb.addField("Animals/Characters 🐶", "`intel animals`", true);
+		eb.addField("Geography 🗺", "`intel geography`", true);
+		eb.addField("Stonks/Currency 💵", "`intel money`", true);
 
 		eb.setDescription(
 				"**[🌟Invite Here🌟](https://discord.com/api/oauth2/authorize?client_id=779185137971494932&permissions=522304&scope=bot)** \n\n **Welcome to Recon!🔎**"
-				+ " This bot allows plugins to a lot of useful APIs to get you good/hilarious information on basically anything."
-				+ " All API commands give you $"+amountPerCommand+" which you can spend on the all powerful Google command for $"+googleCost+"! \n\n**Economy:** Dollars are earned by using"
-						+ " commands! Each command (except economy and help commands) used gains you $"+amountPerCommand+" 💵. You can also gamble this money and donate it to other users. 💰 \n\n");
-		eb.setFooter("Powered By Recon", "https://cdn0.iconfinder.com/data/icons/user-interface-167/32/ui-02-512.png");// will need to have image as second parameter eventually
+						+ " This bot allows plugins to a lot of useful APIs to get you good/hilarious information on basically anything."
+						+ " All API commands give you $" + amountPerCommand
+						+ " which you can spend on the all powerful Google command for $" + googleCost
+						+ "! \n\n**Economy:** Dollars are earned by using"
+						+ " commands! Each command (except economy and help commands) used gains you $"
+						+ amountPerCommand
+						+ " 💵. You can also gamble this money and donate it to other users. 💰 \n\n");
+		eb.setFooter("Powered By Recon", "https://cdn0.iconfinder.com/data/icons/user-interface-167/32/ui-02-512.png");// will
+																														// need
+																														// to
+																														// have
+																														// image
+																														// as
+																														// second
+																														// parameter
+																														// eventually
 		eb.setThumbnail("https://cdn0.iconfinder.com/data/icons/user-interface-167/32/ui-02-512.png");
 		eb3 = eb.build();
 		channel.sendMessage(eb3).queue();
+		
+		
 	}
+	private void money(MessageChannel channel) {
+		EmbedBuilder eb = new EmbedBuilder();
+		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
+		eb.setColor(new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
+		eb.setTitle("Money Commands 💵");
+		eb.addField("Convert Currency💶💵 (+$" + amountPerCommand + ")",
+				"`intel convertcurrency (convert from,convert to)`", true);
+		eb.addField("Stonks📊 (+$" + amountPerCommand + ")", "`intel stonk (stock symbol)`", true);
+		eb.addField("Detailed Stonks📊 (+$" + amountPerCommand + ")", "`intel detailstonk (stock symbol)`", true);
+		eb.setFooter("Powered By Recon", "https://cdn0.iconfinder.com/data/icons/user-interface-167/32/ui-02-512.png");// will
+																														// need
+																														// to
+																														// have
+																														// image
+																														// as
+																														// second
+																														// parameter
+																														// eventually
+		eb.setThumbnail("https://cdn0.iconfinder.com/data/icons/user-interface-167/32/ui-02-512.png");
+		eb3 = eb.build();
+		channel.sendMessage(eb3).queue();
+		
+	}
+
+	private void geography(MessageChannel channel) {
+		EmbedBuilder eb = new EmbedBuilder();
+		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
+		eb.setColor(new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
+		eb.setTitle("Geography 🗺");
+		eb.addField("Weather☁🌡 (+$" + amountPerCommand + ")", "`intel weather (long,lat)`", true);
+		eb.addField("Longitude Latitude🌎🌐 (+$" + amountPerCommand + ")", "`intel lnglat (place)`", true);
+		eb.addField("Place Information🌎🌐 (+$" + amountPerCommand + ")", "`intel placeinfo (place)`", true);
+		eb.setFooter("Powered By Recon", "https://cdn0.iconfinder.com/data/icons/user-interface-167/32/ui-02-512.png");// will
+																														// need
+																														// to
+																														// have
+																														// image
+																														// as
+																														// second
+																														// parameter
+																														// eventually
+		eb.setThumbnail("https://cdn0.iconfinder.com/data/icons/user-interface-167/32/ui-02-512.png");
+		eb3 = eb.build();
+		channel.sendMessage(eb3).queue();
+		
+	}
+
+	private void animals(MessageChannel channel) {
+		EmbedBuilder eb = new EmbedBuilder();
+		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
+		eb.setColor(new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
+		eb.setTitle("Animals 🐶");
+
+		eb.addField("Pokemon🃏🎴 (+$" + amountPerCommand + ")", "`intel pokemon (pokemon)`", true);
+		eb.addField("Dog🐶🐕‍ (+$" + amountPerCommand + ")", "`intel dog`", true);
+		eb.addField("Cat🐱🐈 (+$" + amountPerCommand + ")", "`intel cat`", true);
+		eb.setFooter("Powered By Recon", "https://cdn0.iconfinder.com/data/icons/user-interface-167/32/ui-02-512.png");// will
+																														// need
+																														// to
+																														// have
+																														// image
+																														// as
+																														// second
+																														// parameter
+																														// eventually
+		eb.setThumbnail("https://cdn0.iconfinder.com/data/icons/user-interface-167/32/ui-02-512.png");
+		eb3 = eb.build();
+		channel.sendMessage(eb3).queue();
+		
+	}
+
+	private void fun(MessageChannel channel) {
+		EmbedBuilder eb = new EmbedBuilder();
+		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
+		eb.setColor(new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
+		eb.setTitle("Fun 🎈");
+		eb.addField("Name -> Age Predictions💭📊 (+$" + amountPerCommand + ")", "`intel name (name)`", true);
+		eb.addField("Kanye Quotes💭 (+$" + amountPerCommand + ")", "`intel kanye`", true);
+		eb.addField("Uncreative Jokes😂🧺 (+$" + amountPerCommand + ")", "`intel joke`", true);
+		eb.addField("Number🔢 (+$" + amountPerCommand + ")", "`intel number (number)`", true);
+		eb.addField("Date🔢 (+$" + amountPerCommand + ")", "`intel date (mm/dd)`", true);
+		eb.addField("Minecraft Server Info🏦 (+$" + amountPerCommand + ")", "`intel minecraft (server address)`", true);
+		eb.addField("Roast Someone 🔥 (+$" + amountPerCommand + ")", "`intel roast (@User)`", true);
+		eb.setFooter("Powered By Recon", "https://cdn0.iconfinder.com/data/icons/user-interface-167/32/ui-02-512.png");// will
+																														// need
+																														// to
+																														// have
+																														// image
+																														// as
+																														// second
+																														// parameter
+																														// eventually
+		eb.setThumbnail("https://cdn0.iconfinder.com/data/icons/user-interface-167/32/ui-02-512.png");
+		eb3 = eb.build();
+		channel.sendMessage(eb3).queue();
+		
+	}
+
+	private void economy(MessageChannel channel) {
+		EmbedBuilder eb = new EmbedBuilder();
+		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
+		eb.setColor(new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
+		eb.setTitle("Economy 📈");
+		eb.addField("(Economy) Rock Paper Scissors✂ (+/-$" + amountRPS + ")", "`intel rps (rock/paper/scissors)`",
+				true);
+		eb.addField("Treasure Hunt💰(+$" + treasureGained + ")(1% chance)(Costs $"+treasureCost+")", "`intel hunt`", true);
+		eb.addField("(Economy) Balance💰", "`intel balance`", true);
+		// eb.addField("(Economy) Leaderboard📊", "`intel leaderboard`", true);
+		eb.addField("(Economy) Donate👬", "`intel donate (@User) ($amount)`", true);
+		eb.setFooter("Powered By Recon", "https://cdn0.iconfinder.com/data/icons/user-interface-167/32/ui-02-512.png");// will
+																														// need
+																														// to
+																														// have
+																														// image
+																														// as
+																														// second
+																														// parameter
+																														// eventually
+		eb.setThumbnail("https://cdn0.iconfinder.com/data/icons/user-interface-167/32/ui-02-512.png");
+		eb3 = eb.build();
+		channel.sendMessage(eb3).queue();
+		
+	}
+
+	private void miscellaneous(MessageChannel channel) {
+		EmbedBuilder eb = new EmbedBuilder();
+		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
+		eb.setColor(new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
+		eb.setTitle("Miscellaneous 🎱");
+		eb.addField("Covid Stats🦠📈 (+$" + amountPerCommand + ")", "`intel covid (us)`", true);
+		eb.addField("Image📷🖼 (+$" + amountPerCommand + ")", "`intel image (ImageName)`", true);
+		eb.addField("IP Info💻🔗 (+$" + amountPerCommand + ")", "`intel ip (ip address)`", true);
+		eb.addField("Movie Recon🎥🎬 (+$" + amountPerCommand + ")", "`intel movie (movie title)`", true);
+		eb.setFooter("Powered By Recon", "https://cdn0.iconfinder.com/data/icons/user-interface-167/32/ui-02-512.png");// will
+																														// need
+																														// to
+																														// have
+																														// image
+																														// as
+																														// second
+																														// parameter
+																														// eventually
+		eb.setThumbnail("https://cdn0.iconfinder.com/data/icons/user-interface-167/32/ui-02-512.png");
+		eb3 = eb.build();
+		channel.sendMessage(eb3).queue();
+		
+	}
+
+	private void utility(MessageChannel channel) {
+		EmbedBuilder eb = new EmbedBuilder();
+		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
+		eb.setColor(new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
+		eb.setTitle("Utility 📜");
+		eb.addField("Take a Poll 📊 (+$" + amountPerCommand + ")", "`intel poll (question)`", true);
+		eb.addField("Ping🏓", "`intel ping`", true);
+		eb.addField("Help🆘", "`intel help`", true);
+		eb.setFooter("Powered By Recon", "https://cdn0.iconfinder.com/data/icons/user-interface-167/32/ui-02-512.png");// will
+																														// need
+																														// to
+																														// have
+																														// image
+																														// as
+																														// second
+																														// parameter
+																														// eventually
+		eb.setThumbnail("https://cdn0.iconfinder.com/data/icons/user-interface-167/32/ui-02-512.png");
+		eb3 = eb.build();
+		channel.sendMessage(eb3).queue();
+		
+	}
+	/////////////////
+	
 
 	private void addCashFromEvent(MessageReceivedEvent event, int cash) {
 		for (int i = 0; i < GeneralInputManager.readWrite.getUsers().size(); i++) {

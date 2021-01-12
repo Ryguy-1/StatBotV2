@@ -150,24 +150,24 @@ public class CovidStatsAPI {
 		try {
 			String jsonString = this.response.substring(1, this.response.length() - 1); // assign your JSON String here
 			JSONObject obj = new JSONObject(jsonString);
-			positive = obj.getInt("positive");
-			negative = obj.getInt("negative");
-			date = obj.getInt("date");
-			pending = obj.getInt("pending");
-			hospitalizedCurrently = obj.getInt("hospitalizedCurrently");
-			inIcuCurrently = obj.getInt("inIcuCurrently");
-			inIcuCumulative = obj.getInt("inIcuCumulative");
-			onVentilatorCurrently = obj.getInt("onVentilatorCurrently");
-			onVentilatorCumulative = obj.getInt("onVentilatorCumulative");
-			recovered = obj.getInt("recovered");
-			dateChecked = obj.getString("dateChecked");
-			death = obj.getInt("death");
-			totalTestResults = obj.getInt("totalTestResults");
-			deathIncrease = obj.getInt("deathIncrease");
-			hospitalizedIncrease = obj.getInt("hospitalizedIncrease");
-			negativeIncrease = obj.getInt("negativeIncrease");
-			positiveIncrease = obj.getInt("positiveIncrease");
-			totalTestResultsIncrease = obj.getInt("totalTestResultsIncrease");
+			try{positive = obj.getInt("positive");}catch(Exception e) {}
+			try{negative = obj.getInt("negative");}catch(Exception e) {}
+			try{date = obj.getInt("date");}catch(Exception e) {}
+			try{pending = obj.getInt("pending");}catch(Exception e) {}
+			try{hospitalizedCurrently = obj.getInt("hospitalizedCurrently");}catch(Exception e) {}
+			try{inIcuCurrently = obj.getInt("inIcuCurrently");}catch(Exception e) {}
+			try{inIcuCumulative = obj.getInt("inIcuCumulative");}catch(Exception e) {}
+			try{onVentilatorCurrently = obj.getInt("onVentilatorCurrently");}catch(Exception e) {}
+			try{onVentilatorCumulative = obj.getInt("onVentilatorCumulative");}catch(Exception e) {}
+			try{recovered = obj.getInt("recovered");}catch(Exception e) {}
+			try{dateChecked = obj.getString("dateChecked");}catch(Exception e) {}
+			try{death = obj.getInt("death");}catch(Exception e) {}
+			try{totalTestResults = obj.getInt("totalTestResults");}catch(Exception e) {}
+			try{deathIncrease = obj.getInt("deathIncrease");}catch(Exception e) {}
+			try{hospitalizedIncrease = obj.getInt("hospitalizedIncrease");}catch(Exception e) {}
+			try{negativeIncrease = obj.getInt("negativeIncrease");}catch(Exception e) {}
+			try{positiveIncrease = obj.getInt("positiveIncrease");}catch(Exception e) {}
+			try{totalTestResultsIncrease = obj.getInt("totalTestResultsIncrease");}catch(Exception e) {}
 		} catch (Exception e) {
 		}
 	}
