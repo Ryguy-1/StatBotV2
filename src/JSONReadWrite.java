@@ -104,8 +104,17 @@ public class JSONReadWrite {
 		JSONArray arr1 = obj.getJSONArray("users");
 
 		// Left off here confused
-		JSONObject tempObject = new JSONObject("{\"cash\":" + startingAmount + ", \"guildName\":" + guildName
+		JSONObject tempObject;
+		try{
+			tempObject = new JSONObject("{\"cash\":" + startingAmount + ", \"guildName\":" + guildName
 				+ ", \"guildId\":" + guildId + ", \"name\":" + name + ", \"id\":" + id + "}");
+		}catch(Exception e) {
+			tempObject = new JSONObject("{\"cash\":" + startingAmount + ", \"guildName\":" + "Error Guild"
+					+ ", \"guildId\":" + guildId + ", \"name\":" + "Error Name" + ", \"id\":" + id + "}");
+		}
+		
+		
+		
 
 		arr1.put(tempObject);
 

@@ -61,7 +61,7 @@ public class Jokes {
 			
 		} catch (Exception e) {
 			response = "Joke API Error";
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 

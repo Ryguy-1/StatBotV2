@@ -342,7 +342,10 @@ public class Guild {
 		} else if (message.contains("intel geography")) {
 			geography(channel);
 			System.out.println("geography");
-		} else if (message.contains("intel money")) {
+		} else if (message.contains("intel git")) {
+			git(channel);
+			System.out.println("geography");
+		}else if (message.contains("intel money")) {
 			money(channel);
 			System.out.println("money");
 		}
@@ -1421,6 +1424,8 @@ public class Guild {
 		eb.addField("Take a Poll 📊 (+$" + amountPerCommand + ")", "`intel poll (question)`", true);
 		eb.addField("Ping🏓", "`intel ping`", true);
 		eb.addField("Help🆘", "`intel help`", true);
+		eb.addField("Github", "`intel git`", true);
+		
 		eb.setFooter("Powered By Recon", "https://cdn0.iconfinder.com/data/icons/user-interface-167/32/ui-02-512.png");// will
 																														// need
 																														// to
@@ -1436,6 +1441,30 @@ public class Guild {
 		
 	}
 	/////////////////
+	
+	
+	private void git(MessageChannel channel) {
+		EmbedBuilder eb = new EmbedBuilder();
+		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
+		eb.setColor(new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
+		eb.setTitle("**Recon Github**");
+		eb.setDescription("**[Github Repository for Recon. See Readme for more info!](https://github.com/Ryguy-1/StatBotV2-Web-Code)**");
+		eb.setFooter("Powered By Recon", "https://cdn0.iconfinder.com/data/icons/user-interface-167/32/ui-02-512.png");// will
+																														// need
+																														// to
+																														// have
+																														// image
+																														// as
+																														// second
+																														// parameter
+																														// eventually
+		eb.setThumbnail("https://avatars1.githubusercontent.com/u/9919?s=200&v=4");
+		eb3 = eb.build();
+		channel.sendMessage(eb3).queue();
+		
+	}
+	
+	//invite link: https://discord.com/api/oauth2/authorize?client_id=779185137971494932&permissions=522304&scope=bot
 	
 
 	private void addCashFromEvent(MessageReceivedEvent event, int cash) {

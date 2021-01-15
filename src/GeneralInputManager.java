@@ -45,7 +45,7 @@ public class GeneralInputManager extends ListenerAdapter {
 		// initialize JDA
 		jda = JDABuilder.createDefault(runner.getDiscordAPIKey()).addEventListeners(this).build();
 		// set status of StatBot
-		jda.getPresence().setActivity(Activity.watching("👓   (intel help)"));
+		jda.getPresence().setActivity(Activity.watching("👓   (intel help) Currently in: Beta. Serving: " + jda.getGuilds().size() + " guilds"));
 		// initialize
 		isWrong = false;
 		// initialize guild variables
@@ -72,6 +72,8 @@ public class GeneralInputManager extends ListenerAdapter {
 			// updates the JSON file
 			updateUserJSON(event);
 
+			
+			
 			boolean inGuilds = false;
 			// checks if in a guild
 			for (int i = 0; i < this.guildIds.size(); i++) {
@@ -95,6 +97,7 @@ public class GeneralInputManager extends ListenerAdapter {
 				try {
 					System.out.println(
 							"New Guild - Id: " + event.getGuild().getId() + ", Name: " + event.getGuild().getName());
+					jda.getPresence().setActivity(Activity.watching("👓   (intel help) Currently in: Beta. Serving: " + jda.getGuilds().size() + " guilds"));
 				} catch (Exception e) {
 				}
 				// tries to add the new guild if the message was sent from a guild and inGuilds
@@ -146,7 +149,7 @@ public class GeneralInputManager extends ListenerAdapter {
 	private void updateUserJSON(MessageReceivedEvent event) {
 		if (readWrite.userIsInList(event.getAuthor().getId()) == false) {
 			System.out.println("New User");
-			readWrite.addUserJSON("100", event.getGuild().getName(), event.getGuild().getId() + "",
+			readWrite.addUserJSON("200", event.getGuild().getName(), event.getGuild().getId() + "",
 					event.getAuthor().getName(), event.getAuthor().getId() + "");
 		}
 	}
