@@ -1234,7 +1234,7 @@ public class Guild {
 		EmbedBuilder eb = new EmbedBuilder();
 		MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null, null);
 		eb.setColor(new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
-		eb.setTitle("📜Gathering Reconnaissance...📊");
+		eb.setTitle("📜Gathering Reconnaissance...📊    Currently in: Beta");
 		eb.addField("Google🔎🔍 (-$" + googleCost + ")", "`intel google (anything)`", true);
 		eb.addField("Utility 📜", "`intel utility`", true);
 		eb.addField("Miscellaneous 🎱", "`intel miscellaneous`", true);

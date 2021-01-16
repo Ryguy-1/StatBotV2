@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
@@ -26,27 +27,37 @@ public class JSONReadWrite {
 
 		// Read from a file one line at a time
 		String jsonString = "";
-		try {
-			BufferedReader br = new BufferedReader(new FileReader(resourceName));
+		
+		BufferedReader objReader = null;
+		  try {
+		   String strCurrentLine;
 
-			jsonString = br.readLine();
-			while (br.readLine() != null) {
-				jsonString += br.readLine();
-			}
+		   objReader = new BufferedReader(new FileReader(resourceName));
 
-			br.close();
-		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		   while ((strCurrentLine = objReader.readLine()) != null) {
+			jsonString+=strCurrentLine;
+		   }
 
+		  } catch (IOException e) {
+
+		   e.printStackTrace();
+
+		  } finally {
+
+		   try {
+		    if (objReader != null)
+		     objReader.close();
+		   } catch (IOException ex) {
+		    ex.printStackTrace();
+		   }
+		  }
+		
 		JSONObject obj = new JSONObject(jsonString);
 
 		JSONArray arr1 = obj.getJSONArray("users");
 
+		System.out.println(arr1.length() + " is the array length");
+		
 		try {
 			for (int i = 0; i < arr1.length(); i++) {
 				addUserArrayList(new JSONObject(arr1.get(i).toString()).getLong("cash") + "",
@@ -83,38 +94,46 @@ public class JSONReadWrite {
 
 		// Read from a file one line at a time
 		String jsonString = "";
-		try {
-			BufferedReader br = new BufferedReader(new FileReader(resourceName));
+		BufferedReader objReader = null;
+		  try {
+		   String strCurrentLine;
 
-			jsonString = br.readLine();
-			while (br.readLine() != null) {
-				jsonString += br.readLine();
-			}
+		   objReader = new BufferedReader(new FileReader(resourceName));
 
-			br.close();
-		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		   while ((strCurrentLine = objReader.readLine()) != null) {
+			jsonString+=strCurrentLine;
+		   }
+
+		  } catch (IOException e) {
+
+		   e.printStackTrace();
+
+		  } finally {
+
+		   try {
+		    if (objReader != null)
+		     objReader.close();
+		   } catch (IOException ex) {
+		    ex.printStackTrace();
+		   }
+		  }
 		JSONObject obj = new JSONObject(jsonString);
 
 		JSONArray arr1 = obj.getJSONArray("users");
 
 		// Left off here confused
 		JSONObject tempObject;
-		try{
+
+		// check if utf-8 compatible, etc.
+		try {
+			byte[] bytes = guildName.getBytes("UTF-8");
+			byte[] bytes2 = name.getBytes("UTF-8");
 			tempObject = new JSONObject("{\"cash\":" + startingAmount + ", \"guildName\":" + guildName
-				+ ", \"guildId\":" + guildId + ", \"name\":" + name + ", \"id\":" + id + "}");
-		}catch(Exception e) {
+					+ ", \"guildId\":" + guildId + ", \"name\":" + name + ", \"id\":" + id + "}");
+		} catch (Exception e) {
 			tempObject = new JSONObject("{\"cash\":" + startingAmount + ", \"guildName\":" + "Error Guild"
 					+ ", \"guildId\":" + guildId + ", \"name\":" + "Error Name" + ", \"id\":" + id + "}");
 		}
-		
-		
-		
 
 		arr1.put(tempObject);
 
@@ -137,22 +156,29 @@ public class JSONReadWrite {
 
 		// Read from a file one line at a time
 		String jsonString = "";
-		try {
-			BufferedReader br = new BufferedReader(new FileReader(resourceName));
+		BufferedReader objReader = null;
+		  try {
+		   String strCurrentLine;
 
-			jsonString = br.readLine();
-			while (br.readLine() != null) {
-				jsonString += br.readLine();
-			}
+		   objReader = new BufferedReader(new FileReader(resourceName));
 
-			br.close();
-		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		   while ((strCurrentLine = objReader.readLine()) != null) {
+			jsonString+=strCurrentLine;
+		   }
+
+		  } catch (IOException e) {
+
+		   e.printStackTrace();
+
+		  } finally {
+
+		   try {
+		    if (objReader != null)
+		     objReader.close();
+		   } catch (IOException ex) {
+		    ex.printStackTrace();
+		   }
+		  }
 		JSONObject obj = new JSONObject(jsonString);
 
 		JSONArray arr1 = obj.getJSONArray("users");
