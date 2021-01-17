@@ -795,8 +795,12 @@ public class Guild {
 				try {
 					channel.sendMessage("Your search for " + message + "...🔎");
 
-					channel.sendFile(GeneralInputManager.userBots.get(inUseIndex).getFileFile(), "User Thread.jpg")
-							.queue();
+					
+					//got rid of picture because can find my ip address through it...
+//					channel.sendFile(GeneralInputManager.userBots.get(inUseIndex).getFileFile(), "User Thread.jpg")
+//							.queue();
+					//temp line to keep working properly
+					GeneralInputManager.userBots.get(inUseIndex).getFileFile();
 
 					EmbedBuilder eb = new EmbedBuilder();
 					MessageEmbed eb3 = new MessageEmbed("", "", "", null, null, 0, null, null, null, null, null, null,
@@ -806,7 +810,7 @@ public class Guild {
 					eb.setTitle("**" + message.toUpperCase() + "🔗🖱**",
 							GeneralInputManager.userBots.get(inUseIndex).getCurrentURL());
 					String temp = "";
-					for (int i = 0; i < 12; i++) { // only top 12 links or blank spaces
+					for (int i = 0; i < 7; i++) { // only top 12 links or blank spaces
 						try {
 							if (!GeneralInputManager.userBots.get(inUseIndex).getLinkTitles().get(i).equals("")) {
 								temp += "[" + GeneralInputManager.userBots.get(inUseIndex).getLinkTitles().get(i) + "]("

@@ -128,8 +128,8 @@ public class JSONReadWrite {
 		try {
 			byte[] bytes = guildName.getBytes("UTF-8");
 			byte[] bytes2 = name.getBytes("UTF-8");
-			tempObject = new JSONObject("{\"cash\":" + startingAmount + ", \"guildName\":" + guildName
-					+ ", \"guildId\":" + guildId + ", \"name\":" + name + ", \"id\":" + id + "}");
+			tempObject = new JSONObject("{\"cash\":" + startingAmount + ", \"guildName\":" + guildName+"n"
+					+ ", \"guildId\":" + guildId + ", \"name\":" + name+"n" + ", \"id\":" + id + "}");
 		} catch (Exception e) {
 			tempObject = new JSONObject("{\"cash\":" + startingAmount + ", \"guildName\":" + "Error Guild"
 					+ ", \"guildId\":" + guildId + ", \"name\":" + "Error Name" + ", \"id\":" + id + "}");
